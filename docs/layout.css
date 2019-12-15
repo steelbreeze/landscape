@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #263238;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1em;
+
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust:100%;
+}
+
+h1,
+h2 {
+    margin: 0;
+}
+
+h3 {
+    margin-bottom: 0;
+}
+
+p {
+    margin: 0.25em 0 0.75em 0;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 2px solid white;
+    border-radius: 50%; 
+    background: #6CC24A;
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #6CC24A;
+  }
+  
+table.heatmap {
+    width: 100%;
+
+    margin: 1em 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.8em;
+    color: rgba(255, 255, 255, 0.87);
+
+    table-layout: fixed;
+}
+
+table.heatmap th {
+    border: 1px solid white;
+    padding: 0.25em 0.75em;
+    font-weight: normal;
+}
+
+table.heatmap td {
+    border: 1px solid white;
+    padding: 0.8em;
+    font-weight: normal;
+    text-align: center;
+
+    overflow: hidden;
+}
+
+table.heatmap th.tableHeading {
+    color: #D0D5DA;
+}
+
+table.heatmap td.xAxis {
+    background: #7FD3F7;
+    padding: 0.25em 0.75em;
+}
+
+table.heatmap td.yAxis {
+    background: #00A7F0;
+}
+
+table.heatmap .green {
+    background: #6CC24A;
+}
+
+table.heatmap .amber {
+    background: #FFAD00;
+}
+
+table.heatmap .red {
+    background: #F93822;
+}
+
+table.heatmap .blue {
+    background: #B1C9E8;
+}
+
+/* NOTE: cell have a scale size: 10 is a normal height cell, smaller ones may need adjustment. */
+table.heatmap .height9,
+table.heatmap .height8,
+table.heatmap .height7  {
+    padding: 0em;
+}
+
+table.heatmap .height6,
+table.heatmap .height5,
+table.heatmap .height4  {
+    font-size: 0.75em;
+    padding: 0em;
+}
+
+table.heatmap .height3,
+table.heatmap .height2,
+table.heatmap .height1 {
+    font-size: 0.5em;
+    padding: 0em;
+}
+
+table.heatmap td:empty {
+    background: repeating-linear-gradient(135deg, white, white 4px, #D0D5DA 4px, #D0D5DA 6px);
+}
+
+table.heatmap td.xAxis:empty {
+    background: none;
+}
+
+table.timeline {
+    width: 100%;
+
+    margin: 1em 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.8em;
+
+    table-layout: fixed;
+
+    text-align: center;
+}
+
+table.timeline td {
+    padding: 0.25em 0;
+}
+
+table.timeline td:first-child{
+    text-align: left;
+}
+table.timeline td:last-child{
+    text-align: right;
+}

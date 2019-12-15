@@ -1,0 +1,236 @@
+[
+	{
+		"name": "Azure API GW",
+		"usage": [
+			{
+				"capability": "Market gateway",
+				"product": "MM",
+				"location": "Italy",
+				"status": "green",
+				"commissioned": "2020-01-01"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "Credit",
+				"location": "Italy",
+				"status": "green",
+				"commissioned": "2020-05-01"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "Rates",
+				"location": "Italy",
+				"status": "green",
+				"commissioned": "2021-02-20"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "FX",
+				"location": "Italy",
+				"status": "green",
+				"commissioned": "2021-02-20"
+			}
+		]
+	},
+	{
+		"name": "ION",
+		"usage": [
+			{
+				"capability": "Market gateway",
+				"product": "MM",
+				"location": "Italy",
+				"status": "red",
+				"decommissioned": "2020-01-01"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "Credit",
+				"location": "United Kingdom",
+				"status": "red",
+				"decommissioned": "2020-05-01"
+			}
+		]
+	},
+	{
+		"name": "Wall St",
+		"usage": [
+			{
+				"capability": "Market gateway",
+				"product": "MM",
+				"location": "United Kingdom",
+				"status": "green",
+				"decommissioned": "2020-10-01"
+			},
+			{
+				"capability": "Order management",
+				"product": "MM",
+				"location": "United Kingdom",
+				"status": "green"
+			},
+			{
+				"capability": "Order execution",
+				"product": "FX",
+				"location": "United Kingdom",
+				"status": "green",
+				"commissioned": "2020-11-15"
+			},
+			{
+				"capability": "Order execution",
+				"product": "MM",
+				"location": "United Kingdom",
+				"status": "green",
+				"commissioned": "2020-11-15"
+			},
+			{
+				"capability": "Order management",
+				"product": "FX",
+				"location": "United Kingdom",
+				"status": "green"
+			}
+				]
+	},
+	{
+		"name": "Misys",
+		"usage": [
+			{
+				"capability": "Order execution",
+				"product": "Credit",
+				"location": "United Kingdom",
+				"status": "amber"
+			},
+			{
+				"capability": "Order execution",
+				"product": "MM",
+				"location": "United Kingdom",
+				"status": "amber",
+				"decommissioned": "2021-01-15"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "MM",
+				"location": "United Kingdom",
+				"status": "amber",
+				"decommissioned": "2020-03-01"
+			}
+		]
+	},
+	{
+		"name": "Summit",
+		"usage": [
+			{
+				"capability": "Market gateway",
+				"product": "FX",
+				"location": "United Kingdom",
+				"status": "green",
+				"decommissioned": "2021-04-15"
+			},
+			{
+				"capability": "Order execution",
+				"product": "FX",
+				"location": "United Kingdom",
+				"status": "green",
+				"decommissioned": "2021-01-15"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "Rates",
+				"location": "United Kingdom",
+				"status": "green",
+				"decommissioned": "2021-04-15"
+			},
+			{
+				"capability": "Order management",
+				"product": "Rates",
+				"location": "United Kingdom",
+				"status": "green",
+				"commissioned": "2021-09-15"
+			},
+			{
+				"capability": "Order execution",
+				"product": "Rates",
+				"location": "United Kingdom",
+				"status": "green"
+			}
+		]
+	},
+	{
+		"name": "Kdb",
+		"usage": [
+			{
+				"capability": "Order management",
+				"product": "Equities",
+				"location": "Germany",
+				"status": "green"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "Equities",
+				"location": "Germany",
+				"status": "green"
+			},
+			{
+				"capability": "Confirmations",
+				"product": "Equities",
+				"location": "Germany",
+				"status": "red",
+				"decommissioned": "2022-09-09"
+			},
+			{
+				"capability": "Order execution",
+				"product": "Equities",
+				"location": "Germany",
+				"status": "green",
+				"commissioned": "2020-06-01"
+			},
+			{
+				"capability": "Order execution",
+				"product": "Equities",
+				"location": "Germany",
+				"status": "amber",
+				"decommissioned": "2020-07-01"
+			}
+		]
+	},
+	{
+		"name": "Thunderhead",
+		"usage": [
+			{
+				"capability": "Confirmations",
+				"product": "FX",
+				"location": "United Kingdom",
+				"status": "green"
+			},
+			{
+				"capability": "Confirmations",
+				"product": "MM",
+				"location": "United Kingdom",
+				"status": "green"
+			},
+			{
+				"capability": "Confirmations",
+				"product": "Rates",
+				"location": "United Kingdom",
+				"status": "green"
+			},
+			{
+				"capability": "Confirmations",
+				"product": "Credit",
+				"location": "United Kingdom",
+				"status": "green"
+			},
+			{
+				"capability": "Market gateway",
+				"product": "Credit",
+				"location": "United Kingdom",
+				"status": "red",
+				"decommissioned": "2020-10-01"
+			},
+			{
+				"capability": "Confirmations",
+				"product": "Equities",
+				"location": "United Kingdom",
+				"status": "green",
+				"commissioned": "2022-06-06"
+			}
+		]
+	}]

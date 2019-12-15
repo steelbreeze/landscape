@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Application portfolio</title>
+	<link rel="stylesheet" href="./layout.css" media="all">
+</head>
+
+<body>
+	<header>
+		<h2>Mythical bank</h2>
+		<h1>Application portfolio heat-maps</h1>
+	</header>
+	<table class="heatmap">
+		<tbody id="lineOfBusiness">
+		</tbody>
+	</table>
+	<table class="timeline">
+		<tbody>
+			<tr>
+				<td colspan="3">View as of: <span id="dateOfInterest"></span></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
+						oninput="displayAtDate(fromToday(this.value))" /></td>
+			</tr>
+			<tr>
+				<td id="earliestDate">Earliest</td>
+				<td id="todaysDate">Today</td>
+				<td id="latestDate">Latest</td>
+			</tr>
+		</tbody>
+	</table>
+	<p>The heat map above is auto-generated from a <a href="./data/mythicalBank.json">JSON file</a> containing
+		information about applications and the context in which they are used. Heat maps with merged and split cells
+		convey a great deal of information in a compact form.</p>
+	<p>The process from raw data to the table above is as follows:</p>
+	<ol>
+		<li>Extract the unique values for the x and y axis;</li>
+		<li>Determine the optimal sequences of x and y axis values to position the same applications of the same status
+			together;</li>
+		<li>Produce a table using the optimal x and y axis where cells containing multiple applications are split and
+			applications of the same status in neighbouring cells merged.</li>
+	</ol>
+	<p>These operations are performed in seperate calls to the library, therefore if you want a preset x and y axis, you
+		can skip the first two steps alltogether, or substitute your own methods.</p>
+	<h3>Browser support</h3>
+	<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should therefore work in any
+		browser. The heat map is rendered using D3 into an HTML table. Microsoft Internet Explorer does not seem to
+		support the latest versions of D3; Apple Safari and Microsoft Edge both have rowspan table rendering issues
+		where there are complex split cell scenarios; Google Chrome and Mozilla Firefox both render well.</p>
+	<h3>Outstanding work</h3>
+	<p>Add a function to help select a preferred scenario.</p>
+	<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
+	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
+
+	<script src="./dist/d3.min.js"></script>
+	<script src="./dist/layout.min.js"></script>
+	<script>
+		// extract any URL parameters to define dimensions
+		const urlParams = new URLSearchParams(window.location.search);
+		const x = urlParams.get("x") || "product";
+		const y = urlParams.get("y") || "capability";
+		let data = undefined;
+		let scenario = undefined;
+
+		// load the applications data
+		d3.json("./data/mythicalBank.json").then(json => {
+			data = convertRawJson(json);
+
+			// update the slider labels
+			d3.select("#earliestDate").text(fromToday(-1095).toLocaleDateString());
+			d3.select("#todaysDate").text(fromToday().toLocaleDateString());
+			d3.select("#latestDate").text(fromToday(1096).toLocaleDateString());
+
+			// extract the axes from the application data
+			const axes = layout.getAxes(data, x, y);
+
+			// find the optimum layout scenarios
+			const scenarios = layout.getOptimalAxes(data, axes, fixY);
+
+			// select the preferred scenario
+			if (scenarios.length !== 0) {
+				scenario = scenarios[0];
+
+				displayAtDate(fromToday());
+			}
+		});
+
+		function displayAtDate(date) {
+			// get the prepared table with applications filtered by the date of interest
+			const table = layout.getTable(layout.filterByDate(data, date), scenario);
+
+			// update data of interest field
+			d3.select("#dateOfInterest").text(date.toLocaleDateString());
+
+			// update the table
+			tbody = d3.select("#lineOfBusiness");
+			tbody.selectAll("tr").remove();
+			tbody.selectAll("tr").data(table).enter().append("tr")
+				.selectAll("td").data(row => row).enter().append("td")
+				.text(cell => cell.name)
+				.attr("class", cell => `${cell.style} height${Math.round(cell.height / 10)}`)
+				.attr("colspan", cell => cell.colspan).attr("rowspan", cell => cell.rowspan);
+		}
+
+
+		// alternative function to considering all permutations of the y axis; to pass into layout.getOptimalAxes
+		function fixY(values) {
+			const capabilities = ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"];
+
+			return [capabilities.filter(capability => values.indexOf(capability) !== -1)];
+		}
+
+		// map raw JSON data to format required in layout engine (transform date strings into dates)
+		function convertRawJson(json) {
+			return json.map(app => {
+				return {
+					name: app.name,
+					usage: app.usage.map(use => {
+						return {
+							product: use.product,
+							capability: use.capability,
+							location: use.location,
+							commissioned: use.commissioned ? new Date(use.commissioned) : undefined,
+							decommissioned: use.decommissioned ? new Date(use.decommissioned) : undefined,
+							status: use.status
+						};
+					})
+				};
+			});
+		}
+
+		// helper function to add days to a date
+		function fromToday(offset) {
+			var result = new Date();
+
+			result.setMilliseconds(result.getMilliseconds() + ((offset || 0) * 86400000));
+
+			return result;
+		}
+	</script>
+</body>
+
+</html>
