@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Application portfolio</title>
-	<link rel="stylesheet" href="./layout.css" media="all">
+	<link rel="stylesheet" href="./heatmap.css" media="all">
 </head>
 
 <body>
@@ -58,7 +58,7 @@
 	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
 
 	<script src="./dist/d3.min.js"></script>
-	<script src="./dist/layout.min.js"></script>
+	<script src="./dist/heatmap.min.js"></script>
 	<script>
 		// extract any URL parameters to define dimensions
 		const urlParams = new URLSearchParams(window.location.search);
@@ -77,10 +77,10 @@
 			d3.select("#latestDate").text(fromToday(1096).toLocaleDateString());
 
 			// extract the axes from the application data
-			const axes = layout.getAxes(data, x, y);
+			const axes = heatmap.getAxes(data, x, y);
 
 			// find the optimum layout scenarios
-			const scenarios = layout.getOptimalAxes(data, axes, fixY);
+			const scenarios = heatmap.getOptimalAxes(data, axes, fixY);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {
@@ -92,7 +92,7 @@
 
 		function displayAtDate(date) {
 			// get the prepared table with applications filtered by the date of interest
-			const table = layout.getTable(layout.filterByDate(data, date), scenario);
+			const table = heatmap.getTable(heatmap.filterByDate(data, date), scenario);
 
 			// update data of interest field
 			d3.select("#dateOfInterest").text(date.toLocaleDateString());
@@ -108,7 +108,7 @@
 		}
 
 
-		// alternative function to considering all permutations of the y axis; to pass into layout.getOptimalAxes
+		// alternative function to considering all permutations of the y axis; to pass into heatmap.getOptimalAxes
 		function fixY(values) {
 			const capabilities = ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"];
 

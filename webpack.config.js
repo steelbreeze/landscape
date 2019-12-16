@@ -4,8 +4,8 @@ module.exports = {
   entry: './lib/index.js',
   mode: 'production',
   output: {
-    filename: 'layout.min.js',
-    library: 'layout',
+    filename: 'heatmap.min.js',
+    library: 'heatmap',
     libraryTarget: 'var'
   }
 };
