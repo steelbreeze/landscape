@@ -1,6 +1,9 @@
 [
 	{
-		"name": "Azure API GW",
+		"detail": {
+			"id": 0,
+		"name": "Azure API GW"
+		},
 		"usage": [
 			{
 				"capability": "Market gateway",
@@ -33,7 +36,9 @@
 		]
 	},
 	{
-		"name": "ION",
+		"detail": {
+			"id": 1,
+			"name": "ION"},
 		"usage": [
 			{
 				"capability": "Market gateway",
@@ -52,7 +57,9 @@
 		]
 	},
 	{
-		"name": "Wall St",
+		"detail": {
+			"id": 2,
+			"name": "Wall St"},
 		"usage": [
 			{
 				"capability": "Market gateway",
@@ -90,7 +97,9 @@
 				]
 	},
 	{
-		"name": "Misys",
+		"detail": {
+			"id": 3,
+			"name": "MX II"},
 		"usage": [
 			{
 				"capability": "Order execution",
@@ -115,7 +124,9 @@
 		]
 	},
 	{
-		"name": "Summit",
+		"detail": {
+			"id": 4,
+			"name": "Summit"},
 		"usage": [
 			{
 				"capability": "Market gateway",
@@ -154,7 +165,9 @@
 		]
 	},
 	{
-		"name": "Kdb",
+		"detail": {
+			"id": 5,
+			"name": "Kdb"},
 		"usage": [
 			{
 				"capability": "Order management",
@@ -192,7 +205,9 @@
 		]
 	},
 	{
-		"name": "Thunderhead",
+		"detail": {
+			"id": 6,
+			"name": "Thunderhead"},
 		"usage": [
 			{
 				"capability": "Confirmations",

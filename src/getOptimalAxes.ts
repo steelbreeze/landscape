@@ -15,14 +15,14 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
     let bestAdjacency = -1;
 
     // denormalise the underlying application data and resolve the axes
-    let interim: Array<{ name: string, status: string, usage: Array<{ x: string, y: string }> }> = [];
+    let interim: Array<{ name: string | undefined, status: string, usage: Array<{ x: string, y: string }> }> = [];
 
     for (const app of applications) {
         for (const use of app.usage) {
-            let interimApp = interim.filter(a => a.name === app.name && a.status === use.status)[0];
+            let interimApp = interim.filter(a => a.name === app.detail.name && a.status === use.status)[0];
 
             if (!interimApp) {
-                interimApp = { name: app.name, status: use.status, usage: [] };
+                interimApp = { name: app.detail.name, status: use.status, usage: [] };
 
                 interim.push(interimApp);
             }

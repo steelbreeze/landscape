@@ -1,3 +1,4 @@
+import { Detail, noDetail } from './Detail';
 import { Application } from './Application';
 import { Axes } from './Axes';
 import { Cell } from './Cell';
@@ -9,24 +10,24 @@ import { Cell } from './Cell';
  */
 export function getTable(applications: Array<Application>, axes: Axes): Array<Array<Cell>> {
     // denormalise the underlying application data
-    const flattened: Array<{ name: string, x: string, y: string, status: string }> = [];
+    const flattened: Array<{ detail: Detail, x: string, y: string, status: string }> = [];
 
     for (const app of applications) {
         for (const use of app.usage) {
-            flattened.push({ name: app.name, x: use[axes.xDimension], y: use[axes.yDimension], status: use.status });
+            flattened.push({ detail: app.detail, x: use[axes.xDimension], y: use[axes.yDimension], status: use.status });
         }
     }
 
     // build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-    const xAxis = [[new Cell("", "xAxis")], ...axes.xValues.map(x => [new Cell(x, "xAxis")])];
-    const interim = [xAxis, ...axes.yValues.map(y => [[new Cell(y, "yAxis")], ...axes.xValues.map(x => flattened.filter(a => a.x === x && a.y === y).map(a => new Cell(a.name, a.status)))])];
+    const xAxis = [[new Cell(noDetail(), "xAxis")], ...axes.xValues.map(x => [new Cell(noDetail(x), "xAxis")])];
+    const interim = [xAxis, ...axes.yValues.map(y => [[new Cell(noDetail(y), "yAxis")], ...axes.xValues.map(x => flattened.filter(a => a.x === x && a.y === y).map(a => new Cell(a.detail, a.status)))])];
 
     // create blank apps and split rows as necessary
     for (let iY = interim.length; iY--;) {
         // where there are no apps in a cells insert an empty cell object
         for (let iX = interim[iY].length; iX--;) {
             if (interim[iY][iX].length === 0) {
-                interim[iY][iX].push(new Cell("", "empty"));
+                interim[iY][iX].push(new Cell(noDetail(), "empty"));
             }
         }
 
@@ -52,7 +53,7 @@ export function getTable(applications: Array<Application>, axes: Axes): Array<Ar
             if (!merged && iY) {
                 const above = result[iY - 1][iX];
 
-                if (above.name === app.name && above.style === app.style && above.colspan === app.colspan) {
+                if (above.detail.name === app.detail.name && above.style === app.style && above.colspan === app.colspan) {
                     above.rowspan += app.rowspan;
                     above.height += app.height;
                     result[iY].splice(iX, 1);
@@ -64,7 +65,7 @@ export function getTable(applications: Array<Application>, axes: Axes): Array<Ar
             if (!merged && iX) {
                 const left = result[iY][iX - 1];
 
-                if (left.name === app.name && left.style === app.style && left.rowspan === app.rowspan) {
+                if (left.detail.name === app.detail.name && left.style === app.style && left.rowspan === app.rowspan) {
                     left.colspan += app.colspan;
                     result[iY].splice(iX, 1);
                 }

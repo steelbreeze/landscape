@@ -18,9 +18,9 @@ function between(date: Date, start: Date | undefined, end: Date | undefined) {
  * @returns Returns the subset of applications that were in use on the specified date.
  */
 export function filterByDate(applications: Array<Application>, date: Date): Array<Application> {
-    return applications.map(app => { return { name: app.name, usage: app.usage.filter(use => between(date, use.commissioned, use.decommissioned)) } }).filter(app => app.usage.length > 0);
+    return applications.map(app => { return { detail: app.detail, usage: app.usage.filter(use => between(date, use.commissioned, use.decommissioned)) } }).filter(app => app.usage.length > 0);
 }
 
 export function filterTarget(applications: Array<Application>): Array<Application> {
-    return applications.map(app => { return { name: app.name, usage: app.usage.filter(use => !use.decommissioned) } }).filter(app => app.usage.length > 0);
+    return applications.map(app => { return { detail: app.detail, usage: app.usage.filter(use => !use.decommissioned) } }).filter(app => app.usage.length > 0);
 }

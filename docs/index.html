@@ -102,7 +102,7 @@
 			tbody.selectAll("tr").remove();
 			tbody.selectAll("tr").data(table).enter().append("tr")
 				.selectAll("td").data(row => row).enter().append("td")
-				.text(cell => cell.name)
+				.text(cell => cell.detail.name)
 				.attr("class", cell => `${cell.style} height${Math.round(cell.height / 10)}`)
 				.attr("colspan", cell => cell.colspan).attr("rowspan", cell => cell.rowspan);
 		}
@@ -119,7 +119,7 @@
 		function convertRawJson(json) {
 			return json.map(app => {
 				return {
-					name: app.name,
+					detail: app.detail,
 					usage: app.usage.map(use => {
 						return {
 							product: use.product,
