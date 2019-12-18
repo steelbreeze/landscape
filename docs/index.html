@@ -80,7 +80,7 @@
 			const axes = heatmap.getAxes(data, x, y);
 
 			// find the optimum layout scenarios
-			const scenarios = heatmap.getOptimalAxes(data, axes, fixY);
+			const scenarios = heatmap.getOptimalAxes(data, axes/*, fixY*/);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {
