@@ -11,7 +11,7 @@
 <body>
 	<header>
 		<h2>Mythical bank</h2>
-		<h1>Application portfolio heat-maps</h1>
+		<h1>Application landscape</h1>
 	</header>
 	<table class="heatmap">
 		<tbody id="lineOfBusiness">
@@ -34,15 +34,15 @@
 			</tr>
 		</tbody>
 	</table>
-	<p>The heat map above is auto-generated from a <a href="./data/mythicalBank.json">JSON file</a> containing
-		information about applications and the context in which they are used. Heat maps with merged and split cells
-		convey a great deal of information in a compact form.</p>
-	<p>The process from raw data to the table above is as follows:</p>
+	<p>The application landscape above is auto-generated from a <a href="./data/mythicalBank.json">JSON file</a> containing
+		information about applications and the context in which they are used. Landscape maps with merged and split cells
+		convey a great deal of information in a compact form. For more information see the <a href="https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248" target="_blank">Archimate architecture viewpoints</a> documentation.</p>
+	<p>In this example, we are fixing the y-axis with a pre-defined order of capabilities and determining the optimal sequence of the x-axis. The process from raw data to the table above is as follows:</p>
 	<ol>
 		<li>Extract the unique values for the x and y axis;</li>
-		<li>Determine the optimal sequences of x and y axis values to position the same applications of the same status
+		<li>Determine the optimal sequences of values on the x-axis to position the same applications of the same status
 			together;</li>
-		<li>Produce a table using the optimal x and y axis where cells containing multiple applications are split and
+		<li>Produce a table using the optimal x-axis and y-axis where cells containing multiple applications are split and
 			applications of the same status in neighbouring cells merged.</li>
 	</ol>
 	<p>These operations are performed in seperate calls to the library, therefore if you want a preset x and y axis, you
@@ -63,7 +63,7 @@
 		// extract any URL parameters to define dimensions
 		const urlParams = new URLSearchParams(window.location.search);
 		const x = urlParams.get("x") || "product";
-		const y = urlParams.get("y") || "capability";
+		const y = /*urlParams.get("y") ||*/ "capability";
 		let data = undefined;
 		let scenario = undefined;
 
@@ -80,7 +80,7 @@
 			const axes = heatmap.getAxes(data, x, y);
 
 			// find the optimum layout scenarios
-			const scenarios = heatmap.getOptimalAxes(data, axes/*, fixY*/);
+			const scenarios = heatmap.getOptimalAxes(data, axes, capabilities);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {
@@ -109,7 +109,7 @@
 
 
 		// alternative function to considering all permutations of the y axis; to pass into heatmap.getOptimalAxes
-		function fixY(values) {
+		function capabilities(values) {
 			const capabilities = ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"];
 
 			return [capabilities.filter(capability => values.indexOf(capability) !== -1)];

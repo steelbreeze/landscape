@@ -3,6 +3,7 @@ import { Application } from './Application';
 import { Axes } from './Axes';
 import { Cell } from './Cell';
 
+/** Structure of flattened application data */
 interface FlatApp {
     detail: Detail;
     xValue: string;
@@ -17,7 +18,7 @@ interface FlatApp {
  */
 export function getTable(applications: Array<Application>, axes: Axes): Array<Array<Cell>> {
     // denormalise the underlying application data
-    const flattened = applications.reduce((result, app) => [...result, ...app.usage.map(use => { return {detail: app.detail, xValue: use[axes.xDimension], yValue: use[axes.yDimension], status: use.status}; } )], new Array<FlatApp>() );
+    const flattened = applications.reduce((result, app) => [...result, ...app.usage.map(use => { return { detail: app.detail, xValue: use[axes.xDimension], yValue: use[axes.yDimension], status: use.status }; })], new Array<FlatApp>());
 
     // build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
     const xAxis = [[new Cell(noDetail(), "xAxis")], ...axes.xValues.map(x => [new Cell(noDetail(x), "xAxis")])];
@@ -45,8 +46,9 @@ export function getTable(applications: Array<Application>, axes: Axes): Array<Ar
     const result = interim.map(row => row.map(col => col[0]));
 
     // merge adjacent cells
-    for (let iY = result.length; iY--;) {
-        for (let iX = result[iY].length; iX--;) {
+    const mY = result.length, mX = result[0].length;
+    for (let iY = mY; iY--;) {
+        for (let iX = mX; iX--;) {
             const app = result[iY][iX];
             let merged = false;
 
@@ -69,6 +71,7 @@ export function getTable(applications: Array<Application>, axes: Axes): Array<Ar
                 if (left.detail.name === app.detail.name && left.style === app.style && left.rowspan === app.rowspan) {
                     left.colspan += app.colspan;
                     result[iY].splice(iX, 1);
+                    merged = true;
                 }
             }
         }
