@@ -1,6 +1,6 @@
 import { Application } from './Application';
 import { Axes } from './Axes';
-import { flex } from './flex';
+import { permutations } from './permutations';
 
 /**
  * Determine the optimum order of the axes resulting in a layout with applications grouped together
@@ -10,7 +10,7 @@ import { flex } from './flex';
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF: (axis: Array<string>) => Array<Array<string>> = flex, xF: (axis: Array<string>) => Array<Array<string>> = flex): Array<Axes> {
+export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF: (axis: Array<string>) => Array<Array<string>> = permutations, xF: (axis: Array<string>) => Array<Array<string>> = permutations): Array<Axes> {
     let result: Array<Axes> = [];
     let bestAdjacency = -1;
 
