@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Application landscape</title>
+	<title>Application landscape - test</title>
 	<link rel="stylesheet" href="./heatmap.css" media="all">
 </head>
 
@@ -80,7 +80,7 @@
 			const axes = heatmap.getAxes(data, x, y);
 
 			// find the optimum layout scenarios
-			const scenarios = heatmap.getOptimalAxes(data, axes, capabilities);
+			const scenarios = heatmap.tom(data, axes);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {
@@ -107,12 +107,12 @@
 				.attr("colspan", cell => cell.colspan).attr("rowspan", cell => cell.rowspan);
 		}
 
-		const dimensions = {"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"]};
 
 		// alternative function to considering all permutations of the y axis; to pass into heatmap.getOptimalAxes
 		function capabilities(values) {
+			const capabilities = ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"];
 
-			return [dimensions["capability"].filter(capability => values.indexOf(capability) !== -1)];
+			return [capabilities.filter(capability => values.indexOf(capability) !== -1)];
 		}
 
 		// map raw JSON data to format required in layout engine (transform date strings into dates)
