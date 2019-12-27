@@ -105,14 +105,13 @@
 			document.getElementById("dateOfInterest").textContent = date.toLocaleDateString();
 
 			// update the table
-			document.getElementById("lineOfBusiness").innerHTML = table.reduce((res, row) => `${res}<tr>${row.reduce((res,cell) => `${res}<td class="${cell.style} height${Math.round(cell.height / 10)}" colspan="${cell.colspan}" rowspan="${cell.rowspan}">${cell.detail.name || ""}</td>`, "")}</tr>`, "");
+			document.getElementById("lineOfBusiness").innerHTML = heatmap.getHTML(table);
 		}
 
 		const dimensions = { "capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"] };
 
 		// alternative function to considering all permutations of the y axis; to pass into heatmap.getOptimalAxes
 		function capabilities(values) {
-
 			return [dimensions["capability"].filter(capability => values.indexOf(capability) !== -1)];
 		}
 
