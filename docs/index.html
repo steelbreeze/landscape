@@ -105,7 +105,7 @@
 			document.getElementById("dateOfInterest").textContent = date.toLocaleDateString();
 
 			// update the table
-			document.getElementById("lineOfBusiness").innerHTML = table.map(row => `<tr>${row.map(cell => `<td class="${cell.style} height${Math.round(cell.height / 10)}" colspan="${cell.colspan}" rowspan="${cell.rowspan}">${cell.detail.name || ""}</td>`).join("")}</tr>`).join("");
+			document.getElementById("lineOfBusiness").innerHTML = table.reduce((res, row) => `${res}<tr>${row.reduce((res,cell) => `${res}<td class="${cell.style} height${Math.round(cell.height / 10)}" colspan="${cell.colspan}" rowspan="${cell.rowspan}">${cell.detail.name || ""}</td>`, "")}</tr>`, "");
 		}
 
 		const dimensions = { "capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"] };
