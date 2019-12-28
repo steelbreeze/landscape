@@ -1,2 +1,2 @@
-# heatmap
-Heat map visualisations with merged cells
+# landscape
+Landscape map visualisation of data.
