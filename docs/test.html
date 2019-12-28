@@ -47,17 +47,16 @@
 	</ol>
 	<p>These operations are performed in seperate calls to the library, therefore if you want a preset x and y axis, you
 		can skip the first two steps alltogether, or substitute your own methods.</p>
-	<h3>Browser support</h3>
-	<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should therefore work in any
-		browser. The heat map is rendered using D3 into an HTML table. Microsoft Internet Explorer does not seem to
-		support the latest versions of D3; Apple Safari and Microsoft Edge both have rowspan table rendering issues
-		where there are complex split cell scenarios; Google Chrome and Mozilla Firefox both render well.</p>
-	<h3>Outstanding work</h3>
+		<h3>Browser support</h3>
+		<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should therefore work in any
+			browser. The json data in this example is loaded with <code>window.fetch</code> therefore a polyfil is required for older browsers.</p>
+	<h3>Rendering</h3>
+	<p>Google Chrome and Mozilla Firefox both render well. Apple Safari and Microsoft Edge both have rowspan table rendering issues where there are complex split cell scenarios.</p>
+		<h3>Outstanding work</h3>
 	<p>Add a function to help select a preferred scenario.</p>
 	<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
 	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
 
-	<script src="./dist/d3.min.js"></script>
 	<script src="./dist/heatmap.min.js"></script>
 	<script>
 		// extract any URL parameters to define dimensions
@@ -68,13 +67,13 @@
 		let scenario = undefined;
 
 		// load the applications data
-		d3.json("./data/mythicalBank.json").then(json => {
+		window.fetch("./data/mythicalBank.json").then(response => response.json()).then(json => {
 			data = convertRawJson(json);
 
 			// update the slider labels
-			d3.select("#earliestDate").text(fromToday(-1095).toLocaleDateString());
-			d3.select("#todaysDate").text(fromToday().toLocaleDateString());
-			d3.select("#latestDate").text(fromToday(1096).toLocaleDateString());
+			document.getElementById("earliestDate").textContent = fromToday(-1095).toLocaleDateString();
+			document.getElementById("todaysDate").textContent = fromToday().toLocaleDateString();
+			document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
 
 			// extract the axes from the application data
 			const axes = heatmap.getAxes(data, x, y);
@@ -95,18 +94,11 @@
 			const table = heatmap.getTable(heatmap.filterByDate(data, date), scenario);
 
 			// update data of interest field
-			d3.select("#dateOfInterest").text(date.toLocaleDateString());
+			document.getElementById("dateOfInterest").textContent = date.toLocaleDateString();
 
 			// update the table
-			tbody = d3.select("#lineOfBusiness");
-			tbody.selectAll("tr").remove();
-			tbody.selectAll("tr").data(table).enter().append("tr")
-				.selectAll("td").data(row => row).enter().append("td")
-				.text(cell => cell.detail.name)
-				.attr("class", cell => `${cell.style} height${Math.round(cell.height / 10)}`)
-				.attr("colspan", cell => cell.colspan).attr("rowspan", cell => cell.rowspan);
+			document.getElementById("lineOfBusiness").innerHTML = heatmap.getHTML(table);
 		}
-
 
 		// alternative function to considering all permutations of the y axis; to pass into heatmap.getOptimalAxes
 		function capabilities(values) {
