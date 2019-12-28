@@ -18,11 +18,11 @@ interface FlatApp {
  */
 export function getTable(applications: Array<Application>, axes: Axes): Array<Array<Cell>> {
     // denormalise the underlying application data
-    const flattened = applications.reduce((result, app) => [...result, ...app.usage.map(use => { return { detail: app.detail, xValue: use[axes.xDimension], yValue: use[axes.yDimension], status: use.status }; })], new Array<FlatApp>());
+    const flattened = applications.reduce((result, app) => [...result, ...app.usage.map(use => { return { detail: app.detail, xValue: use[axes.x.dimension], yValue: use[axes.y.dimension], status: use.status }; })], new Array<FlatApp>());
 
     // build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-    const xAxis = [[new Cell(noDetail(), "xAxis")], ...axes.xValues.map(x => [new Cell(noDetail(x), "xAxis")])];
-    const interim = [xAxis, ...axes.yValues.map(y => [[new Cell(noDetail(y), "yAxis")], ...axes.xValues.map(x => flattened.filter(a => a.xValue === x && a.yValue === y).map(a => new Cell(a.detail, a.status)))])];
+    const xAxis = [[new Cell(noDetail(), "xAxis")], ...axes.x.values.map(x => [new Cell(noDetail(x), "xAxis")])];
+    const interim = [xAxis, ...axes.y.values.map(y => [[new Cell(noDetail(y), "yAxis")], ...axes.x.values.map(x => flattened.filter(a => a.xValue === x && a.yValue === y).map(a => new Cell(a.detail, a.status)))])];
 
     // create blank apps and split rows as necessary
     for (let iY = interim.length; iY--;) {

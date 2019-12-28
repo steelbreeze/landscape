@@ -14,9 +14,9 @@ function pairs(value: number): Array<Array<number>> {
 }
 
 export function tom(applications: Array<Application>, axes: Axes): Array<Axes> {
-    const isXAxisLonger = axes.xValues.length >= axes.yValues.length;
-    const longAxis = isXAxisLonger ? axes.xValues : axes.yValues;
-    const shortAxis = isXAxisLonger ? axes.yValues : axes.xValues;
+    const isXAxisLonger = axes.x.values.length >= axes.y.values.length;
+    const longAxis = isXAxisLonger ? axes.x.values : axes.y.values;
+    const shortAxis = isXAxisLonger ? axes.y.values : axes.x.values;
 
     for(const pair of pairs(shortAxis.length)) {
         console.log(`${shortAxis[pair[0]]} / ${shortAxis[pair[1]]}`);

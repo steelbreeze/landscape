@@ -27,7 +27,7 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
                 interim.push(interimApp);
             }
 
-            interimApp.usage.push({ x: use[axes.xDimension], y: use[axes.yDimension] });
+            interimApp.usage.push({ x: use[axes.x.dimension], y: use[axes.y.dimension] });
         }
     }
 
@@ -35,10 +35,10 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
     interim = interim.filter(app => app.usage.length > 1);
 
     // some items not to recalculate in an O(n!) algo
-    const xPerms = xF(axes.xValues);
+    const xPerms = xF(axes.x.values);
 
     // iterate all X and Y using the formulas provided
-    for (const yValues of yF(axes.yValues)) {
+    for (const yValues of yF(axes.y.values)) {
         for (const xValues of xPerms) {
             let adjacency = 0;
             
@@ -70,7 +70,7 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
                     bestAdjacency = adjacency;
                 }
 
-                result.push({ xDimension: axes.xDimension, xValues, yDimension: axes.yDimension, yValues });
+                result.push({ x: {dimension: axes.x.dimension, values: xValues}, y: {dimension: axes.y.dimension, values: yValues }});
             }
         }
     }

@@ -1,4 +1,5 @@
 import { Application } from './Application';
+import { Axis } from './Axis';
 import { Axes } from './Axes';
 import { Dimension } from './Dimension';
 
@@ -10,23 +11,23 @@ import { Dimension } from './Dimension';
  * @returns Returns the x and y axes with their values.
  */
 export function getAxes(applications: Array<Application>, xDimension: Dimension, yDimension: Dimension): Axes {
-    const xValues: Array<string> = [];
-    const yValues: Array<string> = [];
+    const x: Axis = { dimension: xDimension, values: [] };
+    const y: Axis = { dimension: yDimension, values: [] };
 
     for (const app of applications) {
         for (const use of app.usage) {
-            const xValue = use[xDimension];
-            const yValue = use[yDimension];
+            const xValue = use[x.dimension];
+            const yValue = use[y.dimension];
 
-            if (xValues.indexOf(xValue) === -1) {
-                xValues.push(xValue);
+            if (x.values.indexOf(xValue) === -1) {
+                x.values.push(xValue);
             }
 
-            if (yValues.indexOf(yValue) === -1) {
-                yValues.push(yValue);
+            if (y.values.indexOf(yValue) === -1) {
+                y.values.push(yValue);
             }
         }
     }
 
-    return {xDimension, xValues, yDimension, yValues};
+    return { x, y };
 }
