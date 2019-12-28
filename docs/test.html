@@ -76,10 +76,11 @@
 			document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
 
 			// extract the axes from the application data
-			const axes = landscape.getAxes(data, x, y);
+			const xAxis = landscape.getAxis(data, x);
+			const yAxis = landscape.getAxis(data, y);
 
 			// find the optimum layout scenarios
-			const scenarios = landscape.tom(data, axes);
+			const scenarios = landscape.tom(data, xAxis, yAxis);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {

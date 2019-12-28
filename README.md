@@ -26,7 +26,7 @@ The landscape library works with source data in the following format:
 ```
 
 ## API
-getAxes: returns the distinct set of values within the data for the specified x any y values (taken from all the usage data in the data set.
+getAxis: returns the distinct set of values within the data for the specified dimension (taken from all the usage data in the data set.
 
 getOptimalAxes: returns the optimal order of the values on the x and y axis.
 

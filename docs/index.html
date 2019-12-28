@@ -69,7 +69,7 @@
 		// extract any URL parameters to define dimensions
 		const urlParams = new URLSearchParams(window.location.search);
 		const x = urlParams.get("x") || "product";
-		const y = /*urlParams.get("y") ||*/ "capability";
+		const y = urlParams.get("y") || "capability";
 		let data = undefined;
 		let scenario = undefined;
 
@@ -83,10 +83,11 @@
 			document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
 
 			// extract the axes from the application data
-			const axes = landscape.getAxes(data, x, y);
+			const xAxis = landscape.getAxis(data, x);
+			const yAxis = landscape.getAxis(data, y);
 
 			// find the optimum layout scenarios
-			const scenarios = landscape.getOptimalAxes(data, axes, capabilities);
+			const scenarios = landscape.getOptimalAxes(data, xAxis, yAxis, capabilities);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {
@@ -98,7 +99,7 @@
 
 		function displayAtDate(date) {
 			// get the prepared table with applications filtered by the date of interest
-			const table = landscape.getTable(landscape.filterByDate(data, date), scenario);
+			const table = landscape.getTable(landscape.filterByDate(data, date), scenario.x, scenario.y);
 
 			// update data of interest field
 			document.getElementById("dateOfInterest").textContent = date.toLocaleDateString();

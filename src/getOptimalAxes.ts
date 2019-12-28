@@ -1,4 +1,5 @@
 import { Application } from './Application';
+import { Axis } from './Axis';
 import { Axes } from './Axes';
 import { permutations } from './permutations';
 
@@ -10,7 +11,7 @@ import { permutations } from './permutations';
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF: (axis: Array<string>) => Array<Array<string>> = permutations, xF: (axis: Array<string>) => Array<Array<string>> = permutations): Array<Axes> {
+export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axis, yF: (axis: Array<string>) => Array<Array<string>> = permutations, xF: (axis: Array<string>) => Array<Array<string>> = permutations): Array<Axes> {
     let result: Array<Axes> = [];
     let bestAdjacency = -1;
 
@@ -27,7 +28,7 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
                 interim.push(interimApp);
             }
 
-            interimApp.usage.push({ x: use[axes.x.dimension], y: use[axes.y.dimension] });
+            interimApp.usage.push({ x: use[x.name], y: use[y.name] });
         }
     }
 
@@ -35,10 +36,10 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
     interim = interim.filter(app => app.usage.length > 1);
 
     // some items not to recalculate in an O(n!) algo
-    const xPerms = xF(axes.x.values);
+    const xPerms = xF(x.values);
 
     // iterate all X and Y using the formulas provided
-    for (const yValues of yF(axes.y.values)) {
+    for (const yValues of yF(y.values)) {
         for (const xValues of xPerms) {
             let adjacency = 0;
             
@@ -70,7 +71,7 @@ export function getOptimalAxes(applications: Array<Application>, axes: Axes, yF:
                     bestAdjacency = adjacency;
                 }
 
-                result.push({ x: {dimension: axes.x.dimension, values: xValues}, y: {dimension: axes.y.dimension, values: yValues }});
+                result.push({ x: {name: x.name, values: xValues}, y: {name: y.name, values: yValues }});
             }
         }
     }

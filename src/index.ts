@@ -1,4 +1,4 @@
-export { getAxes } from './getAxes';
+export { getAxis } from './getAxis';
 export { getOptimalAxes } from './getOptimalAxes';
 export { tom } from './tom';
 export { getTable } from './getTable';
