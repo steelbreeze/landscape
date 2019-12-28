@@ -92,7 +92,7 @@
 
 		function displayAtDate(date) {
 			// get the prepared table with applications filtered by the date of interest
-			const table = landscape.getTable(landscape.filterByDate(data, date), scenario);
+			const table = landscape.getTable(landscape.filterByDate(data, date), scenario.x, scenario.y);
 
 			// update data of interest field
 			document.getElementById("dateOfInterest").textContent = date.toLocaleDateString();
