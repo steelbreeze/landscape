@@ -1,11 +1,11 @@
 export interface Detail {
     /** An identifier for the application. */
-    id: string | number | undefined;
+    id: string | number;
 
     /** The name of the application. */
-    name: string | undefined;
+    name: string;
 }
 
-export function noDetail(name: string | undefined = undefined) {
-    return { id: undefined, name };
+export function noDetail(id: number | string = "", name: string = ""): Detail {
+    return { id, name };
 }

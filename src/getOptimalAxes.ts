@@ -1,12 +1,14 @@
 import { Application } from './Application';
 import { Axis } from './Axis';
 import { Axes } from './Axes';
+import { Detail } from './Detail';
 import { permutations } from './permutations';
 
 /**
  * Determine the optimum order of the axes resulting in a layout with applications grouped together
  * @param applications The raw application data
- * @param axes The x and y axes
+ * @param x The x axis
+ * @param y The y axis
  * @param yF The algorithm to use the generate scenarios to test on the y axis; defaults to all permutations.
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
@@ -16,14 +18,14 @@ export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axi
     let bestAdjacency = -1;
 
     // denormalise the underlying application data and resolve the axes
-    let interim: Array<{ name: string | undefined, status: string, usage: Array<{ x: string, y: string }> }> = [];
+    let interim: Array<{ detail: Detail, status: string, usage: Array<{ x: string, y: string }> }> = [];
 
     for (const app of applications) {
         for (const use of app.usage) {
-            let interimApp = interim.filter(a => a.name === app.detail.name && a.status === use.status)[0];
+            let interimApp = interim.filter(a => a.detail.id === app.detail.id && a.status === use.status)[0];
 
             if (!interimApp) {
-                interimApp = { name: app.detail.name, status: use.status, usage: [] };
+                interimApp = { detail: app.detail, status: use.status, usage: [] };
 
                 interim.push(interimApp);
             }

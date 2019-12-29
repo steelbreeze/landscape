@@ -3,14 +3,6 @@ import { Application } from './Application';
 import { Axis } from './Axis';
 import { Cell } from './Cell';
 
-/** Structure of flattened application data */
-interface FlatApp {
-    detail: Detail;
-    xValue: string;
-    yValue: string;
-    status: string;
-}
-
 /**
  * Prepares application data for rendering according to a selected set of axes. 
  * @param applications The application data to prepare.
@@ -18,11 +10,17 @@ interface FlatApp {
  */
 export function getTable(applications: Array<Application>, x: Axis, y: Axis): Array<Array<Cell>> {
     // denormalise the underlying application data
-    const flattened = applications.reduce((result, app) => [...result, ...app.usage.map(use => { return { detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status }; })], new Array<FlatApp>());
+    const flattened: Array<{ detail: Detail, xValue: string, yValue: string, status: string }> = [];
+
+    for(const app of applications) {
+        for( const use of app.usage){
+            flattened.push({ detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status });
+        }
+    }
 
     // build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-    const xAxis = [[new Cell(noDetail(), "xAxis")], ...x.values.map(xValue => [new Cell(noDetail(xValue), "xAxis")])];
-    const interim = [xAxis, ...y.values.map(yValue => [[new Cell(noDetail(yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
+    const xAxis = [[new Cell(noDetail(), "xAxis")], ...x.values.map(xValue => [new Cell(noDetail("", xValue), "xAxis")])];
+    const interim = [xAxis, ...y.values.map(yValue => [[new Cell(noDetail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
 
     // create blank apps and split rows as necessary
     for (let iY = interim.length; iY--;) {
