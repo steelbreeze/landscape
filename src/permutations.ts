@@ -1,3 +1,5 @@
+import { selectMany } from "./selectMany";
+
 /**
  * Flexes a dimension, generating all ordering permutations of an array of strings.
  * @param source The source array of string.
@@ -7,14 +9,6 @@ export function permutations(source: Array<string>): Array<Array<string>> {
     if (source.length === 1) {
         return [source];
     } else {
-        const result: Array<Array<string>> = [];
-
-        for (const exclude of source) {
-            for (const subElement of permutations(source.filter((element) => element !== exclude))) {
-                result.push([exclude, ...subElement]);
-            }
-        }
-
-        return result;
+        return selectMany(source, exclude => permutations(source.filter((element) => element !== exclude)), (elements, exclude) => [exclude, ...elements]);
     }
 }

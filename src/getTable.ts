@@ -1,7 +1,8 @@
-import { Detail, noDetail } from './Detail';
+import { noDetail } from './Detail';
 import { Application } from './Application';
 import { Axis } from './Axis';
 import { Cell } from './Cell';
+import { selectMany } from './selectMany';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
@@ -9,16 +10,8 @@ import { Cell } from './Cell';
  * @param axes The axes to use.
  */
 export function getTable(applications: Array<Application>, x: Axis, y: Axis): Array<Array<Cell>> {
-    // denormalise the underlying application data
-    const flattened: Array<{ detail: Detail, xValue: string, yValue: string, status: string }> = [];
-
-    for(const app of applications) {
-        for( const use of app.usage){
-            flattened.push({ detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status });
-        }
-    }
-
     // build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
+    const flattened = selectMany(applications, app => app.usage, (use, app) => { return { detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status } } );
     const xAxis = [[new Cell(noDetail(), "xAxis")], ...x.values.map(xValue => [new Cell(noDetail("", xValue), "xAxis")])];
     const interim = [xAxis, ...y.values.map(yValue => [[new Cell(noDetail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
 
