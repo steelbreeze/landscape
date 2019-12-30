@@ -5,10 +5,10 @@ import { selectMany } from "./selectMany";
  * @param source The source array of string.
  * @returns Returns and array of all permutations of the array of strings.
  */
-export function permutations(source: Array<string>): Array<Array<string>> {
+export function permutations<T>(source: Array<T>): Array<Array<T>> {
     if (source.length === 1) {
         return [source];
     } else {
-        return selectMany(source, exclude => permutations(source.filter((element) => element !== exclude)), (elements, exclude) => [exclude, ...elements]);
+        return selectMany(source, (exclude, excludeIndex) => permutations(source.filter((element, elementIndex) => elementIndex !== excludeIndex)), (elements, exclude) => [exclude, ...elements]);
     }
 }
