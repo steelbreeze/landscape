@@ -11,5 +11,5 @@ import { unique } from './unique';
  * @returns Returns the axis with its values.
  */
 export function getAxis(applications: Array<Application>, name: Dimension): Axis {
-    return { name, values: selectMany(applications, app => app.usage, use => use[name]).filter(unique) };
+	return { name, values: selectMany(applications, app => app.usage, use => use[name]).filter(unique) };
 }

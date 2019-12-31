@@ -14,69 +14,69 @@ import { permutations } from './permutations';
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
 export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axis, yF: (axis: Array<string>) => Array<Array<string>> = permutations, xF: (axis: Array<string>) => Array<Array<string>> = permutations): Array<Axes> {
-    let result: Array<Axes> = [];
-    let bestAdjacency = -1;
+	let result: Array<Axes> = [];
+	let bestAdjacency = -1;
 
-    // denormalise the underlying application data and resolve the axes
-    let interim: Array<{ detail: Detail, status: string, usage: Array<{ x: string, y: string }> }> = [];
+	// denormalise the underlying application data and resolve the axes
+	let interim: Array<{ detail: Detail, status: string, usage: Array<{ x: string, y: string }> }> = [];
 
-    for (const app of applications) {
-        for (const use of app.usage) {
-            let interimApp = interim.filter(a => a.detail.id === app.detail.id && a.status === use.status)[0];
+	for (const app of applications) {
+		for (const use of app.usage) {
+			let interimApp = interim.filter(a => a.detail.id === app.detail.id && a.status === use.status)[0];
 
-            if (!interimApp) {
-                interimApp = { detail: app.detail, status: use.status, usage: [] };
+			if (!interimApp) {
+				interimApp = { detail: app.detail, status: use.status, usage: [] };
 
-                interim.push(interimApp);
-            }
+				interim.push(interimApp);
+			}
 
-            interimApp.usage.push({ x: use[x.name], y: use[y.name] });
-        }
-    }
+			interimApp.usage.push({ x: use[x.name], y: use[y.name] });
+		}
+	}
 
-    // delete single use app/status combinations as they cannot contribute to affinity score
-    interim = interim.filter(app => app.usage.length > 1);
+	// delete single use app/status combinations as they cannot contribute to affinity score
+	interim = interim.filter(app => app.usage.length > 1);
 
-    // some items not to recalculate in an O(n!) algo
-    const xPerms = xF(x.values);
+	// some items not to recalculate in an O(n!) algo
+	const xPerms = xF(x.values);
 
-    // iterate all X and Y using the formulas provided
-    for (const yValues of yF(y.values)) {
-        for (const xValues of xPerms) {
-            let adjacency = 0;
-            
-            // test each application/status combination individually
-            for (const app of interim) {
-                // create 2d boolean matrix where the application exists 
-                const matrix = yValues.map(y => xValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
+	// iterate all X and Y using the formulas provided
+	for (const yValues of yF(y.values)) {
+		for (const xValues of xPerms) {
+			let adjacency = 0;
 
-                // count adjacent cells
-                for (let iY = yValues.length; iY--;) {
-                    for (let iX = xValues.length; iX--;) {
-                        if (matrix[iY][iX]) {
-                            if (iY && matrix[iY - 1][iX]) {
-                                adjacency++;
-                            }
+			// test each application/status combination individually
+			for (const app of interim) {
+				// create 2d boolean matrix where the application exists 
+				const matrix = yValues.map(y => xValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
 
-                            if (iX && matrix[iY][iX - 1]) {
-                                adjacency++;
-                            }
-                        }
-                    }
-                }
-            }
+				// count adjacent cells
+				for (let iY = yValues.length; iY--;) {
+					for (let iX = xValues.length; iX--;) {
+						if (matrix[iY][iX]) {
+							if (iY && matrix[iY - 1][iX]) {
+								adjacency++;
+							}
 
-            // just keep the best scenarios
-            if (adjacency >= bestAdjacency) {
-                if (adjacency > bestAdjacency) {
-                    result = [];
-                    bestAdjacency = adjacency;
-                }
+							if (iX && matrix[iY][iX - 1]) {
+								adjacency++;
+							}
+						}
+					}
+				}
+			}
 
-                result.push({ x: {name: x.name, values: xValues}, y: {name: y.name, values: yValues }});
-            }
-        }
-    }
+			// just keep the best scenarios
+			if (adjacency >= bestAdjacency) {
+				if (adjacency > bestAdjacency) {
+					result = [];
+					bestAdjacency = adjacency;
+				}
 
-    return result;
+				result.push({ x: { name: x.name, values: xValues }, y: { name: y.name, values: yValues } });
+			}
+		}
+	}
+
+	return result;
 }

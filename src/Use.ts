@@ -5,7 +5,7 @@ export interface Use extends Dimensions {
 	commissioned: Date | undefined;
 
 	decommissioned: Date | undefined;
-	
+
 	/** The status of an application. */
 	status: "green" | "amber" | "red";
 }

@@ -10,81 +10,81 @@ import { selectMany } from './selectMany';
  * @param axes The axes to use.
  */
 export function getTable(applications: Array<Application>, x: Axis, y: Axis): Array<Array<Cell>> {
-    // build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-    const flattened = selectMany(applications, app => app.usage, (use, app) => { return { detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status } } );
-    const xAxis = [[new Cell(noDetail(), "xAxis")], ...x.values.map(xValue => [new Cell(noDetail("", xValue), "xAxis")])];
-    const interim = [xAxis, ...y.values.map(yValue => [[new Cell(noDetail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
+	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
+	const flattened = selectMany(applications, app => app.usage, (use, app) => { return { detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status } });
+	const xAxis = [[new Cell(noDetail(), "xAxis")], ...x.values.map(xValue => [new Cell(noDetail("", xValue), "xAxis")])];
+	const interim = [xAxis, ...y.values.map(yValue => [[new Cell(noDetail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
 
-    // create blank apps and split rows as necessary
-    for (let iY = interim.length; iY--;) {
-        // where there are no apps in a cells insert an empty cell object
-        for (let iX = interim[iY].length; iX--;) {
-            if (interim[iY][iX].length === 0) {
-                interim[iY][iX].push(new Cell(noDetail(), "empty"));
-            }
-        }
+	// create blank apps and split rows as necessary
+	for (let iY = interim.length; iY--;) {
+		// where there are no apps in a cells insert an empty cell object
+		for (let iX = interim[iY].length; iX--;) {
+			if (interim[iY][iX].length === 0) {
+				interim[iY][iX].push(new Cell(noDetail(), "empty"));
+			}
+		}
 
-        // where there are multiple apps in a cell, expand the rows
-        const counts = interim[iY].map(cell => cell.length || 1);
-        const split = counts.reduce((a, b) => leastCommonMultiple(a, b), 1);
+		// where there are multiple apps in a cell, expand the rows
+		const counts = interim[iY].map(cell => cell.length || 1);
+		const split = counts.reduce((a, b) => leastCommonMultiple(a, b), 1);
 
-        if (split > 1) {
-            interim.splice(iY, 1, ...range(split).map(y => counts.map((c, x) => interim[iY][x].length === 0 ? [] : [interim[iY][x][Math.floor(y / split * c)].clone(split)])));
-        }
-    }
+		if (split > 1) {
+			interim.splice(iY, 1, ...range(split).map(y => counts.map((c, x) => interim[iY][x].length === 0 ? [] : [interim[iY][x][Math.floor(y / split * c)].clone(split)])));
+		}
+	}
 
-    // create the final result structure
-    const result = interim.map(row => row.map(col => col[0]));
+	// create the final result structure
+	const result = interim.map(row => row.map(col => col[0]));
 
-    // merge adjacent cells
-    const mY = result.length, mX = result[0].length;
-    for (let iY = mY; iY--;) {
-        for (let iX = mX; iX--;) {
-            const app = result[iY][iX];
-            let merged = false;
+	// merge adjacent cells
+	const mY = result.length, mX = result[0].length;
+	for (let iY = mY; iY--;) {
+		for (let iX = mX; iX--;) {
+			const app = result[iY][iX];
+			let merged = false;
 
-            // try merge with cell above first
-            if (!merged && iY) {
-                const above = result[iY - 1][iX];
+			// try merge with cell above first
+			if (!merged && iY) {
+				const above = result[iY - 1][iX];
 
-                if (above.detail.name === app.detail.name && above.style === app.style && above.colspan === app.colspan) {
-                    above.rowspan += app.rowspan;
-                    above.height += app.height;
-                    result[iY].splice(iX, 1);
-                    merged = true;
-                }
-            }
+				if (above.detail.name === app.detail.name && above.style === app.style && above.colspan === app.colspan) {
+					above.rowspan += app.rowspan;
+					above.height += app.height;
+					result[iY].splice(iX, 1);
+					merged = true;
+				}
+			}
 
-            // otherwise try cell to left
-            if (!merged && iX) {
-                const left = result[iY][iX - 1];
+			// otherwise try cell to left
+			if (!merged && iX) {
+				const left = result[iY][iX - 1];
 
-                if (left.detail.name === app.detail.name && left.style === app.style && left.rowspan === app.rowspan) {
-                    left.colspan += app.colspan;
-                    result[iY].splice(iX, 1);
-                    merged = true;
-                }
-            }
-        }
-    }
+				if (left.detail.name === app.detail.name && left.style === app.style && left.rowspan === app.rowspan) {
+					left.colspan += app.colspan;
+					result[iY].splice(iX, 1);
+					merged = true;
+				}
+			}
+		}
+	}
 
-    return result;
+	return result;
 }
 
 function range(n: number): Array<number> {
-    const result: Array<number> = [];
+	const result: Array<number> = [];
 
-    for (let i = 0; i < n; ++i) {
-        result.push(i);
-    }
+	for (let i = 0; i < n; ++i) {
+		result.push(i);
+	}
 
-    return result;
+	return result;
 }
 
 function leastCommonMultiple(a: number, b: number): number {
-    return (a * b) / greatestCommonFactor(a, b);
+	return (a * b) / greatestCommonFactor(a, b);
 }
 
 function greatestCommonFactor(a: number, b: number): number {
-    return b ? greatestCommonFactor(b, a % b) : a;
+	return b ? greatestCommonFactor(b, a % b) : a;
 }

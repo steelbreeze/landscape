@@ -20,7 +20,7 @@ function between(date: Date, start: Date | undefined, end: Date | undefined) {
  * @returns The filtered set of applications
  */
 export function filter(applications: Array<Application>, useCriteria: ((use: Use) => boolean) | undefined = undefined, appCriteria: ((app: Application) => boolean) | undefined = undefined): Array<Application> {
-    return applications.filter(appCriteria || (() => true)).map(app => { return { detail: app.detail, usage: app.usage.filter(useCriteria || (() => true)) } }).filter(app => app.usage.length > 0);
+	return applications.filter(appCriteria || (() => true)).map(app => { return { detail: app.detail, usage: app.usage.filter(useCriteria || (() => true)) } }).filter(app => app.usage.length > 0);
 }
 
 /**
@@ -30,5 +30,5 @@ export function filter(applications: Array<Application>, useCriteria: ((use: Use
  * @returns Returns the subset of applications that were in use on the specified date.
  */
 export function filterByDate(applications: Array<Application>, date: Date): Array<Application> {
-    return filter(applications, use => between(date, use.commissioned, use.decommissioned));
+	return filter(applications, use => between(date, use.commissioned, use.decommissioned));
 }
