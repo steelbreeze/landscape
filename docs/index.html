@@ -55,26 +55,31 @@
 		can skip the first two steps alltogether, or substitute your own methods.</p>
 	<h3>Browser support</h3>
 	<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should therefore work in any
-		browser. The json data in this example is loaded with <code>window.fetch</code> therefore a polyfil is required for older browsers.</p>
-<h3>Rendering</h3>
-<p>Google Chrome and Mozilla Firefox both render well. Apple Safari and Microsoft Edge both have rowspan table rendering issues where there are complex split cell scenarios.</p>
-		<h3>Outstanding work</h3>
+		browser. The json data in this example is loaded with <code>window.fetch</code> therefore a polyfil is required
+		for older browsers.</p>
+	<h3>Rendering</h3>
+	<p>Google Chrome and Mozilla Firefox both render well. Apple Safari and Microsoft Edge both have rowspan table
+		rendering issues where there are complex split cell scenarios.</p>
+	<h3>Outstanding work</h3>
 	<p>Add a function to help select a preferred scenario.</p>
 	<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
 	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
 	<p>Make this example compatible with older browsers including Internet Explorer.</p>
 
+	<script src="./dist/promise.min.js"></script> <!-- polyfill: Promise -->
+	<script src="./dist/fetch.umd.js"></script> <!-- polyfill: window.fetch -->
 	<script src="./dist/landscape.min.js"></script>
+
 	<script>
 		// extract any URL parameters to define dimensions
-		const urlParams = new URLSearchParams(window.location.search);
-		const x = urlParams.get("x") || "product";
-		const y = urlParams.get("y") || "capability";
+		/*const urlParams = new URLSearchParams(window.location.search);*/
+		const x = /*urlParams.get("x") ||*/ "product";
+		const y = /*urlParams.get("y") ||*/ "capability";
 		let data = undefined;
 		let scenario = undefined;
 
 		// load the applications data
-		window.fetch("./data/mythicalBank.json").then(response => response.json()).then(json => {
+		window.fetch("./data/mythicalBank.json").then(function (response) { return response.json() }).then(function (json) {
 			data = convertRawJson(json);
 
 			// update the slider labels
@@ -95,6 +100,8 @@
 
 				displayAtDate(fromToday());
 			}
+		}).catch(function (err) {
+			console.log('Fetch Error :-S', err);
 		});
 
 		function displayAtDate(date) {
@@ -112,15 +119,15 @@
 
 		// alternative function to considering all permutations of the y axis; to pass into landscape.getOptimalAxes
 		function capabilities(values) {
-			return [dimensions["capability"].filter(capability => values.indexOf(capability) !== -1)];
+			return [dimensions["capability"].filter(function (capability) { return values.indexOf(capability) !== -1 })];
 		}
 
 		// map raw JSON data to format required in layout engine (transform date strings into dates)
 		function convertRawJson(json) {
-			return json.map(app => {
+			return json.map(function (app) {
 				return {
 					detail: app.detail,
-					usage: app.usage.map(use => {
+					usage: app.usage.map(function (use) {
 						return {
 							product: use.product,
 							capability: use.capability,
