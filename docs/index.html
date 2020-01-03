@@ -20,6 +20,32 @@
 	<table class="timeline">
 		<tbody>
 			<tr>
+				<td colspan="3">
+					<label for="xAxisSelector">x axis:</label>
+					<select id="xAxisSelector" onchange="determineAxis()">
+						<option value="capability">Capability</option>
+						<option value="location">Location</option>
+						<option value="product" selected="selected">Product</option>
+						<option value="status">Status</option>
+					</select>
+					<label for="xAxisOptimised">optimised:</label>
+					<input type="checkbox" id="xAxisOptimised" onchange="determineAxis()" checked />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<label for="yAxisSelector">y axis:</label>
+					<select id="yAxisSelector" onchange="determineAxis()">
+						<option value="capability" selected="selected">Capability</option>
+						<option value="location">Location</option>
+						<option value="product">Product</option>
+						<option value="status">Status</option>
+					</select>
+					<label for="yAxisOptimised">optimised:</label>
+					<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()"/>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="3">View as of: <span id="dateOfInterest"></span></td>
 			</tr>
 			<tr>
@@ -67,33 +93,44 @@
 	<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
 	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
 	<p>Style of date slider in IE.</p>
-	<p>Add drop-downs for dimensions.</p>
 
 	<script src="./dist/promise.min.js"></script> <!-- polyfill: Promise -->
 	<script src="./dist/fetch.umd.js"></script> <!-- polyfill: window.fetch -->
 	<script src="./dist/landscape.min.js"></script>
 
 	<script>
-		const x = "product";
-		const y = "capability";
+		// get DOM elements that are frequently changed
+		const dateOfInterest = document.getElementById("dateOfInterest");
+		const lineOfBusiness = document.getElementById("lineOfBusiness");
+		const xAxisSelector = document.getElementById("xAxisSelector");
+		const yAxisSelector = document.getElementById("yAxisSelector");
+		const xAxisOptimised = document.getElementById("xAxisOptimised");
+		const yAxisOptimised = document.getElementById("yAxisOptimised");
+
 		let data = undefined;
 		let scenario = undefined;
 
+		// one-off DOM element updates
+		document.getElementById("earliestDate").textContent = fromToday(-1095).toLocaleDateString();
+		document.getElementById("todaysDate").textContent = fromToday().toLocaleDateString();
+		document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
+
 		// load the applications data
 		window.fetch("./data/mythicalBank.json").then(function (response) { return response.json() }).then(function (json) {
+			// normalise the data - convert dates as strings to dates
 			data = convertRawJson(json);
 
-			// update the slider labels
-			document.getElementById("earliestDate").textContent = fromToday(-1095).toLocaleDateString();
-			document.getElementById("todaysDate").textContent = fromToday().toLocaleDateString();
-			document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
+			// create the initial table
+			determineAxis();
+		});
 
+		function determineAxis() {
 			// extract the axes from the application data
-			const xAxis = landscape.getAxis(data, x);
-			const yAxis = landscape.getAxis(data, y);
+			const xAxis = landscape.getAxis(data, xAxisSelector.options[xAxisSelector.selectedIndex].value);
+			const yAxis = landscape.getAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
 
 			// find the optimum layout scenarios
-			const scenarios = landscape.getOptimalAxes(data, xAxis, yAxis, fixOrder, landscape.flexOrder);
+			const scenarios = landscape.getOptimalAxes(data, xAxis, yAxis, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 
 			// select the preferred scenario
 			if (scenarios.length !== 0) {
@@ -101,19 +138,17 @@
 
 				displayAtDate(fromToday());
 			}
-		}).catch(function (err) {
-			console.log('Fetch Error :-S', err);
-		});
+		}
 
 		function displayAtDate(date) {
 			// get the prepared table with applications filtered by the date of interest
 			const table = landscape.getTable(landscape.filterByDate(data, date), scenario.x, scenario.y);
 
 			// update data of interest field
-			document.getElementById("dateOfInterest").textContent = date.toLocaleDateString();
+			dateOfInterest.textContent = date.toLocaleDateString();
 
 			// update the table
-			document.getElementById("lineOfBusiness").innerHTML = landscape.getHTML(table);
+			lineOfBusiness.innerHTML = landscape.getHTML(table);
 		}
 
 		// alternative function to considering all permutations an axis
