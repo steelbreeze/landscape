@@ -13,7 +13,7 @@ import { permutations } from './permutations';
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axis, yF: (axis: Array<string>) => Array<Array<string>> = permutations, xF: (axis: Array<string>) => Array<Array<string>> = permutations): Array<Axes> {
+export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axis, yF: (axis: Axis) => Array<Array<string>> = flexOrder, xF: (axis: Axis) => Array<Array<string>> = flexOrder): Array<Axes> {
 	let result: Array<Axes> = [];
 	let bestAdjacency = -1;
 
@@ -38,10 +38,10 @@ export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axi
 	interim = interim.filter(app => app.usage.length > 1);
 
 	// some items not to recalculate in an O(n!) algo
-	const xPerms = xF(x.values);
+	const xPerms = xF(x);
 
 	// iterate all X and Y using the formulas provided
-	for (const yValues of yF(y.values)) {
+	for (const yValues of yF(y)) {
 		for (const xValues of xPerms) {
 			let adjacency = 0;
 
@@ -79,4 +79,12 @@ export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axi
 	}
 
 	return result;
+}
+
+/**
+ * Allow an axis to be assessed in any order of the axis values.
+ * @param axis The axis to flex
+ */
+export function flexOrder(axis: Axis): Array<Array<string>> {
+	return permutations(axis.values);
 }
