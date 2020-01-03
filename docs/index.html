@@ -51,8 +51,8 @@
 			<tr>
 				<td colspan="3">
 					<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
-						oninput="displayAtDate(fromToday(this.value))"
-						onchange="displayAtDate(fromToday(this.value))" /></td>
+						oninput="displayAtDate()"
+						onchange="displayAtDate()" /></td>
 			</tr>
 			<tr>
 				<td id="earliestDate">Earliest</td>
@@ -93,6 +93,7 @@
 	<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
 	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
 	<p>Style of date slider in IE.</p>
+	<p>Base the date slider max and min values based on the underlying data.</p>
 
 	<script src="./dist/promise.min.js"></script> <!-- polyfill: Promise -->
 	<script src="./dist/fetch.umd.js"></script> <!-- polyfill: window.fetch -->
@@ -106,6 +107,7 @@
 		const yAxisSelector = document.getElementById("yAxisSelector");
 		const xAxisOptimised = document.getElementById("xAxisOptimised");
 		const yAxisOptimised = document.getElementById("yAxisOptimised");
+		const slider = document.getElementById("slider");
 
 		let data = undefined;
 		let scenario = undefined;
@@ -136,11 +138,13 @@
 			if (scenarios.length !== 0) {
 				scenario = scenarios[0];
 
-				displayAtDate(fromToday());
+				displayAtDate();
 			}
 		}
 
-		function displayAtDate(date) {
+		function displayAtDate() {
+			const date = fromToday(slider.value);
+
 			// get the prepared table with applications filtered by the date of interest
 			const table = landscape.getTable(landscape.filterByDate(data, date), scenario.x, scenario.y);
 
