@@ -60,14 +60,6 @@ table.landscape {
     border-spacing: 0;
     font-size: 0.8em;
     color: rgba(255, 255, 255, 0.87);
-
-    table-layout: fixed;
-}
-
-table.landscape th {
-    border: 1px solid white;
-    padding: 0.25em 0.75em;
-    font-weight: normal;
 }
 
 table.landscape td {
@@ -76,7 +68,14 @@ table.landscape td {
     font-weight: normal;
     text-align: center;
 
-    overflow: hidden;
+	text-overflow: ellipsis;
+	
+	width: 20%;
+}
+
+table.landscape tr td:first-child {
+	white-space: nowrap;
+	width: 1%;
 }
 
 table.landscape th.tableHeading {
