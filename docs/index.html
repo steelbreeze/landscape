@@ -42,7 +42,7 @@
 						<option value="status">Status</option>
 					</select>
 					<label for="yAxisOptimised">optimised:</label>
-					<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()"/>
+					<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()" checked />
 				</td>
 			</tr>
 			<tr>
@@ -51,8 +51,7 @@
 			<tr>
 				<td colspan="3">
 					<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
-						oninput="displayAtDate()"
-						onchange="displayAtDate()" /></td>
+						oninput="displayAtDate()" onchange="displayAtDate()" /></td>
 			</tr>
 			<tr>
 				<td id="earliestDate">Earliest</td>
@@ -89,7 +88,6 @@
 		table
 		rendering issues where there are complex split cell scenarios.</p>
 	<h3>Outstanding work</h3>
-	<p>Add a function to help select a preferred scenario.</p>
 	<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
 	<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
 	<p>Style of date slider in IE.</p>
@@ -100,6 +98,16 @@
 	<script src="./dist/landscape.min.js"></script>
 
 	<script>
+		// define the preferred sequence of the dimensions
+		// this order will be used if optimised is unchecked
+		// the closest optimised scenario to this will be used if optimised is checked
+		const dimensions = {
+			"capability": ["Market gateway", "Order management", "Order execution", "Confirmations"],
+			"product": ["FX", "MM", "Rates", "Credit", "Equities"],
+			"status": ["green", "amber", "red"],
+			"location": ["United States", "United Kingdom", "Germany", "Italy"]
+		};
+
 		// get DOM elements that are frequently changed
 		const dateOfInterest = document.getElementById("dateOfInterest");
 		const lineOfBusiness = document.getElementById("lineOfBusiness");
@@ -132,12 +140,10 @@
 			const yAxis = landscape.getAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
 
 			// find the optimum layout scenarios
-			const scenarios = landscape.getOptimalAxes(data, xAxis, yAxis, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+			scenario = landscape.getOptimalAxes(data, xAxis, yAxis, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 
 			// select the preferred scenario
-			if (scenarios.length !== 0) {
-				scenario = scenarios[0];
-
+			if (scenario) {
 				displayAtDate();
 			}
 		}
@@ -157,13 +163,6 @@
 
 		// alternative function to considering all permutations an axis
 		function fixOrder(axis) {
-			const dimensions = {
-				"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Clearing", "Settlement", "Payments"],
-				"product": ["FX", "MM", "Rates", "Credit", "Equities"],
-				"status": ["green", "amber", "red"],
-				"location": ["United States", "United Kingdom", "Germany", "Italy"]
-			};
-
 			return [dimensions[axis.name].filter(function (capability) { return axis.values.indexOf(capability) !== -1 })];
 		}
 
@@ -193,6 +192,34 @@
 			result.setMilliseconds(result.getMilliseconds() + ((offset || 0) * 86400000));
 
 			return result;
+		}
+
+		function selectScenario(scenarios) {
+			let bestScore = 1000000;
+			let bestScenario = 0;
+			const xPreferred = dimensions[scenarios[0].x.name];
+			const yPreferred = dimensions[scenarios[0].y.name];
+
+			scenarios.forEach(function(scenario, scenarioIndex) {
+				const xAxis = scenario.x;
+				const yAxis = scenario.y;
+				let score = 0;
+
+				xAxis.values.forEach(function(value, valueIndex) {
+					score += Math.abs(xPreferred.indexOf(value) - valueIndex);
+				});
+
+				yAxis.values.forEach(function(value, valueIndex) {
+					score += Math.abs(yPreferred.indexOf(value) - valueIndex);
+				});
+
+				if(score < bestScore) {
+					bestScenario = scenarioIndex;
+					bestScore = score;
+				}
+			});
+
+			return scenarios[bestScenario];
 		}
 	</script>
 </body>

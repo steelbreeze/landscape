@@ -13,7 +13,7 @@ import { permutations } from './permutations';
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axis, xF: (axis: Axis) => Array<Array<string>> = flexOrder, yF: (axis: Axis) => Array<Array<string>> = flexOrder): Array<Axes> {
+export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axis, axesSelector: (scenarios: Array<Axes>) => Axes = first, xF: (axis: Axis) => Array<Array<string>> = flexOrder, yF: (axis: Axis) => Array<Array<string>> = flexOrder): Axes {
 	let result: Array<Axes> = [];
 	let bestAdjacency = -1;
 
@@ -78,7 +78,7 @@ export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axi
 		}
 	}
 
-	return result;
+	return axesSelector(result);
 }
 
 /**
@@ -87,4 +87,8 @@ export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axi
  */
 export function flexOrder(axis: Axis): Array<Array<string>> {
 	return permutations(axis.values);
+}
+
+export function first(scenaios: Array<Axes>): Axes {
+	return scenaios[0];
 }
