@@ -72,7 +72,7 @@
 	<ol>
 		<li>Extract the unique values for the x and y axis;</li>
 		<li>Determine the optimal sequences of values on the x-axis to position the same applications of the same status
-			together;</li>
+			together in an order that is closest to the ideal desired order;</li>
 		<li>Produce a table using the optimal x-axis and y-axis where cells containing multiple applications are split
 			and
 			applications of the same status in neighbouring cells merged.</li>
@@ -198,23 +198,23 @@
 		function selectScenario(scenarios) {
 			let bestScore = 1000000;
 			let bestScenario = 0;
-			const xPreferred = dimensions[scenarios[0].x.name].filter(v => scenarios[0].x.values.indexOf(v) !== -1);
-			const yPreferred = dimensions[scenarios[0].y.name].filter(v => scenarios[0].y.values.indexOf(v) !== -1);
+			const xPreferred = dimensions[scenarios[0].x.name].filter(function (v) { return scenarios[0].x.values.indexOf(v) !== -1; });
+			const yPreferred = dimensions[scenarios[0].y.name].filter(function (v) { return scenarios[0].y.values.indexOf(v) !== -1; });
 
-			scenarios.forEach(function(scenario, scenarioIndex) {
+			scenarios.forEach(function (scenario, scenarioIndex) {
 				const xAxis = scenario.x;
 				const yAxis = scenario.y;
 				let score = 0;
 
-				xAxis.values.forEach(function(value, valueIndex) {
+				xAxis.values.forEach(function (value, valueIndex) {
 					score += Math.abs(xPreferred.indexOf(value) - valueIndex);
 				});
 
-				yAxis.values.forEach(function(value, valueIndex) {
+				yAxis.values.forEach(function (value, valueIndex) {
 					score += Math.abs(yPreferred.indexOf(value) - valueIndex);
 				});
 
-				if(score < bestScore) {
+				if (score < bestScore) {
 					bestScenario = scenarioIndex;
 					bestScore = score;
 				}
