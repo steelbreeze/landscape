@@ -102,7 +102,7 @@
 		// this order will be used if optimised is unchecked
 		// the closest optimised scenario to this will be used if optimised is checked
 		const dimensions = {
-			"capability": ["Market gateway", "Order management", "Order execution", "Confirmations"],
+			"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
 			"product": ["FX", "MM", "Rates", "Credit", "Equities"],
 			"status": ["green", "amber", "red"],
 			"location": ["United States", "United Kingdom", "Germany", "Italy"]
@@ -194,11 +194,12 @@
 			return result;
 		}
 
+		// pick the scenario closest to the desired layout
 		function selectScenario(scenarios) {
 			let bestScore = 1000000;
 			let bestScenario = 0;
-			const xPreferred = dimensions[scenarios[0].x.name];
-			const yPreferred = dimensions[scenarios[0].y.name];
+			const xPreferred = dimensions[scenarios[0].x.name].filter(v => scenarios[0].x.values.indexOf(v) !== -1);
+			const yPreferred = dimensions[scenarios[0].y.name].filter(v => scenarios[0].y.values.indexOf(v) !== -1);
 
 			scenarios.forEach(function(scenario, scenarioIndex) {
 				const xAxis = scenario.x;
