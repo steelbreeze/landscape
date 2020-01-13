@@ -1,6 +1,9 @@
 import { Detail } from './Detail';
 
-/** Represents a cell within a table. */
+/**
+ * Represents a cell within a table.
+ * @hidden
+ */
 export class Cell {
 	public height = 100;
 

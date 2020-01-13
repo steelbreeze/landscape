@@ -71,6 +71,11 @@ export function getTable(applications: Array<Application>, x: Axis, y: Axis): Ar
 	return result;
 }
 
+/**
+ * Returns an array of numbers from 0 to n -1
+ * @param n 
+ * @hidden
+ */
 function range(n: number): Array<number> {
 	const result: Array<number> = [];
 
@@ -81,10 +86,22 @@ function range(n: number): Array<number> {
 	return result;
 }
 
+/**
+ * Returns the least common multiple of two integers
+ * @param a 
+ * @param b
+ * @hidden 
+ */
 function leastCommonMultiple(a: number, b: number): number {
 	return (a * b) / greatestCommonFactor(a, b);
 }
 
+/**
+ * Returns the greatest common factor of two numbers
+ * @param a 
+ * @param b 
+ * @hidden
+ */
 function greatestCommonFactor(a: number, b: number): number {
 	return b ? greatestCommonFactor(b, a % b) : a;
 }

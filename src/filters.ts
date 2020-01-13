@@ -7,6 +7,7 @@ import { Use } from './Use';
  * @param start The start of the range; if undefined the range start at the begining of time.
  * @param end The end of the range; if undefined the range ends at the end of time.
  * @returns True if the date is within the range
+ * @hidden
  */
 function between(date: Date, start: Date | undefined, end: Date | undefined) {
     return (start === undefined || date >= start) && (end === undefined || date <= end);

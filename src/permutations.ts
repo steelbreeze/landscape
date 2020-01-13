@@ -4,6 +4,7 @@ import { selectMany } from "./selectMany";
  * Flexes a dimension, generating all ordering permutations of an array of strings.
  * @param source The source array of string.
  * @returns Returns and array of all permutations of the array of strings.
+ * @hidden
  */
 export function permutations<T>(source: Array<T>): Array<Array<T>> {
 	if (source.length === 1) {

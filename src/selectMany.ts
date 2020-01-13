@@ -3,6 +3,7 @@
  * @param source The parent array.
  * @param collectionSelector A function to return the child array for each element of the parent array.
  * @param resultSelector A function to build the result elements.
+ * @hidden
  */
 export function selectMany<TElement, TCollection, TResult>(source: Array<TElement>, collectionSelector: (element: TElement, elementIndex: number) => Array<TCollection>, resultSelector: (subElement: TCollection, element: TElement) => TResult): Array<TResult> {
 	let result: Array<TResult> = [];
