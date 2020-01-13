@@ -50,6 +50,7 @@ export function getOptimalAxes(applications: Array<Application>, x: Axis, y: Axi
 /**
  * Allow an axis to be assessed in any order of the axis values.
  * @param axis The axis to flex
+ * @hidden
  */
 export function flexOrder(axis: Axis): Array<Array<string>> {
 	return permutations(axis.values);

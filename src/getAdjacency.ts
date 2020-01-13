@@ -1,5 +1,13 @@
 import { FlatApp } from "./flatten";
 
+/**
+ * Gets an adjacencey count for applications in a given scenario (sequence of axes values)
+ * @param denormalised The denormalised application data
+ * @param xAxis The xAxis
+ * @param yAxis The yAxis
+ * @returns Returns an adjacency count; the number of adjacent cells in the x and y dimensions
+ * @hidden
+ */
 export function getAdjacency(denormalised: Array<FlatApp>, xAxis: Array<string>, yAxis: Array<string>): number {
 	let adjacency = 0;
 
