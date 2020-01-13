@@ -1,5 +1,6 @@
 # landscape
 Landscape map visualisation of data.
+![Example landscape map](https://steelbreeze.net/images/landscape_map.jpg)
 ## Installation
 Download landscape.min.js from the Releases page.
 ## Usage
