@@ -1,7 +1,7 @@
 import { Dimension } from "./Dimension";
 
 /** Represents a single axis. */
-export interface Axis {
+export interface IAxis {
 	/** The name of the dimension used on the axis */
 	name: Dimension;
 

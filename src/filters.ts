@@ -1,5 +1,5 @@
-import { Application } from './Application';
-import { Use } from './Use';
+import { IApplication } from './IApplication';
+import { IUse } from './IUse';
 
 /**
  * An always true predicate.
@@ -26,7 +26,7 @@ function between(date: Date, start: Date | undefined, end: Date | undefined) {
  * @param appCriteria The application criteria
  * @returns The filtered set of applications
  */
-export function filter(applications: Array<Application>, useCriteria: ((use: Use) => boolean) | undefined = fTrue, appCriteria: ((app: Application) => boolean) | undefined = fTrue): Array<Application> {
+export function filter(applications: Array<IApplication>, useCriteria: ((use: IUse) => boolean) | undefined = fTrue, appCriteria: ((app: IApplication) => boolean) | undefined = fTrue): Array<IApplication> {
 	return applications.filter(appCriteria).map(app => { return { detail: app.detail, usage: app.usage.filter(useCriteria) } }).filter(app => app.usage.length > 0);
 }
 
@@ -37,6 +37,6 @@ export function filter(applications: Array<Application>, useCriteria: ((use: Use
  * @param date The date to filter the applications by.
  * @returns Returns the subset of applications that were in use on the specified date.
  */
-export function filterByDate(applications: Array<Application>, date: Date): Array<Application> {
+export function filterByDate(applications: Array<IApplication>, date: Date): Array<IApplication> {
 	return filter(applications, use => between(date, use.commissioned, use.decommissioned));
 }

@@ -1,6 +1,6 @@
-import { noDetail } from './Detail';
-import { Application } from './Application';
-import { Axis } from './Axis';
+import { Detail } from './Detail';
+import { IApplication } from './IApplication';
+import { IAxis } from './IAxis';
 import { Cell } from './Cell';
 import { selectMany } from './selectMany';
 
@@ -9,18 +9,18 @@ import { selectMany } from './selectMany';
  * @param applications The application data to prepare.
  * @param axes The axes to use.
  */
-export function getTable(applications: Array<Application>, x: Axis, y: Axis): Array<Array<Cell>> {
+export function getTable(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<Array<Cell>> {
 	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
 	const flattened = selectMany(applications, app => app.usage, (use, app) => { return { detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status } });
-	const xAxis = [[new Cell(noDetail(), "xAxis")], ...x.values.map(xValue => [new Cell(noDetail("", xValue), "xAxis")])];
-	const interim = [xAxis, ...y.values.map(yValue => [[new Cell(noDetail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
+	const xAxis = [[new Cell(new Detail(), "xAxis")], ...x.values.map(xValue => [new Cell(new Detail("", xValue), "xAxis")])];
+	const interim = [xAxis, ...y.values.map(yValue => [[new Cell(new Detail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
 
 	// create blank apps and split rows as necessary
 	for (let iY = interim.length; iY--;) {
 		// where there are no apps in a cells insert an empty cell object
 		for (let iX = interim[iY].length; iX--;) {
 			if (interim[iY][iX].length === 0) {
-				interim[iY][iX].push(new Cell(noDetail(), "empty"));
+				interim[iY][iX].push(new Cell(new Detail(), "empty"));
 			}
 		}
 

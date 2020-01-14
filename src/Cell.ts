@@ -1,4 +1,4 @@
-import { Detail } from './Detail';
+import { IDetail } from './IDetail';
 
 /**
  * Represents a cell within a table.
@@ -15,7 +15,7 @@ export class Cell {
 	 * @param rowspan The numbe or row that the application should span.
 	 * @param height The height of the cell out of 100 (this can be greater for merged cells, or smaller for split cells).
 	 */
-	public constructor(public readonly detail: Detail, public style: string, public colspan: number = 1, public rowspan: number = 1, public split: number = 1) {
+	public constructor(public readonly detail: IDetail, public style: string, public colspan: number = 1, public rowspan: number = 1, public split: number = 1) {
 		this.height = 100 / split;
 	}
 

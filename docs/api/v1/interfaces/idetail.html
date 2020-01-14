@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Axis | landscape</title>
+	<title>IDetail | landscape</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="axis.html">Axis</a>
+					<a href="idetail.html">IDetail</a>
 				</li>
 			</ul>
-			<h1>Interface Axis</h1>
+			<h1>Interface IDetail</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Represents a single axis.</p>
+						<p>The meta data associated with an application excluding its usage context.</p>
 					</div>
 				</div>
 			</section>
@@ -77,8 +77,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Axis</span>
+						<span class="target">IDetail</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="" class="tsd-signature-type">Detail</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -88,8 +94,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="axis.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="axis.html#values" class="tsd-kind-icon">values</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idetail.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idetail.html#name" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,32 +104,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../globals.html#dimension" class="tsd-signature-type">Dimension</a></div>
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/Axis.ts#L6">Axis.ts:6</a></li>
+							<li>Defined in IDetail.ts:6</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of the dimension used on the axis</p>
+							<p>An identifier for the application.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="values" class="tsd-anchor"></a>
-					<h3>values</h3>
-					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/Axis.ts#L9">Axis.ts:9</a></li>
+							<li>Defined in IDetail.ts:9</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The set of values on the axis.</p>
+							<p>The name of the application.</p>
 						</div>
 					</div>
 				</section>
@@ -140,34 +146,34 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface">
-						<a href="application.html" class="tsd-kind-icon">Application</a>
+						<a href="iapplication.html" class="tsd-kind-icon">IApplication</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="axes.html" class="tsd-kind-icon">Axes</a>
+						<a href="iaxes.html" class="tsd-kind-icon">IAxes</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="axis.html" class="tsd-kind-icon">Axis</a>
+						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="axis.html#name" class="tsd-kind-icon">name</a>
+								<a href="idetail.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="axis.html#values" class="tsd-kind-icon">values</a>
+								<a href="idetail.html#name" class="tsd-kind-icon">name</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="detail.html" class="tsd-kind-icon">Detail</a>
+						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="dimensions.html" class="tsd-kind-icon">Dimensions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="use.html" class="tsd-kind-icon">Use</a>
+						<a href="iuse.html" class="tsd-kind-icon">IUse</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#dimension" class="tsd-kind-icon">Dimension</a>

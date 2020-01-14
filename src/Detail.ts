@@ -1,20 +1,13 @@
+import { IDetail } from './IDetail';
 /**
- * The meta data associated with an application excluding its usage context.
- */
-export interface Detail {
-	/** An identifier for the application. */
-	id: string | number;
-
-	/** The name of the application. */
-	name: string;
-}
-
-/**
- * Creates a blank application detail object
- * @param id The application id
- * @param name The application name
+ * An implementation of the IDetail interface, for application detail generated within the library.
  * @hidden
  */
-export function noDetail(id: number | string = "", name: string = ""): Detail {
-	return { id, name };
+export class Detail implements IDetail {
+	/**
+	 * Creates an instance of the Detail class.
+	 * @param id The application id.
+	 * @param name The application name.
+	 */
+	public constructor (public readonly id: string | number = "", public readonly name: string = "") { }	
 }

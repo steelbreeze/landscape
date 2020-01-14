@@ -70,12 +70,12 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface"><a href="interfaces/application.html" class="tsd-kind-icon">Application</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/axes.html" class="tsd-kind-icon">Axes</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/axis.html" class="tsd-kind-icon">Axis</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/detail.html" class="tsd-kind-icon">Detail</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/dimensions.html" class="tsd-kind-icon">Dimensions</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/use.html" class="tsd-kind-icon">Use</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iapplication.html" class="tsd-kind-icon">IApplication</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iaxes.html" class="tsd-kind-icon">IAxes</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iaxis.html" class="tsd-kind-icon">IAxis</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/idetail.html" class="tsd-kind-icon">IDetail</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/idimensions.html" class="tsd-kind-icon">IDimensions</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iuse.html" class="tsd-kind-icon">IUse</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -103,15 +103,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="dimension" class="tsd-anchor"></a>
 					<h3>Dimension</h3>
-					<div class="tsd-signature tsd-kind-icon">Dimension<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof <a href="interfaces/dimensions.html" class="tsd-signature-type">Dimensions</a></span></div>
+					<div class="tsd-signature tsd-kind-icon">Dimension<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">keyof <a href="interfaces/idimensions.html" class="tsd-signature-type">IDimensions</a></span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/Dimension.ts#L4">Dimension.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/Dimension.ts#L4">Dimension.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An enumeration of the valid dimension names; dynamically generated from the Dimensions interface.</p>
+							<p>An enumeration of the valid dimension names; dynamically generated from the <a href="interfaces/idimensions.html">IDimensions</a> interface.</p>
 						</div>
 					</div>
 				</section>
@@ -122,13 +122,13 @@
 					<a name="filter" class="tsd-anchor"></a>
 					<h3>filter</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span>, useCriteria<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, appCriteria<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, useCriteria<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, appCriteria<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/filters.ts#L29">filters.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/filters.ts#L29">filters.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -139,7 +139,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The set of applications to filter.</p>
 									</div>
@@ -157,7 +157,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>The filtered set of applications</p>
 						</li>
 					</ul>
@@ -166,13 +166,13 @@
 					<a name="filterbydate" class="tsd-anchor"></a>
 					<h3>filter<wbr>ByDate</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">filter<wbr>ByDate<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span>, date<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">filter<wbr>ByDate<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, date<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/filters.ts#L40">filters.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/filters.ts#L40">filters.ts:40</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -188,7 +188,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The full set of applications.</p>
 									</div>
@@ -200,7 +200,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>Returns the subset of applications that were in use on the specified date.</p>
 						</li>
 					</ul>
@@ -209,13 +209,13 @@
 					<a name="getaxis" class="tsd-anchor"></a>
 					<h3>get<wbr>Axis</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Axis<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span>, name<span class="tsd-signature-symbol">: </span><a href="globals.html#dimension" class="tsd-signature-type">Dimension</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Axis<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, name<span class="tsd-signature-symbol">: </span><a href="globals.html#dimension" class="tsd-signature-type">Dimension</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/getAxis.ts#L13">getAxis.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/getAxis.ts#L13">getAxis.ts:13</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -226,7 +226,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The applications data.</p>
 									</div>
@@ -238,7 +238,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h4>
 							<p>Returns the axis with its values.</p>
 						</li>
 					</ul>
@@ -253,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/getHTML.ts#L7">getHTML.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/getHTML.ts#L7">getHTML.ts:7</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -278,13 +278,13 @@
 					<a name="getoptimalaxes" class="tsd-anchor"></a>
 					<h3>get<wbr>Optimal<wbr>Axes</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Optimal<wbr>Axes<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span>, x<span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a>, y<span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a>, axesSelector<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, xF<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, yF<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/axes.html" class="tsd-signature-type">Axes</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Optimal<wbr>Axes<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, x<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a>, y<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a>, axesSelector<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, xF<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, yF<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/getOptimalAxes.ts#L18">getOptimalAxes.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/getOptimalAxes.ts#L18">getOptimalAxes.ts:18</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -295,19 +295,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The raw application data</p>
 									</div>
 								</li>
 								<li>
-									<h5>x: <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h5>
+									<h5>x: <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The x axis</p>
 									</div>
 								</li>
 								<li>
-									<h5>y: <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h5>
+									<h5>y: <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The y axis</p>
 									</div>
@@ -320,17 +320,17 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>scenarios<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/axes.html" class="tsd-signature-type">Axes</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/axes.html" class="tsd-signature-type">Axes</a></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>scenarios<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>scenarios: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/axes.html" class="tsd-signature-type">Axes</a><span class="tsd-signature-symbol">&gt;</span></h5>
+															<h5>scenarios: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a><span class="tsd-signature-symbol">&gt;</span></h5>
 														</li>
 													</ul>
-													<h4 class="tsd-returns-title">Returns <a href="interfaces/axes.html" class="tsd-signature-type">Axes</a></h4>
+													<h4 class="tsd-returns-title">Returns <a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></h4>
 												</li>
 											</ul>
 										</li>
@@ -344,14 +344,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>axis: <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h5>
+															<h5>axis: <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -368,14 +368,14 @@
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>axis: <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h5>
+															<h5>axis: <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -385,7 +385,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/axes.html" class="tsd-signature-type">Axes</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></h4>
 							<p>Returns all conbinations of x and y axes with the greatest grouping of applications</p>
 						</li>
 					</ul>
@@ -394,13 +394,13 @@
 					<a name="gettable" class="tsd-anchor"></a>
 					<h3>get<wbr>Table</h3>
 					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Table<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span>, x<span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a>, y<span class="tsd-signature-symbol">: </span><a href="interfaces/axis.html" class="tsd-signature-type">Axis</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="" class="tsd-signature-type">Cell</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Table<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, x<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a>, y<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="" class="tsd-signature-type">Cell</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/38b8e2f/src/getTable.ts#L12">getTable.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/bc794ca/src/getTable.ts#L12">getTable.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -411,16 +411,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/application.html" class="tsd-signature-type">Application</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The application data to prepare.</p>
 									</div>
 								</li>
 								<li>
-									<h5>x: <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h5>
+									<h5>x: <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h5>
 								</li>
 								<li>
-									<h5>y: <a href="interfaces/axis.html" class="tsd-signature-type">Axis</a></h5>
+									<h5>y: <a href="interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="" class="tsd-signature-type">Cell</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -440,22 +440,22 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/application.html" class="tsd-kind-icon">Application</a>
+						<a href="interfaces/iapplication.html" class="tsd-kind-icon">IApplication</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/axes.html" class="tsd-kind-icon">Axes</a>
+						<a href="interfaces/iaxes.html" class="tsd-kind-icon">IAxes</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/axis.html" class="tsd-kind-icon">Axis</a>
+						<a href="interfaces/iaxis.html" class="tsd-kind-icon">IAxis</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/detail.html" class="tsd-kind-icon">Detail</a>
+						<a href="interfaces/idetail.html" class="tsd-kind-icon">IDetail</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/dimensions.html" class="tsd-kind-icon">Dimensions</a>
+						<a href="interfaces/idimensions.html" class="tsd-kind-icon">IDimensions</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/use.html" class="tsd-kind-icon">Use</a>
+						<a href="interfaces/iuse.html" class="tsd-kind-icon">IUse</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#dimension" class="tsd-kind-icon">Dimension</a>

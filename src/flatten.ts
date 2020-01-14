@@ -1,13 +1,13 @@
-import { Axis } from './Axis';
-import { Application } from './Application';
-import { Detail } from './Detail';
+import { IAxis } from './IAxis';
+import { IApplication } from './IApplication';
+import { IDetail } from './IDetail';
 
 /**
  * A denormalised representation of application data.
  * @hidden
  */
 export interface FlatApp {
-	detail: Detail;
+	detail: IDetail;
 	status: string;
 	usage: Array<{ x: string, y: string }>
 }
@@ -19,7 +19,7 @@ export interface FlatApp {
  * @param y 
  * @hidden
  */
-export function flatten(applications: Array<Application>, x: Axis, y: Axis): Array<FlatApp> {
+export function flatten(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<FlatApp> {
 	// denormalise the underlying application data and resolve the axes
 	let interim: Array<FlatApp> = [];
 

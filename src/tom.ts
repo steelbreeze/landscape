@@ -1,6 +1,6 @@
-import { Application } from './Application';
-import { Axis } from './Axis';
-import { Axes } from './Axes';
+import { IApplication } from './IApplication';
+import { IAxis } from './IAxis';
+import { IAxes } from './IAxes';
 import { flatten } from './flatten';
 import { getAdjacency } from './getAdjacency';
 
@@ -28,7 +28,7 @@ function pairs(value: number): Array<Array<number>> {
  * @param y 
  * @hidden
  */
-export function tom(applications: Array<Application>, x: Axis, y: Axis): Array<Axes> {
+export function tom(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<IAxes> {
 	const isXAxisLonger = x.values.length >= y.values.length;
 	const longAxis = isXAxisLonger ? x.values : y.values;
 	const shortAxis = isXAxisLonger ? y.values : x.values;

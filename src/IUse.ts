@@ -1,7 +1,7 @@
-import { Dimensions } from './Dimensions';
+import { IDimensions } from './IDimensions';
 
 /** A usage context of an application and its status. */
-export interface Use extends Dimensions {
+export interface IUse extends IDimensions {
 	commissioned: Date | undefined;
 
 	decommissioned: Date | undefined;
