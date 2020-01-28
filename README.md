@@ -1,6 +1,6 @@
 # landscape
 Landscape map visualisation of data.
-![landscape map viewpoint](https://steelbreeze.net/images/landscape_map.jpg)
+![landscape map viewpoint](https://steelbreeze.net/images/landscape-map.png)
 These visualisations conform to the [Archimate Landscape Map Viewpoint](https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248).
 
 These visualisations are an invaluable communication tool offering insight into the health of an application portfolio. High density areas indicate a fragmented portfolio, or redundancy; a wide scope may indicate over-extension.
