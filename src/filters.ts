@@ -27,7 +27,7 @@ function between(date: Date, start: Date | undefined, end: Date | undefined) {
  * @returns The filtered set of applications
  */
 export function filter(applications: Array<IApplication>, useCriteria: ((use: IUse) => boolean) | undefined = fTrue, appCriteria: ((app: IApplication) => boolean) | undefined = fTrue): Array<IApplication> {
-	return applications.filter(appCriteria).map(app => { return { detail: app.detail, usage: app.usage.filter(useCriteria) } }).filter(app => app.usage.length > 0);
+	return applications.filter(appCriteria).map(app => { return { detail: app.detail, usage: app.usage.filter(useCriteria) }; }).filter(app => app.usage.length > 0);
 }
 
 /**

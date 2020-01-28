@@ -5,10 +5,12 @@ import { FlatApp } from "./flatten";
  * @param denormalised The denormalised application data
  * @param xAxis The xAxis
  * @param yAxis The yAxis
+ * @param countX Count adjacency on the x axis
+ * @param countY Count adjacency on the y axis
  * @returns Returns an adjacency count; the number of adjacent cells in the x and y dimensions
  * @hidden
  */
-export function getAdjacency(denormalised: Array<FlatApp>, xAxis: Array<string>, yAxis: Array<string>): number {
+export function getAdjacency(denormalised: Array<FlatApp>, xAxis: Array<string>, yAxis: Array<string>, countX: boolean = true, countY: boolean = true): number {
 	let adjacency = 0;
 
 	// test each application/status combination individually
@@ -20,11 +22,11 @@ export function getAdjacency(denormalised: Array<FlatApp>, xAxis: Array<string>,
 		for (let iY = yAxis.length; iY--;) {
 			for (let iX = xAxis.length; iX--;) {
 				if (matrix[iY][iX]) {
-					if (iY && matrix[iY - 1][iX]) {
+					if (countY && iY && matrix[iY - 1][iX]) {
 						adjacency++;
 					}
 
-					if (iX && matrix[iY][iX - 1]) {
+					if (countX && iX && matrix[iY][iX - 1]) {
 						adjacency++;
 					}
 				}
