@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IAxes | landscape</title>
+	<title>Axis | </title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">landscape</a>
+					<a href="../index.html" class="title"></a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,32 +53,31 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="iaxes.html">IAxes</a>
+					<a href="axis.html">Axis</a>
 				</li>
 			</ul>
-			<h1>Interface IAxes</h1>
+			<h1>Class Axis</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Represents a pair of axis.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IAxes</span>
+						<span class="target">Axis</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -86,46 +85,73 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="axis.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iaxes.html#x" class="tsd-kind-icon">x</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iaxes.html#y" class="tsd-kind-icon">y</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="axis.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="axis.html#values" class="tsd-kind-icon">values</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="x" class="tsd-anchor"></a>
-					<h3>x</h3>
-					<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <a href="iaxis.html" class="tsd-signature-type">IAxis</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in IAxes.ts:6</li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The x axis.</p>
-						</div>
-					</div>
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Axis<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><a href="../index.html#dimension" class="tsd-signature-type">Dimension</a>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axis.html" class="tsd-signature-type">Axis</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Axis.ts:4</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <a href="../index.html#dimension" class="tsd-signature-type">Dimension</a></h5>
+								</li>
+								<li>
+									<h5>values: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="axis.html" class="tsd-signature-type">Axis</a></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="y" class="tsd-anchor"></a>
-					<h3>y</h3>
-					<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <a href="iaxis.html" class="tsd-signature-type">IAxis</a></div>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <a href="../index.html#dimension" class="tsd-signature-type">Dimension</a></div>
 					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/iaxis.html">IAxis</a>.<a href="../interfaces/iaxis.html#name">name</a></p>
 						<ul>
-							<li>Defined in IAxes.ts:9</li>
+							<li>Defined in Axis.ts:5</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The y axis.</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="values" class="tsd-anchor"></a>
+					<h3>values</h3>
+					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/iaxis.html">IAxis</a>.<a href="../interfaces/iaxis.html#values">values</a></p>
+						<ul>
+							<li>Defined in Axis.ts:5</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -133,62 +159,65 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+						<a href="../index.html"><em>Globals</em></a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface">
-						<a href="iapplication.html" class="tsd-kind-icon">IApplication</a>
+					<li class=" tsd-kind-class">
+						<a href="axes.html" class="tsd-kind-icon">Axes</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="iaxes.html" class="tsd-kind-icon">IAxes</a>
+					<li class="current tsd-kind-class">
+						<a href="axis.html" class="tsd-kind-icon">Axis</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iaxes.html#x" class="tsd-kind-icon">x</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="axis.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iaxes.html#y" class="tsd-kind-icon">y</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="axis.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="axis.html#values" class="tsd-kind-icon">values</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
+						<a href="../interfaces/iapplication.html" class="tsd-kind-icon">IApplication</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
+						<a href="../interfaces/iaxis.html" class="tsd-kind-icon">IAxis</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
+						<a href="../interfaces/idetail.html" class="tsd-kind-icon">IDetail</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="iuse.html" class="tsd-kind-icon">IUse</a>
+						<a href="../interfaces/idimensions.html" class="tsd-kind-icon">IDimensions</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/iuse.html" class="tsd-kind-icon">IUse</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#dimension" class="tsd-kind-icon">Dimension</a>
+						<a href="../index.html#dimension" class="tsd-kind-icon">Dimension</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#filter" class="tsd-kind-icon">filter</a>
+						<a href="../index.html#filterbydate" class="tsd-kind-icon">filter<wbr>ByDate</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#filterbydate" class="tsd-kind-icon">filter<wbr>ByDate</a>
+						<a href="../index.html#getaxis" class="tsd-kind-icon">get<wbr>Axis</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#getaxis" class="tsd-kind-icon">get<wbr>Axis</a>
+						<a href="../index.html#gethtml" class="tsd-kind-icon">getHTML</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#gethtml" class="tsd-kind-icon">getHTML</a>
+						<a href="../index.html#getoptimalaxes" class="tsd-kind-icon">get<wbr>Optimal<wbr>Axes</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#getoptimalaxes" class="tsd-kind-icon">get<wbr>Optimal<wbr>Axes</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#gettable" class="tsd-kind-icon">get<wbr>Table</a>
+						<a href="../index.html#gettable" class="tsd-kind-icon">get<wbr>Table</a>
 					</li>
 				</ul>
 			</nav>

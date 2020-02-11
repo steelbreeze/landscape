@@ -1,6 +1,7 @@
 import { IApplication } from './IApplication';
 import { IAxis } from './IAxis';
-import { IAxes } from './IAxes';
+import { Axis } from './Axis';
+import { Axes } from './Axes';
 import { flatten } from './flatten';
 import { permutations } from './permutations';
 import { getAdjacency } from './getAdjacency';
@@ -15,7 +16,7 @@ import { getAdjacency } from './getAdjacency';
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<Axes>) => Axes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): Axes {
 	// denormalise the underlying application data and resolve the axes
 	const denormalised = flatten(applications, x, y);
 
@@ -24,7 +25,7 @@ export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: I
 	const yPerms = yF(y);
 
 	// retain only the scenarios with the best adjacency
-	let scenarios: Array<IAxes> = [];
+	let scenarios: Array<Axes> = [];
 	let bestAdjacency = -1;
 
 	// iterate all X and Y using the formulas provided
@@ -39,7 +40,7 @@ export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: I
 					bestAdjacency = adjacency;
 				}
 
-				scenarios.push({ x: { name: x.name, values: xValues }, y: { name: y.name, values: yValues } });
+				scenarios.push(new Axes(new Axis(x.name, xValues), new Axis(y.name, yValues)));
 			}
 		}
 	}

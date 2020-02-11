@@ -33,7 +33,7 @@ export function flatten(applications: Array<IApplication>, x: IAxis, y: IAxis): 
 				interim.push(interimApp);
 			}
 
-			interimApp.usage.push({ x: use[x.name], y: use[y.name] });
+			interimApp.usage.push({ x: use.dimensions[x.name], y: use.dimensions[y.name] });
 		}
 	}
 

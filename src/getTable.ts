@@ -11,7 +11,7 @@ import { selectMany } from './selectMany';
  */
 export function getTable(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<Array<Cell>> {
 	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-	const flattened = selectMany(applications, app => app.usage, (use, app) => { return { detail: app.detail, xValue: use[x.name], yValue: use[y.name], status: use.status } });
+	const flattened = selectMany(applications, app => app.usage, (use, app) => { return { detail: app.detail, xValue: use.dimensions[x.name], yValue: use.dimensions[y.name], status: use.status } });
 	const xAxis = [[new Cell(new Detail(), "xAxis")], ...x.values.map(xValue => [new Cell(new Detail("", xValue), "xAxis")])];
 	const interim = [xAxis, ...y.values.map(yValue => [[new Cell(new Detail("", yValue), "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
 

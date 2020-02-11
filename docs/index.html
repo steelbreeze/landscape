@@ -178,9 +178,7 @@
 					detail: app.detail,
 					usage: app.usage.map(function (use) {
 						return {
-							product: use.product,
-							capability: use.capability,
-							location: use.location,
+							dimensions: use.dimensions,
 							commissioned: use.commissioned ? new Date(use.commissioned) : undefined,
 							decommissioned: use.decommissioned ? new Date(use.decommissioned) : undefined,
 							status: use.status
