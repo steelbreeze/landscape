@@ -17,7 +17,7 @@ The API is split into four main functions:
 
 Depending on your needs, you use a subset of these functions. For example, if you know the axes you want to display and their order, you can omit steps 1 and 2.
 
-The full API documentation can be found [here](https://steelbreeze.net/landscape/api/v1/globals.html).
+The full API documentation can be found [here](https://steelbreeze.net/landscape/api/v1/).
 
 ## License
 MIT License
