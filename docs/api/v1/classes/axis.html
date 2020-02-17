@@ -66,6 +66,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An axis to use to layout a landscape.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -97,6 +104,12 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="axis.html#values" class="tsd-kind-icon">values</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="axis.html#derive" class="tsd-kind-icon">derive</a></li>
+							</ul>
+						</section>
 					</div>
 				</section>
 			</section>
@@ -112,16 +125,31 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/910b485/src/Axis.ts#L3">Axis.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L7">Axis.ts:7</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new instance of the Axis class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The name of the dimension to use as the axis.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>values: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An ordered set of the unique values of the dimension.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="axis.html" class="tsd-signature-type">Axis</a></h4>
@@ -138,9 +166,14 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/iaxis.html">IAxis</a>.<a href="../interfaces/iaxis.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/910b485/src/Axis.ts#L4">Axis.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L13">Axis.ts:13</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the dimension to use as the axis.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="values" class="tsd-anchor"></a>
@@ -149,9 +182,55 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/iaxis.html">IAxis</a>.<a href="../interfaces/iaxis.html#values">values</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/910b485/src/Axis.ts#L4">Axis.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L13">Axis.ts:13</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An ordered set of the unique values of the dimension.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="derive" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> derive</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">derive<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axis.html" class="tsd-signature-type">Axis</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L21">Axis.ts:21</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Derives an axis to be used in the map layout from underlying application data.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The applications data.</p>
+									</div>
+								</li>
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the dimension.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="axis.html" class="tsd-signature-type">Axis</a></h4>
+							<p>Returns the axis with its values.</p>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -182,6 +261,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="axis.html#values" class="tsd-kind-icon">values</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="axis.html#derive" class="tsd-kind-icon">derive</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -200,9 +282,6 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#filterbydate" class="tsd-kind-icon">filter<wbr>ByDate</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="../index.html#getaxis" class="tsd-kind-icon">get<wbr>Axis</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#gethtml" class="tsd-kind-icon">getHTML</a>

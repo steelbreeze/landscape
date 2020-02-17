@@ -1,4 +1,4 @@
-export { getAxis } from './getAxis';
+export { Axis } from './Axis';
 export { getOptimalAxes, flexOrder } from './getOptimalAxes';
 export { getTable } from './getTable';
 export { getHTML } from './getHTML';
