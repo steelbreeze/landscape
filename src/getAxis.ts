@@ -1,6 +1,5 @@
 import { IApplication } from './IApplication';
 import { Axis } from './Axis';
-import { Dimension } from './Dimension';
 import { selectMany } from './selectMany';
 import { unique } from './unique';
 
@@ -10,6 +9,6 @@ import { unique } from './unique';
  * @param name The name of the dimension.
  * @returns Returns the axis with its values.
  */
-export function getAxis(applications: Array<IApplication>, name: Dimension): Axis {
+export function getAxis(applications: Array<IApplication>, name: string): Axis {
 	return new Axis(name, selectMany(applications, app => app.usage, use => use.dimensions[name]).filter(unique));
 }

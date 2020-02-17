@@ -105,7 +105,7 @@
 					<div class="tsd-signature tsd-kind-icon">commissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/48421da/src/IUse.ts#L12">IUse.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/a8d2bcf/src/IUse.ts#L10">IUse.ts:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -121,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">decommissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/48421da/src/IUse.ts#L18">IUse.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/a8d2bcf/src/IUse.ts#L16">IUse.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -134,30 +134,38 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="dimensions" class="tsd-anchor"></a>
 					<h3>dimensions</h3>
-					<div class="tsd-signature tsd-kind-icon">dimensions<span class="tsd-signature-symbol">:</span> <a href="idimensions.html" class="tsd-signature-type">IDimensions</a></div>
+					<div class="tsd-signature tsd-kind-icon">dimensions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/48421da/src/IUse.ts#L6">IUse.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/a8d2bcf/src/IUse.ts#L4">IUse.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The dimensions used to categorise the usage (this is extensible and additional fields will be passed though)</p>
+							<p>The set of dimensions used to categorise this usage.</p>
 						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="status" class="tsd-anchor"></a>
 					<h3>status</h3>
-					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"green"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"amber"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"red"</span></div>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/48421da/src/IUse.ts#L21">IUse.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/a8d2bcf/src/IUse.ts#L19">IUse.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The status of an application.</p>
+							<p>The status of an application in this usage context.</p>
 						</div>
 					</div>
 				</section>
@@ -188,9 +196,6 @@
 					<li class=" tsd-kind-interface">
 						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
@@ -212,9 +217,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-type-alias">
-						<a href="../index.html#dimension" class="tsd-kind-icon">Dimension</a>
-					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#filterbydate" class="tsd-kind-icon">filter<wbr>ByDate</a>
 					</li>
@@ -247,7 +249,6 @@
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -296,7 +297,7 @@
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>

@@ -1,9 +1,7 @@
-import { IDimensions } from './IDimensions';
-
 /** A usage context of an application and its status. */
 export interface IUse {
-	/** The dimensions used to categorise the usage (this is extensible and additional fields will be passed though) */
-	dimensions: IDimensions;
+	/** The set of dimensions used to categorise this usage. */
+	dimensions: { [key: string]: string };
 
 	/**
 	 * The date this this particular application usage was commissioned.
@@ -17,6 +15,6 @@ export interface IUse {
 	 */
 	decommissioned: Date | undefined;
 
-	/** The status of an application. */
-	status: "green" | "amber" | "red";
+	/** The status of an application in this usage context. */
+	status: string;
 }
