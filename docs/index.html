@@ -16,6 +16,7 @@
 		<h1>Application landscape</h1>
 	</header>
 	<table class="landscape">
+		<caption>Test</caption>
 		<tbody id="lineOfBusiness">
 		</tbody>
 	</table>
@@ -106,7 +107,7 @@
 		<p>Style of date slider in IE.</p>
 		<p>Base the date slider max and min values based on the underlying data.</p>
 
-		<script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch"></script>
+		<!--script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch"></script-->
 		<script src="./dist/landscape.min.js"></script>
 
 		<script>
@@ -199,9 +200,9 @@
 				return (start === undefined || date >= start) && (end === undefined || date <= end);
 			}
 
-function filterByDate(applications, date) {
-    return applications.map(function (app) { return { detail: app.detail, usage: app.usage.filter(function (use) { return between(date, use.commissioned, use.decommissioned); }) }; }).filter(function (app) { return app.usage.length > 0; });
-}
+			function filterByDate(applications, date) {
+				return applications.map(function (app) { return { detail: app.detail, usage: app.usage.filter(function (use) { return between(date, use.commissioned, use.decommissioned); }) }; }).filter(function (app) { return app.usage.length > 0; });
+			}
 
 			// helper function to add days to a date
 			function fromToday(offset) {
