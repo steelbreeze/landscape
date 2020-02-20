@@ -3,22 +3,35 @@ import { IApplication } from './IApplication';
 import { IAxis } from './IAxis';
 import { Cell } from './Cell';
 import { IDetail } from './IDetail';
-import { flatten } from './flatten';
+
+export interface PreparedData {
+	detail: IDetail;
+	xValue: string;
+	yValue: string;
+	commissioned: Date | undefined;
+	decommissioned: Date | undefined;
+	status: string;
+}
+
+export function prepareData(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<PreparedData> {
+	const prepared: Array<PreparedData> = [];
+
+	for(const app of applications) {
+		for(const use of app.usage) {
+			prepared.push({detail: app.detail, xValue: use.dimensions[x.name], yValue: use.dimensions[y.name], commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status});
+		}
+	}
+
+	return prepared;
+}
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
  * @param applications The application data to prepare.
  * @param axes The axes to use.
  */
-export function getTable(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<Array<Cell>> {
-	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-	const flattened: Array<{detail: IDetail, xValue: string, yValue: string, status: string }> = [];
-
-	for(const app of applications) {
-		for(const use of app.usage) {
-			flattened.push({detail: app.detail, xValue: use.dimensions[x.name], yValue: use.dimensions[y.name], status: use.status});
-		}
-	}
+export function getTable(flattened: Array<PreparedData>, x: IAxis, y: IAxis): Array<Array<Cell>> {
+//	const flattened = prepareData(applications, x, y);
 
 	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
 	const xAxis = [[new Cell(new Detail(), "xAxis")], ...x.values.map(xValue => [new Cell(new Detail("", xValue), "xAxis")])];

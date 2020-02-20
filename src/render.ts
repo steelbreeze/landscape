@@ -1,2 +1,2 @@
-export { getTable } from './getTable';
+export { prepareData, getTable } from './getTable';
 export { getHTML } from './getHTML';

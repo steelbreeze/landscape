@@ -131,6 +131,7 @@
 			const slider = document.getElementById("slider");
 
 			let data = undefined;
+			let flattened = undefined;
 			let scenario = undefined;
 
 			// one-off DOM element updates
@@ -157,6 +158,8 @@
 
 				// select the preferred scenario
 				if (scenario) {
+					flattened = landscape.prepareData(data, scenario.x, scenario.y);
+
 					displayAtDate();
 				}
 			}
@@ -165,7 +168,7 @@
 				const date = fromToday(slider.value);
 
 				// get the prepared table with applications filtered by the date of interest
-				const table = landscape.getTable(filterByDate(data, date), scenario.x, scenario.y);
+				const table = landscape.getTable(filterByDate(flattened, date), scenario.x, scenario.y);
 
 				// update data of interest field
 				dateOfInterest.textContent = date.toLocaleDateString();
@@ -201,7 +204,8 @@
 			}
 
 			function filterByDate(applications, date) {
-				return applications.map(function (app) { return { detail: app.detail, usage: app.usage.filter(function (use) { return between(date, use.commissioned, use.decommissioned); }) }; }).filter(function (app) { return app.usage.length > 0; });
+				return applications.filter(app => between(date, app.commissioned, app.decommissioned) );
+//				return applications.map(function (app) { return { detail: app.detail, usage: app.usage.filter(function (use) { return between(date, use.commissioned, use.decommissioned); }) }; }).filter(function (app) { return app.usage.length > 0; });
 			}
 
 			// helper function to add days to a date
