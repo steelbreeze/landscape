@@ -1,6 +1,6 @@
 import { IAxis } from './IAxis';
 import { Cell } from './Cell';
-import { ApplicationUse } from './ApplicationUse';
+import { IApplicationUse } from './IApplicationUse';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
@@ -8,7 +8,7 @@ import { ApplicationUse } from './ApplicationUse';
  * @param x The x axis to use.
  * @param y The y axis to use.
  */
-export function getTable(flattened: Array<ApplicationUse>, x: IAxis, y: IAxis): Array<Array<Cell>> {
+export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<Cell>> {
 	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
 	const xAxis = [[new Cell({id: "", name: ""}, "xAxis")], ...x.values.map(xValue => [new Cell({id: "", name: xValue}, "xAxis")])];
 	const interim = [xAxis, ...y.values.map(yValue => [[new Cell({id:"", name: yValue}, "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];

@@ -2,7 +2,7 @@ import { IDetail } from './IDetail';
 /**
  * Data structure of denormalised application and usage data once x and y axes have been selected.
  */
-export interface ApplicationUse {
+export interface IApplicationUse {
 	/** The meta data associated with the application. */
 	detail: IDetail;
 	/** The value of the chosen x axis. */
