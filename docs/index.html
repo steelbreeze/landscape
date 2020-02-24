@@ -150,8 +150,8 @@
 
 			function determineAxis() {
 				// extract the axes from the application data
-				const xAxis = landscape.Axis.derive(data, xAxisSelector.options[xAxisSelector.selectedIndex].value);
-				const yAxis = landscape.Axis.derive(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
+				const xAxis = landscape.deriveAxis(data, xAxisSelector.options[xAxisSelector.selectedIndex].value);
+				const yAxis = landscape.deriveAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
 
 				// find the optimum layout scenarios
 				scenario = landscape.getOptimalAxes(data, xAxis, yAxis, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);

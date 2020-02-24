@@ -1,6 +1,5 @@
 import { IApplication } from './IApplication';
 import { IAxis } from './IAxis';
-import { Axis } from './Axis';
 import { Axes } from './Axes';
 import { flatten } from './flatten';
 import { permutations } from './permutations';
@@ -40,7 +39,7 @@ export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: I
 					bestAdjacency = adjacency;
 				}
 
-				scenarios.push(new Axes(new Axis(x.name, xValues), new Axis(y.name, yValues)));
+				scenarios.push({ x: { name: x.name, values: xValues }, y: { name: y.name, values: yValues } });
 			}
 		}
 	}
