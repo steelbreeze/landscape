@@ -1,4 +1,3 @@
-import { IAxis } from './IAxis';
 import { IApplication } from './IApplication';
 import { IDetail } from './IDetail';
 
@@ -19,7 +18,7 @@ export interface FlatApp {
  * @param y 
  * @hidden
  */
-export function flatten(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<FlatApp> {
+export function flatten(applications: Array<IApplication>, x: string, y: string): Array<FlatApp> {
 	// denormalise the underlying application data and resolve the axes
 	let interim: Array<FlatApp> = [];
 
@@ -33,7 +32,7 @@ export function flatten(applications: Array<IApplication>, x: IAxis, y: IAxis): 
 				interim.push(interimApp);
 			}
 
-			interimApp.usage.push({ x: use.dimensions[x.name], y: use.dimensions[y.name] });
+			interimApp.usage.push({ x: use.dimensions[x], y: use.dimensions[y] });
 		}
 	}
 

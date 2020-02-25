@@ -16,7 +16,7 @@ import { getAdjacency } from './getAdjacency';
  */
 export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
 	// denormalise the underlying application data and resolve the axes
-	const denormalised = flatten(applications, x, y);
+	const denormalised = flatten(applications, x.name, y.name);
 
 	// some items not to recalculate in an O(n!) algo
 	const xPerms = xF(x);
