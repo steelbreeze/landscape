@@ -14,5 +14,6 @@ export function prepareData(applications: Array<IApplication>, x: IAxis, y: IAxi
 			denormalised.push({ detail: app.detail, xValue: use.dimensions[x.name], yValue: use.dimensions[y.name], commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 		}
 	}
+	
 	return denormalised;
 }

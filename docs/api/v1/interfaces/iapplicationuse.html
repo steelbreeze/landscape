@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Axis | </title>
+	<title>IApplicationUse | </title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="axis.html">Axis</a>
+					<a href="iapplicationuse.html">IApplicationUse</a>
 				</li>
 			</ul>
-			<h1>Class Axis</h1>
+			<h1>Interface IApplicationUse</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>An axis to use to layout a landscape.</p>
+						<p>Data structure of denormalised application and usage data once x and y axes have been selected.</p>
 					</div>
 				</div>
 			</section>
@@ -77,14 +77,8 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Axis</span>
+						<span class="target">IApplicationUse</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/iaxis.html" class="tsd-signature-type">IAxis</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -92,145 +86,112 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="axis.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="axis.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="axis.html#values" class="tsd-kind-icon">values</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="axis.html#derive" class="tsd-kind-icon">derive</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#commissioned" class="tsd-kind-icon">commissioned</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#decommissioned" class="tsd-kind-icon">decommissioned</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#detail" class="tsd-kind-icon">detail</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#xvalue" class="tsd-kind-icon">x<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#yvalue" class="tsd-kind-icon">y<wbr>Value</a></li>
 							</ul>
 						</section>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Axis<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axis.html" class="tsd-signature-type">Axis</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L7">Axis.ts:7</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new instance of the Axis class.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The name of the dimension to use as the axis.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>values: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An ordered set of the unique values of the dimension.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="axis.html" class="tsd-signature-type">Axis</a></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="commissioned" class="tsd-anchor"></a>
+					<h3>commissioned</h3>
+					<div class="tsd-signature tsd-kind-icon">commissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/iaxis.html">IAxis</a>.<a href="../interfaces/iaxis.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L13">Axis.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/44f18a8/src/IApplicationUse.ts#L16">IApplicationUse.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of the dimension to use as the axis.</p>
+							<p>The date this this particular application usage was commissioned.
+							This is an optional field; undefined means that the origional commissioning date is unknown and therfore the beginning of time.</p>
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="values" class="tsd-anchor"></a>
-					<h3>values</h3>
-					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="decommissioned" class="tsd-anchor"></a>
+					<h3>decommissioned</h3>
+					<div class="tsd-signature tsd-kind-icon">decommissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/iaxis.html">IAxis</a>.<a href="../interfaces/iaxis.html#values">values</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L13">Axis.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/44f18a8/src/IApplicationUse.ts#L21">IApplicationUse.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An ordered set of the unique values of the dimension.</p>
+							<p>The date this this particular application usage was decommissioned.
+							This is an optional field; undefined means that the decommissioning date is unknown and therfore this application usage will continue to the end of time.</p>
 						</div>
 					</div>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="derive" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> derive</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">derive<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="axis.html" class="tsd-signature-type">Axis</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/33a395b/src/Axis.ts#L21">Axis.ts:21</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Derives an axis to be used in the map layout from underlying application data.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iapplication.html" class="tsd-signature-type">IApplication</a><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The applications data.</p>
-									</div>
-								</li>
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The name of the dimension.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="axis.html" class="tsd-signature-type">Axis</a></h4>
-							<p>Returns the axis with its values.</p>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="detail" class="tsd-anchor"></a>
+					<h3>detail</h3>
+					<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <a href="idetail.html" class="tsd-signature-type">IDetail</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/44f18a8/src/IApplicationUse.ts#L7">IApplicationUse.ts:7</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The meta data associated with the application.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/44f18a8/src/IApplicationUse.ts#L23">IApplicationUse.ts:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The status of an application in this usage context.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="xvalue" class="tsd-anchor"></a>
+					<h3>x<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">x<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/44f18a8/src/IApplicationUse.ts#L9">IApplicationUse.ts:9</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The value of the chosen x axis.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="yvalue" class="tsd-anchor"></a>
+					<h3>y<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">y<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/44f18a8/src/IApplicationUse.ts#L11">IApplicationUse.ts:11</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The value of the chosen y axis.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -244,44 +205,53 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="axes.html" class="tsd-kind-icon">Axes</a>
+					<li class=" tsd-kind-interface">
+						<a href="iapplication.html" class="tsd-kind-icon">IApplication</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="axis.html" class="tsd-kind-icon">Axis</a>
+					<li class="current tsd-kind-interface">
+						<a href="iapplicationuse.html" class="tsd-kind-icon">IApplication<wbr>Use</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="axis.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iapplicationuse.html#commissioned" class="tsd-kind-icon">commissioned</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="axis.html#name" class="tsd-kind-icon">name</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iapplicationuse.html#decommissioned" class="tsd-kind-icon">decommissioned</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="axis.html#values" class="tsd-kind-icon">values</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iapplicationuse.html#detail" class="tsd-kind-icon">detail</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="axis.html#derive" class="tsd-kind-icon">derive</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iapplicationuse.html#status" class="tsd-kind-icon">status</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iapplicationuse.html#xvalue" class="tsd-kind-icon">x<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iapplicationuse.html#yvalue" class="tsd-kind-icon">y<wbr>Value</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iapplication.html" class="tsd-kind-icon">IApplication</a>
+						<a href="iaxes.html" class="tsd-kind-icon">IAxes</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iaxis.html" class="tsd-kind-icon">IAxis</a>
+						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/idetail.html" class="tsd-kind-icon">IDetail</a>
+						<a href="icell.html" class="tsd-kind-icon">ICell</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iuse.html" class="tsd-kind-icon">IUse</a>
+						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="iuse.html" class="tsd-kind-icon">IUse</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../index.html#filterbydate" class="tsd-kind-icon">filter<wbr>ByDate</a>
+						<a href="../index.html#deriveaxis" class="tsd-kind-icon">derive<wbr>Axis</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#gethtml" class="tsd-kind-icon">getHTML</a>
@@ -291,6 +261,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#gettable" class="tsd-kind-icon">get<wbr>Table</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#preparedata" class="tsd-kind-icon">prepare<wbr>Data</a>
 					</li>
 				</ul>
 			</nav>

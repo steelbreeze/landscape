@@ -2,7 +2,6 @@ import { IApplication } from './IApplication';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
 import { flatten } from './flatten';
-import { permutations } from './permutations';
 import { getAdjacency } from './getAdjacency';
 
 /**
@@ -54,4 +53,24 @@ export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: I
  */
 export function flexOrder(axis: IAxis): Array<Array<string>> {
 	return permutations(axis.values);
+}
+
+/**
+ * Returns all possible orderings of an array
+ * @hidden
+ */
+function permutations<T>(source: Array<T>): Array<Array<T>> {
+	const result: Array<Array<T>> = [];
+
+	if (source.length === 1) {
+		result.push(source);
+	} else {
+		source.forEach((exclude, excludeIndex) => {
+			for (const excluded of permutations(source.filter((element, elementIndex) => elementIndex !== excludeIndex))) {
+				result.push([exclude, ...excluded]);
+			}
+		});
+	}
+
+	return result;
 }

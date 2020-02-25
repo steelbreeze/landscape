@@ -1,5 +1,6 @@
 import { IAxis } from './IAxis';
-import { Cell } from './Cell';
+import { IDetail } from './IDetail';
+import { ICell } from './ICell';
 import { IApplicationUse } from './IApplicationUse';
 
 /**
@@ -8,17 +9,17 @@ import { IApplicationUse } from './IApplicationUse';
  * @param x The x axis to use.
  * @param y The y axis to use.
  */
-export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<Cell>> {
+export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<ICell>> {
 	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-	const xAxis = [[new Cell({id: "", name: ""}, "xAxis")], ...x.values.map(xValue => [new Cell({id: "", name: xValue}, "xAxis")])];
-	const interim = [xAxis, ...y.values.map(yValue => [[new Cell({id:"", name: yValue}, "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => new Cell(app.detail, app.status)))])];
+	const xAxis: Array<Array<ICell>> = [[makeCell({ id: "", name: "" }, "xAxis")], ...x.values.map(xValue => [makeCell({ id: "", name: xValue }, "xAxis")])];
+	const interim = [xAxis, ...y.values.map(yValue => [[makeCell({ id: "", name: yValue }, "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => makeCell(app.detail, app.status)))])];
 
 	// create blank apps and split rows as necessary
 	for (let iY = interim.length; iY--;) {
 		// where there are no apps in a cells insert an empty cell object
 		for (let iX = interim[iY].length; iX--;) {
 			if (interim[iY][iX].length === 0) {
-				interim[iY][iX].push(new Cell({id: "", name: ""}, "empty"));
+				interim[iY][iX].push(makeCell({ id: "", name: "" }, "empty"));
 			}
 		}
 
@@ -27,7 +28,7 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 		const split = counts.reduce(leastCommonMultiple, 1);
 
 		if (split > 1) {
-			interim.splice(iY, 1, ...range(split).map(y => counts.map((c, x) => interim[iY][x].length === 0 ? [] : [interim[iY][x][Math.floor(y / split * c)].clone(split)])));
+			interim.splice(iY, 1, ...range(split).map(y => counts.map((c, x) => interim[iY][x].length === 0 ? [] : [cloneCell(interim[iY][x][Math.floor(y / split * c)], split)])));
 		}
 	}
 
@@ -45,8 +46,8 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 			if (!merged && iY) {
 				const above = result[iY - 1][iX];
 
-				if (above.detail.name === app.detail.name && above.style === app.style && above.colspan === app.colspan) {
-					above.rowspan += app.rowspan;
+				if (above.detail.name === app.detail.name && above.style === app.style && above.cols === app.cols) {
+					above.rows += app.rows;
 					above.height += app.height;
 					result[iY].splice(iX, 1);
 					merged = true;
@@ -57,8 +58,8 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 			if (!merged && iX) {
 				const left = result[iY][iX - 1];
 
-				if (left.detail.name === app.detail.name && left.style === app.style && left.rowspan === app.rowspan) {
-					left.colspan += app.colspan;
+				if (left.detail.name === app.detail.name && left.style === app.style && left.rows === app.rows) {
+					left.cols += app.cols;
 					result[iY].splice(iX, 1);
 					merged = true;
 				}
@@ -69,6 +70,21 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 	return result;
 }
 
+/**
+ * Creates a cell for the output table
+ * @hidden
+ */
+function makeCell(detail: IDetail, style: string, colspan: number = 1, rowspan: number = 1, split: number = 1): ICell {
+	return { detail, style, cols: colspan, rows: rowspan, height: 1 / split };
+}
+
+/**
+ * Clones a cell for the output table
+ * @hidden
+ */
+function cloneCell(cell: ICell, split: number): ICell {
+	return makeCell(cell.detail, cell.style, cell.cols, cell.rows, split);
+}
 /**
  * Returns an array of numbers from 0 to n -1
  * @param n 
