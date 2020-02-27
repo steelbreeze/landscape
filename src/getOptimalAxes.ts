@@ -1,4 +1,5 @@
 import { IApplication } from './IApplication';
+import { IUse } from './IUse';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
 import { flatten } from './flatten';
@@ -14,7 +15,7 @@ import { getAdjacency } from './getAdjacency';
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplication<IUse>>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
 	// denormalise the underlying application data and resolve the axes
 	const denormalised = flatten(applications, x.name, y.name);
 

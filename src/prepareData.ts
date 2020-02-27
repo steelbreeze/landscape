@@ -1,5 +1,5 @@
 import { IApplication } from './IApplication';
-import { IAxis } from './IAxis';
+import { IUse } from './IUse';
 import { IApplicationUse } from './IApplicationUse';
 /**
  * Denormalises the application data for a given x and y axis.
@@ -7,7 +7,7 @@ import { IApplicationUse } from './IApplicationUse';
  * @param x The x axis dimension to use.
  * @param y The y axis dimension to use.
  */
-export function prepareData(applications: Array<IApplication>, x: string, y: string): Array<IApplicationUse> {
+export function prepareData(applications: Array<IApplication<IUse>>, x: string, y: string): Array<IApplicationUse> {
 	const denormalised: Array<IApplicationUse> = [];
 	for (const app of applications) {
 		for (const use of app.usage) {
