@@ -34,35 +34,23 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 
 	// create the final result structure
 	const result = interim.map(row => row.map(col => col[0]));
+	const mY = result.length, mX = result[0].length;
+	let app, adjacent: ICell;
 
 	// merge adjacent cells
-	const mY = result.length, mX = result[0].length;
 	for (let iY = mY; iY--;) {
-		for (let iX = mX; iX--;) {
-			const app = result[iY][iX];
-			let merged = false;
-
+		for (let iX = mX; iX--, app = result[iY][iX];) {
 			// try merge with cell above first
-			if (!merged && iY) {
-				const above = result[iY - 1][iX];
-
-				if (above.detail.name === app.detail.name && above.style === app.style && above.cols === app.cols) {
-					above.rows += app.rows;
-					above.height += app.height;
-					result[iY].splice(iX, 1);
-					merged = true;
-				}
+			if (iY && (adjacent = result[iY - 1][iX]) && (adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.cols === app.cols)) {
+				adjacent.rows += app.rows;
+				adjacent.height += app.height;
+				result[iY].splice(iX, 1);
 			}
 
 			// otherwise try cell to left
-			if (!merged && iX) {
-				const left = result[iY][iX - 1];
-
-				if (left.detail.name === app.detail.name && left.style === app.style && left.rows === app.rows) {
-					left.cols += app.cols;
-					result[iY].splice(iX, 1);
-					merged = true;
-				}
+			else if (iX && (adjacent = result[iY][iX - 1]) && (adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.rows === app.rows)) {
+				adjacent.cols += app.cols;
+				result[iY].splice(iX, 1);
 			}
 		}
 	}
