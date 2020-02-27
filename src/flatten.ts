@@ -1,6 +1,5 @@
 import { IApplication } from './IApplication';
 import { IDetail } from './IDetail';
-import { IUse } from './IUse';
 /**
  * A denormalised representation of application data.
  * @hidden
@@ -18,7 +17,7 @@ export interface FlatApp {
  * @param y 
  * @hidden
  */
-export function flatten(applications: Array<IApplication<IUse>>, x: string, y: string): Array<FlatApp> {
+export function flatten(applications: Array<IApplication>, x: string, y: string): Array<FlatApp> {
 	// denormalise the underlying application data and resolve the axes
 	let interim: Array<FlatApp> = [];
 

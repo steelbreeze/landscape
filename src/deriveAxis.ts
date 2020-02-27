@@ -1,8 +1,7 @@
 import { IAxis } from './IAxis';
 import { IApplication } from './IApplication';
-import { IUse } from './IUse';
 
-export function deriveAxis(applications: Array<IApplication<IUse>>, name: string): IAxis {
+export function deriveAxis(applications: Array<IApplication>, name: string): IAxis {
 	const values: Array<string> = [];
 
 	for (const application of applications) {
