@@ -10,18 +10,17 @@ import { IApplicationUse } from './IApplicationUse';
  * @param y The y axis to use.
  */
 export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<ICell>> {
+	// TODO: refactor the creation of result into a single iteration of the data
+
 	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
 	const xAxis: Array<Array<ICell>> = [[makeCell({ id: "", name: "" }, "xAxis")], ...x.values.map(xValue => [makeCell({ id: "", name: xValue }, "xAxis")])];
 	const interim = [xAxis, ...y.values.map(yValue => [[makeCell({ id: "", name: yValue }, "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => makeCell(app.detail, app.status)))])];
 
 	// create blank apps and split rows as necessary
+	// TODO: can we add this to the creation of interim above?
 	for (let iY = interim.length; iY--;) {
 		// where there are no apps in a cells insert an empty cell object
-		for (let iX = interim[iY].length; iX--;) {
-			if (interim[iY][iX].length === 0) {
-				interim[iY][iX].push(makeCell({ id: "", name: "" }, "empty"));
-			}
-		}
+		interim[iY] = interim[iY].map(cell => cell.length === 0 ? [makeCell({ id: "", name: "" }, "empty")] : cell);
 
 		// where there are multiple apps in a cell, expand the rows
 		const counts = interim[iY].map(cell => cell.length || 1);
@@ -34,21 +33,26 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 
 	// create the final result structure
 	const result = interim.map(row => row.map(col => col[0]));
+
 	const mY = result.length, mX = result[0].length;
 	let app, adjacent: ICell;
 
 	// merge adjacent cells
 	for (let iY = mY; iY--;) {
-		for (let iX = mX; iX--, app = result[iY][iX];) {
+		for (let iX = mX; iX--;) {
+			app = result[iY][iX];
+
 			// try merge with cell above first
-			if (iY && (adjacent = result[iY - 1][iX]) && (adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.cols === app.cols)) {
+			if (iY && (adjacent = result[iY - 1][iX]) &&
+				(adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.cols === app.cols)) {
 				adjacent.rows += app.rows;
 				adjacent.height += app.height;
 				result[iY].splice(iX, 1);
 			}
 
 			// otherwise try cell to left
-			else if (iX && (adjacent = result[iY][iX - 1]) && (adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.rows === app.rows)) {
+			else if (iX && (adjacent = result[iY][iX - 1]) &&
+				(adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.rows === app.rows)) {
 				adjacent.cols += app.cols;
 				result[iY].splice(iX, 1);
 			}
