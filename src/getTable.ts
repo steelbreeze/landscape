@@ -34,10 +34,11 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 	// create the final result structure
 	const result = interim.map(row => row.map(col => col[0]));
 
+	// merge adjacent cells
 	const mY = result.length, mX = result[0].length;
 	let app, adjacent: ICell;
 
-	// merge adjacent cells
+	// iterate through the cells, from the bottom right to top left
 	for (let iY = mY; iY--;) {
 		for (let iX = mX; iX--;) {
 			app = result[iY][iX];

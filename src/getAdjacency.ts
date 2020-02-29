@@ -1,4 +1,4 @@
-import { FlatApp } from "./flatten";
+import { FlatApp } from "./FlatApp";
 
 /**
  * Gets an adjacencey count for applications in a given scenario (sequence of axes values)

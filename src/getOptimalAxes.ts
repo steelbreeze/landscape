@@ -1,7 +1,7 @@
 import { IApplication } from './IApplication';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
-import { flatten } from './flatten';
+import { FlatApp } from './FlatApp';
 import { getAdjacency } from './getAdjacency';
 
 /**
@@ -73,4 +73,33 @@ function permutations<T>(source: Array<T>): Array<Array<T>> {
 	}
 
 	return result;
+}
+
+/**
+ * Denormalise the application data into an intermedia
+ * @param applications 
+ * @param x 
+ * @param y 
+ * @hidden
+ */
+function flatten(applications: Array<IApplication>, x: string, y: string): Array<FlatApp> {
+	// denormalise the underlying application data and resolve the axes
+	let interim: Array<FlatApp> = [];
+
+	for (const app of applications) {
+		for (const use of app.usage) {
+			let interimApp = interim.filter(a => a.detail.id === app.detail.id && a.status === use.status)[0];
+
+			if (!interimApp) {
+				interimApp = { detail: app.detail, status: use.status, usage: [] };
+
+				interim.push(interimApp);
+			}
+
+			interimApp.usage.push({ x: use.dimensions[x], y: use.dimensions[y] });
+		}
+	}
+
+	// delete single use app/status combinations as they cannot contribute to affinity score
+	return interim.filter(app => app.usage.length > 1);
 }

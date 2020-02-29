@@ -14,6 +14,6 @@ export function prepareData(applications: Array<IApplication>, x: string, y: str
 			denormalised.push({ detail: app.detail, xValue: use.dimensions[x], yValue: use.dimensions[y], commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 		}
 	}
-	
+
 	return denormalised;
 }
