@@ -10,8 +10,6 @@ import { IApplicationUse } from './IApplicationUse';
  * @param y The y axis to use.
  */
 export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<ICell>> {
-	const empty = Cell({ id: "", name: "" }, "empty");
-
 	// create the x-axis heading
 	let result: Array<Array<ICell>> = [[Cell({ id: "", name: "" }, "xAxis"), ...x.values.map(xValue => Cell({ id: "", name: xValue }, "xAxis"))]];
 
@@ -19,17 +17,18 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
 	for (const yValue of y.values) {
 		// get the applications for each cells in the row; default if none found
 		const yApps = flattened.filter(app => app.yValue === yValue);
-		const row = x.values.map(xValue => { const cells = yApps.filter(app => app.xValue === xValue).map(app => Cell(app.detail, app.status)); return cells.length ? cells : [empty]; });
-
-		// TODO: keep row as just apps and convert when adding rows?
+		const row = x.values.map(xValue => yApps.filter(app => app.xValue === xValue));
 
 		// determine the number of rows each row need to be expanded to based on the application count per cell
-		const cellCounts = row.map(cell => cell.length);
+		const cellCounts = row.map(cell => cell.length || 1);
 		const split = cellCounts.reduce(leastCommonMultiple, 1);
 
 		// expand the rows as needed
 		for (let y = 0; y < split; y++) {
-			result.push([Cell({ id: "", name: yValue }, "yAxis"), ...row.map((cell, x) => { const app = cell[Math.floor(y / split * cellCounts[x])]; return Cell(app.detail, app.style, split);})]);
+			result.push([Cell({ id: "", name: yValue }, "yAxis"), ...row.map((apps, x) => {
+				const app = apps[Math.floor(y / split * cellCounts[x])];
+				return app ? Cell(app.detail, app.status, split) : Cell({ id: "", name: "" }, "empty", split);
+			})]);
 		}
 	}
 
