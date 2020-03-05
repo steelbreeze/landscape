@@ -10,29 +10,28 @@ import { IApplicationUse } from './IApplicationUse';
  * @param y The y axis to use.
  */
 export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<ICell>> {
-	// TODO: refactor the creation of result into a single iteration of the data
+	const empty = Cell({ id: "", name: "" }, "empty");
 
-	// build the resultant table, a 3D array af rows (y), columns (x), and 0..n apps, including the x and y axis as row 0 and column 0 respectively
-	const xAxis: Array<Array<ICell>> = [[makeCell({ id: "", name: "" }, "xAxis")], ...x.values.map(xValue => [makeCell({ id: "", name: xValue }, "xAxis")])];
-	const interim = [xAxis, ...y.values.map(yValue => [[makeCell({ id: "", name: yValue }, "yAxis")], ...x.values.map(xValue => flattened.filter(app => app.xValue === xValue && app.yValue === yValue).map(app => makeCell(app.detail, app.status)))])];
+	// create the x-axis heading
+	let result: Array<Array<ICell>> = [[Cell({ id: "", name: "" }, "xAxis"), ...x.values.map(xValue => Cell({ id: "", name: xValue }, "xAxis"))]];
 
-	// create blank apps and split rows as necessary
-	// TODO: can we add this to the creation of interim above?
-	for (let iY = interim.length; iY--;) {
-		// where there are no apps in a cells insert an empty cell object
-		interim[iY] = interim[iY].map(cell => cell.length === 0 ? [makeCell({ id: "", name: "" }, "empty")] : cell);
+	// create the rows
+	for (const yValue of y.values) {
+		// get the applications for each cells in the row; default if none found
+		const yApps = flattened.filter(app => app.yValue === yValue);
+		const row = x.values.map(xValue => { const cells = yApps.filter(app => app.xValue === xValue).map(app => Cell(app.detail, app.status)); return cells.length ? cells : [empty]; });
 
-		// where there are multiple apps in a cell, expand the rows
-		const counts = interim[iY].map(cell => cell.length || 1);
-		const split = counts.reduce(leastCommonMultiple, 1);
+		// TODO: keep row as just apps and convert when adding rows?
 
-		if (split > 1) {
-			interim.splice(iY, 1, ...range(split).map(y => counts.map((c, x) => interim[iY][x].length === 0 ? [] : [cloneCell(interim[iY][x][Math.floor(y / split * c)], split)])));
+		// determine the number of rows each row need to be expanded to based on the application count per cell
+		const cellCounts = row.map(cell => cell.length);
+		const split = cellCounts.reduce(leastCommonMultiple, 1);
+
+		// expand the rows as needed
+		for (let y = 0; y < split; y++) {
+			result.push([Cell({ id: "", name: yValue }, "yAxis"), ...row.map((cell, x) => { const app = cell[Math.floor(y / split * cellCounts[x])]; return Cell(app.detail, app.style, split);})]);
 		}
 	}
-
-	// create the final result structure
-	const result = interim.map(row => row.map(col => col[0]));
 
 	// merge adjacent cells
 	const mY = result.length, mX = result[0].length;
@@ -67,30 +66,8 @@ export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis):
  * Creates a cell for the output table
  * @hidden
  */
-function makeCell(detail: IDetail, style: string, colspan: number = 1, rowspan: number = 1, split: number = 1): ICell {
-	return { detail, style, cols: colspan, rows: rowspan, height: 1 / split };
-}
-
-/**
- * Clones a cell for the output table
- * @hidden
- */
-function cloneCell(cell: ICell, split: number): ICell {
-	return makeCell(cell.detail, cell.style, cell.cols, cell.rows, split);
-}
-/**
- * Returns an array of numbers from 0 to n -1
- * @param n 
- * @hidden
- */
-function range(n: number): Array<number> {
-	const result: Array<number> = [];
-
-	for (let i = 0; i < n; ++i) {
-		result.push(i);
-	}
-
-	return result;
+function Cell(detail: IDetail, style: string, split: number = 1): ICell {
+	return { detail, style, cols: 1, rows: 1, height: 1 / split };
 }
 
 /**
