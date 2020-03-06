@@ -5,26 +5,26 @@ import { IApplicationUse } from './IApplicationUse';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
- * @param flattened The flattened application data having previously been prepared by a call to [prepareData].
+ * @param applications The structured application data having previously been prepared by a call to [prepareData].
  * @param x The x axis to use.
  * @param y The y axis to use.
  */
-export function getTable(flattened: Array<Array<Array<IApplicationUse>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
+export function getTable(applications: Array<Array<Array<IApplicationUse>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
 	// create the x-axis heading
 	const result = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
 
 	// create the rows in the result table
-	flattened.forEach((row, i) => {
+	applications.forEach((row, rowIndex) => {
 		// determine the number of rows each y axis value need to be expanded to
-		const count: Array<number> = row.map(cell => cell.length || 1);
-		const split: number = count.reduce(leastCommonMultiple, 1);
+		const appsPerCell = row.map(apps => apps.length || 1);
+		const rowSplit = appsPerCell.reduce(leastCommonMultiple, 1);
 
 		// add the rows to the resultant table
-		for (let si = 0; si < split; si++) {
+		for (let rowSplitIndex = 0; rowSplitIndex < rowSplit; rowSplitIndex++) {
 			// add the y-axis row heading and its applications
-			result.push([cell(heading(y.values[i]), "yAxis"), ...row.map((apps, x) => {
-				const app = apps[Math.floor(si * count[x] / split)];
-				return app ? cell(app.detail, app.status, split) : cell(heading(), "empty", split);
+			result.push([cell(heading(y.values[rowIndex]), "yAxis"), ...row.map((apps, columnIndex) => {
+				const app = apps[Math.floor(rowSplitIndex * appsPerCell[columnIndex] / rowSplit)];
+				return app ? cell(app.detail, app.status, rowSplit) : cell(heading(), "empty", rowSplit);
 			})]);
 		}
 	});
