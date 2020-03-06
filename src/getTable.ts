@@ -10,28 +10,27 @@ import { IApplicationUse } from './IApplicationUse';
  * @param y The y axis to use.
  */
 export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<ICell>> {
+	// create a 2D table of y and x axis containing an array of all applications within each cell
+	const tab = y.values.map(yValue => x.values.map(xValue => flattened.filter(app => app.yValue === yValue).filter(app => app.xValue === xValue)));
+
 	// create the x-axis heading
-	let result: Array<Array<ICell>> = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
+	const result = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
 
-	// create the rows
-	for (const yValue of y.values) {
-		// get the applications for each cells in the row; results in a jagged array
-		const yApps: Array<IApplicationUse> = flattened.filter(app => app.yValue === yValue);
-		const row: Array<Array<IApplicationUse>> = x.values.map(xValue => yApps.filter(app => app.xValue === xValue));
-
+	// create the rows in the result table
+	tab.forEach((row, i) => {
 		// determine the number of rows each y axis value need to be expanded to
 		const count: Array<number> = row.map(cell => cell.length || 1);
 		const split: number = count.reduce(leastCommonMultiple, 1);
 
 		// add the rows to the resultant table
-		for (let y = 0; y < split; y++) {
+		for (let si = 0; si < split; si++) {
 			// add the y-axis row heading and its applications
-			result.push([cell(heading(yValue), "yAxis"), ...row.map((apps, x) => {
-				const app = apps[Math.floor(y * count[x] / split)];
+			result.push([cell(heading(y.values[i]), "yAxis"), ...row.map((apps, x) => {
+				const app = apps[Math.floor(si * count[x] / split)];
 				return app ? cell(app.detail, app.status, split) : cell(heading(), "empty", split);
 			})]);
 		}
-	}
+	});
 
 	// merge adjacent cells
 	const mY = result.length, mX = result[0].length;
