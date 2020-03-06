@@ -9,15 +9,12 @@ import { IApplicationUse } from './IApplicationUse';
  * @param x The x axis to use.
  * @param y The y axis to use.
  */
-export function getTable(flattened: Array<IApplicationUse>, x: IAxis, y: IAxis): Array<Array<ICell>> {
-	// create a 2D table of y and x axis containing an array of all applications within each cell
-	const tab = y.values.map(yValue => x.values.map(xValue => flattened.filter(app => app.yValue === yValue).filter(app => app.xValue === xValue)));
-
+export function getTable(flattened: Array<Array<Array<IApplicationUse>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
 	// create the x-axis heading
 	const result = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
 
 	// create the rows in the result table
-	tab.forEach((row, i) => {
+	flattened.forEach((row, i) => {
 		// determine the number of rows each y axis value need to be expanded to
 		const count: Array<number> = row.map(cell => cell.length || 1);
 		const split: number = count.reduce(leastCommonMultiple, 1);

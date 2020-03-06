@@ -158,7 +158,7 @@
 
 				// select the preferred scenario
 				if (scenario) {
-					flattened = landscape.prepareData(data, scenario.x.name, scenario.y.name);
+					flattened = landscape.prepareData(data, scenario.x, scenario.y);
 
 					displayAtDate();
 				}
@@ -204,8 +204,7 @@
 			}
 
 			function filterByDate(applications, date) {
-				return applications.filter(app => between(date, app.commissioned, app.decommissioned) );
-//				return applications.map(function (app) { return { detail: app.detail, usage: app.usage.filter(function (use) { return between(date, use.commissioned, use.decommissioned); }) }; }).filter(function (app) { return app.usage.length > 0; });
+				return applications.map(y => y.map(x => x.filter(app => between(date, app.commissioned, app.decommissioned))));
 			}
 
 			// helper function to add days to a date

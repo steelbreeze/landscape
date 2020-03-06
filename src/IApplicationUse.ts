@@ -5,8 +5,10 @@ import { IDetail } from './IDetail';
 export interface IApplicationUse {
 	/** The meta data associated with the application. */
 	detail: IDetail;
+
 	/** The value of the chosen x axis. */
 	xValue: string;
+
 	/** The value of the chosen y axis. */
 	yValue: string;
     /**
