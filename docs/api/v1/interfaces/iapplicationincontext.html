@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IApplicationUse | </title>
+	<title>IApplicationInContext | </title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="iapplicationuse.html">IApplicationUse</a>
+					<a href="iapplicationincontext.html">IApplicationInContext</a>
 				</li>
 			</ul>
-			<h1>Interface IApplicationUse</h1>
+			<h1>Interface IApplicationInContext</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Data structure of denormalised application and usage data once x and y axes have been selected.</p>
+						<p>Data structure of an application within an x/y dimensional context.</p>
 					</div>
 				</div>
 			</section>
@@ -77,7 +77,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IApplicationUse</span>
+						<span class="target">IApplicationInContext</span>
 					</li>
 				</ul>
 			</section>
@@ -88,12 +88,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#commissioned" class="tsd-kind-icon">commissioned</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#decommissioned" class="tsd-kind-icon">decommissioned</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#detail" class="tsd-kind-icon">detail</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#status" class="tsd-kind-icon">status</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#xvalue" class="tsd-kind-icon">x<wbr>Value</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationuse.html#yvalue" class="tsd-kind-icon">y<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#commissioned" class="tsd-kind-icon">commissioned</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#decommissioned" class="tsd-kind-icon">decommissioned</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#detail" class="tsd-kind-icon">detail</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#status" class="tsd-kind-icon">status</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,7 +105,7 @@
 					<div class="tsd-signature tsd-kind-icon">commissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/5e78cf0/src/IApplicationUse.ts#L18">IApplicationUse.ts:18</a></li>
+							<li>Defined in IApplicationInContext.ts:14</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -123,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">decommissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/5e78cf0/src/IApplicationUse.ts#L23">IApplicationUse.ts:23</a></li>
+							<li>Defined in IApplicationInContext.ts:19</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -139,7 +137,7 @@
 					<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <a href="idetail.html" class="tsd-signature-type">IDetail</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/5e78cf0/src/IApplicationUse.ts#L7">IApplicationUse.ts:7</a></li>
+							<li>Defined in IApplicationInContext.ts:8</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,42 +152,12 @@
 					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/5e78cf0/src/IApplicationUse.ts#L26">IApplicationUse.ts:26</a></li>
+							<li>Defined in IApplicationInContext.ts:22</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The status of an application in this usage context.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="xvalue" class="tsd-anchor"></a>
-					<h3>x<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">x<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/5e78cf0/src/IApplicationUse.ts#L10">IApplicationUse.ts:10</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The value of the chosen x axis.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="yvalue" class="tsd-anchor"></a>
-					<h3>y<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">y<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/5e78cf0/src/IApplicationUse.ts#L13">IApplicationUse.ts:13</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The value of the chosen y axis.</p>
 						</div>
 					</div>
 				</section>
@@ -211,25 +179,19 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="iapplicationuse.html" class="tsd-kind-icon">IApplication<wbr>Use</a>
+						<a href="iapplicationincontext.html" class="tsd-kind-icon">IApplication<wbr>InContext</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationuse.html#commissioned" class="tsd-kind-icon">commissioned</a>
+								<a href="iapplicationincontext.html#commissioned" class="tsd-kind-icon">commissioned</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationuse.html#decommissioned" class="tsd-kind-icon">decommissioned</a>
+								<a href="iapplicationincontext.html#decommissioned" class="tsd-kind-icon">decommissioned</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationuse.html#detail" class="tsd-kind-icon">detail</a>
+								<a href="iapplicationincontext.html#detail" class="tsd-kind-icon">detail</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationuse.html#status" class="tsd-kind-icon">status</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationuse.html#xvalue" class="tsd-kind-icon">x<wbr>Value</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationuse.html#yvalue" class="tsd-kind-icon">y<wbr>Value</a>
+								<a href="iapplicationincontext.html#status" class="tsd-kind-icon">status</a>
 							</li>
 						</ul>
 					</li>
