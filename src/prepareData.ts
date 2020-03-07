@@ -10,23 +10,15 @@ import { IAxis } from './IAxis';
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
 export function prepareData(applications: Array<IApplication>, x: IAxis, y: IAxis): Array<Array<Array<IApplicationInContext>>> {
-	return y.values.map((yValue) => {
-		const appsInRow = applications.filter(app => app.usage.some(use => use.dimensions[y.name] === yValue));
+	// create the destination table structure
+	const result: Array<Array<Array<IApplicationInContext>>> = y.values.map(() => x.values.map(()=>[]));
 
-		return x.values.map((xValue) => {
-			const appsInCell = appsInRow.filter(app => app.usage.some(use => use.dimensions[x.name] === xValue));
-			const cell: Array<IApplicationInContext> = [];
+	// position each application within the correct table cell
+	for(const app of applications) {
+		for(const use of app.usage) {
+			result[y.values.indexOf(use.dimensions[y.name])][x.values.indexOf(use.dimensions[x.name])].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
+		}
+	}
 
-			for (const app of appsInCell) {
-				for (const use of app.usage) {
-					if (use.dimensions[y.name] === yValue && use.dimensions[x.name] === xValue) {
-						cell.push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
-					}
-				}
-			}
-
-			return cell;
-		});
-	});
+	return result;
 }
-
