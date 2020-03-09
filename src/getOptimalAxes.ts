@@ -1,4 +1,4 @@
-import { IApplication } from './IApplication';
+import { IApplicationDetail, IApplicationUsage } from './IApplication';
 import { IDetail } from './IDetail';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
@@ -23,7 +23,7 @@ interface FlatApp {
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplicationDetail & IApplicationUsage>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
 	// denormalise the underlying application data and resolve the axes
 	const denormalised = flatten(applications, x.name, y.name);
 
@@ -91,7 +91,7 @@ function permutations<T>(source: Array<T>): Array<Array<T>> {
  * @param y 
  * @hidden
  */
-function flatten(applications: Array<IApplication>, x: string, y: string): Array<FlatApp> {
+function flatten(applications: Array<IApplicationDetail & IApplicationUsage>, x: string, y: string): Array<FlatApp> {
 	// denormalise the underlying application data and resolve the axes
 	let interim: Array<FlatApp> = [];
 

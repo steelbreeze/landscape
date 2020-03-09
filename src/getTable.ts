@@ -1,7 +1,7 @@
 import { IAxis } from './IAxis';
 import { IDetail } from './IDetail';
 import { ICell } from './ICell';
-import { IApplicationView } from './IApplicationView';
+import { IApplicationDetail, IApplicationUsageStatus } from './IApplication';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
@@ -9,7 +9,7 @@ import { IApplicationView } from './IApplicationView';
  * @param x The x axis to use.
  * @param y The y axis to use.
  */
-export function getTable(applications: Array<Array<Array<IApplicationView>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
+export function getTable(applications: Array<Array<Array<IApplicationDetail & IApplicationUsageStatus>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
 	// create the x-axis heading
 	const result = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
 
