@@ -1,5 +1,5 @@
 import { IAxis } from './IAxis';
-import { IApplicationUsage } from './IApplication';
+import { IUsage } from './IApplication';
 
 /**
  * Extracts the list of unique values for a dimension from underlying application data.
@@ -7,7 +7,7 @@ import { IApplicationUsage } from './IApplication';
  * @param dimension The name of the dimension.
  * @returns Returns an [IAxis] structure for hte 
  */
-export function deriveAxis(applications: Array<IApplicationUsage>, dimension: string): IAxis {
+export function deriveAxis(applications: Array<IUsage>, dimension: string): IAxis {
 	const values: Array<string> = [];
 
 	for (const application of applications) {

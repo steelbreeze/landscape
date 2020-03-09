@@ -1,14 +1,14 @@
 /** The core details of an application. */
 export interface IApplication {
 	/** The meta data associated with the application. */
-	detail: IApplicationDetail;
+	detail: IDetail;
 }
 
 /**
  * The meta data associated with an application excluding its usage context.
  * Note: this is designed to be enriched and no type erasure will occur within the landscape library.
  */
-export interface IApplicationDetail {
+export interface IDetail {
 	/** An identifier for the application. */
 	id: string | number;
 
@@ -16,9 +16,9 @@ export interface IApplicationDetail {
 	name: string;
 }
 
-export interface IApplicationUsage {
+export interface IUsage {
 	/** The data showing the application usage context over time. */
-	usage: Array<IDimensions & IApplicationUsageDetail>;
+	usage: Array<IDimensions & IUseDetail>;
 }
 
 /** A usage context of an application and its status. */
@@ -27,7 +27,7 @@ export interface IDimensions {
 	dimensions: { [key: string]: string };
 }
 
-export interface IApplicationUsageDetail {
+export interface IUseDetail {
 	/**
 	 * The date this this particular application usage was commissioned.
 	 * This is an optional field; undefined means that the origional commissioning date is unknown and therfore the beginning of time.
