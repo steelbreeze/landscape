@@ -1,9 +1,9 @@
-import { IApplicationDetail } from './IApplication';
+import { IApplication } from './IApplication';
 
 /**
  * A single cell in the final table structure, ready for transforming into HTML via the getHTML call or other method (e.g. D3)
  */
-export interface ICell extends IApplicationDetail {
+export interface ICell extends IApplication {
 	/** The style to use when rendering the table. */
 	style: string;
 

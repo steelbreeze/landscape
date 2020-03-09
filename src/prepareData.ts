@@ -1,4 +1,4 @@
-import { IApplicationDetail, IApplicationUsage, IApplicationUsageStatus } from './IApplication';
+import { IApplication, IApplicationUsage, IApplicationUsageDetail } from './IApplication';
 import { IAxis } from './IAxis';
 
 /**
@@ -8,9 +8,9 @@ import { IAxis } from './IAxis';
  * @param y The chosen y axis.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplicationDetail & IApplicationUsage>, x: IAxis, y: IAxis): Array<Array<Array<IApplicationDetail & IApplicationUsageStatus>>> {
+export function prepareData(applications: Array<IApplication & IApplicationUsage>, x: IAxis, y: IAxis): Array<Array<Array<IApplication & IApplicationUsageDetail>>> {
 	// create the empty destination table structure
-	const result: Array<Array<Array<IApplicationDetail & IApplicationUsageStatus>>> = y.values.map(() => x.values.map(() => []));
+	const result: Array<Array<Array<IApplication & IApplicationUsageDetail>>> = y.values.map(() => x.values.map(() => []));
 
 	// position each application within the correct table cell
 	for (const app of applications) {

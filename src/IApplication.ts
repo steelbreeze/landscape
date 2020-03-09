@@ -1,16 +1,24 @@
-// This file contains a set of interface fragments that can be composed into normalised or denormalised data structures for application data.
-// This way, regadless of the way the information is structured, each field will only have a single definition
-import { IDetail } from './IDetail';
-
-/** An application and all the contexts in which it is used. */
-export interface IApplicationDetail {
+/** The core details of an application. */
+export interface IApplication {
 	/** The meta data associated with the application. */
-	detail: IDetail;
+	detail: IApplicationDetail;
+}
+
+/**
+ * The meta data associated with an application excluding its usage context.
+ * Note: this is designed to be enriched and no type erasure will occur within the landscape library.
+ */
+export interface IApplicationDetail {
+	/** An identifier for the application. */
+	id: string | number;
+
+	/** The name of the application. */
+	name: string;
 }
 
 export interface IApplicationUsage {
 	/** The data showing the application usage context over time. */
-	usage: Array<IDimensions & IApplicationUsageStatus>;
+	usage: Array<IDimensions & IApplicationUsageDetail>;
 }
 
 /** A usage context of an application and its status. */
@@ -19,7 +27,7 @@ export interface IDimensions {
 	dimensions: { [key: string]: string };
 }
 
-export interface IApplicationUsageStatus {
+export interface IApplicationUsageDetail {
 	/**
 	 * The date this this particular application usage was commissioned.
 	 * This is an optional field; undefined means that the origional commissioning date is unknown and therfore the beginning of time.

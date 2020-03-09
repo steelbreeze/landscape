@@ -1,7 +1,6 @@
 import { IAxis } from './IAxis';
-import { IDetail } from './IDetail';
 import { ICell } from './ICell';
-import { IApplicationDetail, IApplicationUsageStatus } from './IApplication';
+import { IApplication, IApplicationDetail, IApplicationUsageDetail } from './IApplication';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
@@ -9,7 +8,7 @@ import { IApplicationDetail, IApplicationUsageStatus } from './IApplication';
  * @param x The x axis to use.
  * @param y The y axis to use.
  */
-export function getTable(applications: Array<Array<Array<IApplicationDetail & IApplicationUsageStatus>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
+export function getTable(applications: Array<Array<Array<IApplication & IApplicationUsageDetail>>>, x: IAxis, y: IAxis): Array<Array<ICell>> {
 	// create the x-axis heading
 	const result = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
 
@@ -66,7 +65,7 @@ export function getTable(applications: Array<Array<Array<IApplicationDetail & IA
  * Creates a blank IDeail structure for x and y axis headings
  * @hidden
  */
-function heading(name: string = ""): IDetail {
+function heading(name: string = ""): IApplicationDetail {
 	return { id: "", name };
 }
 
@@ -74,7 +73,7 @@ function heading(name: string = ""): IDetail {
  * Creates a cell for the output table
  * @hidden
  */
-function cell(detail: IDetail, style: string, split: number = 1): ICell {
+function cell(detail: IApplicationDetail, style: string, split: number = 1): ICell {
 	return { detail, style, cols: 1, rows: 1, height: 1 / split };
 }
 
