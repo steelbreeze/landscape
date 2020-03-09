@@ -15,7 +15,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	// create the rows in the result table
 	applications.forEach((row, rowIndex) => {
 		// determine the number of rows each y axis value need to be expanded to
-		const appsPerCell = row.map(apps => apps.length);
+		const appsPerCell = row.map(apps => apps.length || 1);
 		const rowSplit = appsPerCell.reduce(leastCommonMultiple, 1);
 
 		// add the rows to the resultant table
