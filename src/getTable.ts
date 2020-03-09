@@ -1,6 +1,6 @@
-import { IAxis } from './IAxis';
-import { ILayout } from './ILayout';
 import { IApplication, IDetail, IUseDetail } from './IApplication';
+import { ILayout } from './ILayout';
+import { IAxis } from './IAxis';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
@@ -15,7 +15,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	// create the rows in the result table
 	applications.forEach((row, rowIndex) => {
 		// determine the number of rows each y axis value need to be expanded to
-		const appsPerCell = row.map(apps => apps.length || 1);
+		const appsPerCell = row.map(apps => apps.length);
 		const rowSplit = appsPerCell.reduce(leastCommonMultiple, 1);
 
 		// add the rows to the resultant table

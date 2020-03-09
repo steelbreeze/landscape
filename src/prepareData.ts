@@ -12,7 +12,7 @@ export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis
 	// create the empty destination table structure
 	const result: Array<Array<Array<IApplication & IUseDetail>>> = y.values.map(() => x.values.map(() => []));
 
-	// position each application within the correct table cell
+	// denormalise and position each application within the correct table cell
 	for (const app of applications) {
 		for (const use of app.usage) {
 			result[y.values.indexOf(use.dimensions[y.name])][x.values.indexOf(use.dimensions[x.name])].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
