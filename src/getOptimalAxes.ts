@@ -1,5 +1,4 @@
 import { IApplicationDetail, IApplicationUsage } from './IApplication';
-import { IDetail } from './IDetail';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
 
@@ -7,8 +6,7 @@ import { IAxes } from './IAxes';
  * A denormalised representation of application data.
  * @hidden
  */
-interface FlatApp {
-	detail: IDetail;
+interface FlatApp extends IApplicationDetail {
 	status: string;
 	usage: Array<{ x: string, y: string }>
 }
