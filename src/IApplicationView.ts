@@ -1,9 +1,10 @@
 import { IDetail } from './IDetail';
 
 /**
- * Data structure of an application within an x/y dimensional context.
+ * Denormalised view of an application within an x/y dimensional context.
+ * Note that the parent structure defines the specific x and y dimensions.
  */
-export interface IApplicationInContext {
+export interface IApplicationView {
 	/** The meta data associated with the application. */
 	detail: IDetail;
 
