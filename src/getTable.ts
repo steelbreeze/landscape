@@ -29,12 +29,11 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	});
 
 	// merge adjacent cells
-	const mY = result.length, mX = result[0].length;
 	let app, adjacent: IApplication & ILayout;
 
 	// iterate through the cells, from the bottom right to top left
-	for (let iY = mY; iY--;) {
-		for (let iX = mX; iX--;) {
+	for (let iY: number = result.length; iY--;) {
+		for (let iX: number = result[iY].length; iX--;) {
 			app = result[iY][iX];
 
 			// try merge with cell above first
