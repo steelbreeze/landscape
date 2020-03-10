@@ -10,7 +10,7 @@ import { IAxis } from './IAxis';
  */
 export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, x: IAxis, y: IAxis): Array<Array<IApplication & ILayout>> {
 	// create the x-axis heading
-	const result = [[cell(heading(), "xAxis"), ...x.values.map(xValue => cell(heading(xValue), "xAxis"))]];
+	const result = [[cell({ id: "", name: "" }, "xAxis"), ...x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))]];
 
 	// create the rows in the result table
 	applications.forEach((row, rowIndex) => {
@@ -21,9 +21,9 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 		// add the rows to the resultant table
 		for (let rowSplitIndex = 0; rowSplitIndex < rowSplit; rowSplitIndex++) {
 			// add the y-axis row heading and its applications
-			result.push([cell(heading(y.values[rowIndex]), "yAxis"), ...row.map((apps, columnIndex) => {
+			result.push([cell({ id: "", name: y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
 				const app = apps[Math.floor(rowSplitIndex * appsPerCell[columnIndex] / rowSplit)];
-				return app ? cell(app.detail, app.status, rowSplit) : cell(heading(), "empty", rowSplit);
+				return app ? cell(app.detail, app.status, rowSplit) : cell({ id: "", name: "" }, "empty", rowSplit);
 			})]);
 		}
 	});
@@ -59,14 +59,6 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	}
 
 	return result;
-}
-
-/**
- * Creates a blank IDeail structure for x and y axis headings
- * @hidden
- */
-function heading(name: string = ""): IDetail {
-	return { id: "", name };
 }
 
 /**
