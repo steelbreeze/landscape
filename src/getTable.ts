@@ -12,6 +12,8 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	// create the x-axis heading
 	const result = [[cell({ id: "", name: "" }, "xAxis"), ...x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))]];
 
+	// TODO: split cells on the x axis as well as the y axis
+
 	// create the rows in the result table
 	applications.forEach((row, rowIndex) => {
 		// determine the number of rows each y axis value need to be expanded to
@@ -19,7 +21,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 		const rowSplit = appsPerCell.reduce(leastCommonMultiple, 1);
 
 		// add the rows to the resultant table
-		for (let rowSplitIndex = 0; rowSplitIndex < rowSplit; rowSplitIndex++) {
+		for(let rowSplitIndex = rowSplit; rowSplitIndex--; ){
 			// add the y-axis row heading and its applications
 			result.push([cell({ id: "", name: y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
 				const app = apps[Math.floor(rowSplitIndex * appsPerCell[columnIndex] / rowSplit)];

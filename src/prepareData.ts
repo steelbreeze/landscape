@@ -23,5 +23,7 @@ export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis
 		}
 	}
 
+	// TODO: consider the order of applications within a cell to promote merges in getTable
+
 	return result;
 }
