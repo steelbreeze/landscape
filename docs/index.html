@@ -154,7 +154,11 @@
 				const yAxis = landscape.deriveAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
 
 				// find the optimum layout scenarios
+				const start = new Date().getMilliseconds();
 				scenario = landscape.getOptimalAxes(data, xAxis, yAxis, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+				const end = new Date().getMilliseconds();
+
+				console.log(`Optimising axes took: ${end-start}ms`);
 
 				// select the preferred scenario
 				if (scenario) {
@@ -165,10 +169,15 @@
 			}
 
 			function displayAtDate() {
+				// filter the application date using the date of interest
 				const date = fromToday(slider.value);
+				const filtered = filterByDate(flattened, date);
 
 				// get the prepared table with applications filtered by the date of interest
-				const table = landscape.getTable(filterByDate(flattened, date), scenario.x, scenario.y);
+				const start = new Date().getMilliseconds();
+				const table = landscape.getTable(filtered, scenario.x, scenario.y);
+				const end = new Date().getMilliseconds();
+				console.log(`render took ${end - start}ms`);
 
 				// update data of interest field
 				dateOfInterest.textContent = date.toLocaleDateString();
