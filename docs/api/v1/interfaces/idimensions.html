@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IAxis | </title>
+	<title>IDimensions | </title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="iaxis.html">IAxis</a>
+					<a href="idimensions.html">IDimensions</a>
 				</li>
 			</ul>
-			<h1>Interface IAxis</h1>
+			<h1>Interface IDimensions</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Represents a single axis.</p>
+						<p>A usage context of an application and its status.</p>
 					</div>
 				</div>
 			</section>
@@ -77,7 +77,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IAxis</span>
+						<span class="target">IDimensions</span>
 					</li>
 				</ul>
 			</section>
@@ -88,8 +88,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iaxis.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iaxis.html#values" class="tsd-kind-icon">values</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="idimensions.html#dimensions" class="tsd-kind-icon">dimensions</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,33 +97,26 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="dimensions" class="tsd-anchor"></a>
+					<h3>dimensions</h3>
+					<div class="tsd-signature tsd-kind-icon">dimensions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/IAxis.ts#L4">IAxis.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/IApplication.ts#L27">IApplication.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of the dimension used on the axis</p>
+							<p>The set of dimensions used to categorise this usage.</p>
 						</div>
 					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="values" class="tsd-anchor"></a>
-					<h3>values</h3>
-					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/IAxis.ts#L7">IAxis.ts:7</a></li>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
 						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The set of values on the axis.</p>
-						</div>
 					</div>
 				</section>
 			</section>
@@ -145,27 +137,24 @@
 					<li class=" tsd-kind-interface">
 						<a href="iaxes.html" class="tsd-kind-icon">IAxes</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
+						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iaxis.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iaxis.html#values" class="tsd-kind-icon">values</a>
+								<a href="idimensions.html#dimensions" class="tsd-kind-icon">dimensions</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
-					</li>
 					<li class=" tsd-kind-interface">
 						<a href="ilayout.html" class="tsd-kind-icon">ILayout</a>
 					</li>

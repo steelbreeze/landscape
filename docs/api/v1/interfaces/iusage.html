@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ICell | </title>
+	<title>IUsage | </title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,28 +56,21 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="icell.html">ICell</a>
+					<a href="iusage.html">IUsage</a>
 				</li>
 			</ul>
-			<h1>Interface ICell</h1>
+			<h1>Interface IUsage</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>A single cell in the final table structure, ready for transforming into HTML via the getHTML call or other method (e.g. D3)</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ICell</span>
+						<span class="target">IUsage</span>
 					</li>
 				</ul>
 			</section>
@@ -88,11 +81,7 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icell.html#cols" class="tsd-kind-icon">cols</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icell.html#detail" class="tsd-kind-icon">detail</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icell.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icell.html#rows" class="tsd-kind-icon">rows</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icell.html#style" class="tsd-kind-icon">style</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iusage.html#usage" class="tsd-kind-icon">usage</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,77 +90,17 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cols" class="tsd-anchor"></a>
-					<h3>cols</h3>
-					<div class="tsd-signature tsd-kind-icon">cols<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="usage" class="tsd-anchor"></a>
+					<h3>usage</h3>
+					<div class="tsd-signature tsd-kind-icon">usage<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IDimensions &amp; IUseDetail</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/ICell.ts#L14">ICell.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/IApplication.ts#L21">IApplication.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The number of columns that this cell will span in the rendered table.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="detail" class="tsd-anchor"></a>
-					<h3>detail</h3>
-					<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <a href="idetail.html" class="tsd-signature-type">IDetail</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/ICell.ts#L8">ICell.ts:8</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The application metadata.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="height" class="tsd-anchor"></a>
-					<h3>height</h3>
-					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/ICell.ts#L20">ICell.ts:20</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The height of a row as a percentage of a full row.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rows" class="tsd-anchor"></a>
-					<h3>rows</h3>
-					<div class="tsd-signature tsd-kind-icon">rows<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/ICell.ts#L17">ICell.ts:17</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The number of rows that this cell will span in the rendered table.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="style" class="tsd-anchor"></a>
-					<h3>style</h3>
-					<div class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/ICell.ts#L11">ICell.ts:11</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The style to use when rendering the table.</p>
+							<p>The data showing the application usage context over time.</p>
 						</div>
 					</div>
 				</section>
@@ -191,46 +120,40 @@
 						<a href="iapplication.html" class="tsd-kind-icon">IApplication</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="iapplicationincontext.html" class="tsd-kind-icon">IApplication<wbr>InContext</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="iaxes.html" class="tsd-kind-icon">IAxes</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="ilayout.html" class="tsd-kind-icon">ILayout</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="icell.html" class="tsd-kind-icon">ICell</a>
+						<a href="iusage.html" class="tsd-kind-icon">IUsage</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icell.html#cols" class="tsd-kind-icon">cols</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icell.html#detail" class="tsd-kind-icon">detail</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icell.html#height" class="tsd-kind-icon">height</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icell.html#rows" class="tsd-kind-icon">rows</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icell.html#style" class="tsd-kind-icon">style</a>
+								<a href="iusage.html#usage" class="tsd-kind-icon">usage</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
+						<a href="iusedetail.html" class="tsd-kind-icon">IUse<wbr>Detail</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="iuse.html" class="tsd-kind-icon">IUse</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../index.html#scenariogenerator" class="tsd-kind-icon">Scenario<wbr>Generator</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../index.html#deriveaxis" class="tsd-kind-icon">derive<wbr>Axis</a>
+						<a href="../index.html#deriveaxes" class="tsd-kind-icon">derive<wbr>Axes</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#gethtml" class="tsd-kind-icon">getHTML</a>

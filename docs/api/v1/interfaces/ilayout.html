@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IApplicationInContext | </title>
+	<title>ILayout | </title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="iapplicationincontext.html">IApplicationInContext</a>
+					<a href="ilayout.html">ILayout</a>
 				</li>
 			</ul>
-			<h1>Interface IApplicationInContext</h1>
+			<h1>Interface ILayout</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Data structure of an application within an x/y dimensional context.</p>
+						<p>A single cell in the final table structure, ready for transforming into HTML via the getHTML call or other method (e.g. D3)</p>
 					</div>
 				</div>
 			</section>
@@ -77,7 +77,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IApplicationInContext</span>
+						<span class="target">ILayout</span>
 					</li>
 				</ul>
 			</section>
@@ -88,10 +88,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#commissioned" class="tsd-kind-icon">commissioned</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#decommissioned" class="tsd-kind-icon">decommissioned</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#detail" class="tsd-kind-icon">detail</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iapplicationincontext.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ilayout.html#cols" class="tsd-kind-icon">cols</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ilayout.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ilayout.html#rows" class="tsd-kind-icon">rows</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ilayout.html#style" class="tsd-kind-icon">style</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,64 +100,62 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="commissioned" class="tsd-anchor"></a>
-					<h3>commissioned</h3>
-					<div class="tsd-signature tsd-kind-icon">commissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<a name="cols" class="tsd-anchor"></a>
+					<h3>cols</h3>
+					<div class="tsd-signature tsd-kind-icon">cols<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/IApplicationInContext.ts#L14">IApplicationInContext.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/ILayout.ts#L9">ILayout.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The date this this particular application usage was commissioned.
-							This is an optional field; undefined means that the origional commissioning date is unknown and therfore the beginning of time.</p>
+							<p>The number of columns that this cell will span in the rendered table.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="decommissioned" class="tsd-anchor"></a>
-					<h3>decommissioned</h3>
-					<div class="tsd-signature tsd-kind-icon">decommissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<a name="height" class="tsd-anchor"></a>
+					<h3>height</h3>
+					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/IApplicationInContext.ts#L19">IApplicationInContext.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/ILayout.ts#L15">ILayout.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The date this this particular application usage was decommissioned.
-							This is an optional field; undefined means that the decommissioning date is unknown and therfore this application usage will continue to the end of time.</p>
+							<p>The height of a row as a percentage of a full row.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="detail" class="tsd-anchor"></a>
-					<h3>detail</h3>
-					<div class="tsd-signature tsd-kind-icon">detail<span class="tsd-signature-symbol">:</span> <a href="idetail.html" class="tsd-signature-type">IDetail</a></div>
+					<a name="rows" class="tsd-anchor"></a>
+					<h3>rows</h3>
+					<div class="tsd-signature tsd-kind-icon">rows<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/IApplicationInContext.ts#L8">IApplicationInContext.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/ILayout.ts#L12">ILayout.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The meta data associated with the application.</p>
+							<p>The number of rows that this cell will span in the rendered table.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="status" class="tsd-anchor"></a>
-					<h3>status</h3>
-					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="style" class="tsd-anchor"></a>
+					<h3>style</h3>
+					<div class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/046f8b0/src/IApplicationInContext.ts#L22">IApplicationInContext.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/ILayout.ts#L6">ILayout.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The status of an application in this usage context.</p>
+							<p>The style to use when rendering the table.</p>
 						</div>
 					</div>
 				</section>
@@ -176,27 +174,6 @@
 					<li class=" tsd-kind-interface">
 						<a href="iapplication.html" class="tsd-kind-icon">IApplication</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="iapplicationincontext.html" class="tsd-kind-icon">IApplication<wbr>InContext</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationincontext.html#commissioned" class="tsd-kind-icon">commissioned</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationincontext.html#decommissioned" class="tsd-kind-icon">decommissioned</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationincontext.html#detail" class="tsd-kind-icon">detail</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iapplicationincontext.html#status" class="tsd-kind-icon">status</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface">
 						<a href="iaxes.html" class="tsd-kind-icon">IAxes</a>
 					</li>
@@ -204,16 +181,43 @@
 						<a href="iaxis.html" class="tsd-kind-icon">IAxis</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="icell.html" class="tsd-kind-icon">ICell</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="idetail.html" class="tsd-kind-icon">IDetail</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="iuse.html" class="tsd-kind-icon">IUse</a>
+						<a href="idimensions.html" class="tsd-kind-icon">IDimensions</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="ilayout.html" class="tsd-kind-icon">ILayout</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ilayout.html#cols" class="tsd-kind-icon">cols</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ilayout.html#height" class="tsd-kind-icon">height</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ilayout.html#rows" class="tsd-kind-icon">rows</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ilayout.html#style" class="tsd-kind-icon">style</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="iusage.html" class="tsd-kind-icon">IUsage</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="iusedetail.html" class="tsd-kind-icon">IUse<wbr>Detail</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../index.html#scenariogenerator" class="tsd-kind-icon">Scenario<wbr>Generator</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../index.html#deriveaxis" class="tsd-kind-icon">derive<wbr>Axis</a>
+						<a href="../index.html#deriveaxes" class="tsd-kind-icon">derive<wbr>Axes</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#gethtml" class="tsd-kind-icon">getHTML</a>

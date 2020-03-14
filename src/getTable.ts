@@ -1,16 +1,15 @@
 import { IApplication, IDetail, IUseDetail } from './IApplication';
 import { ILayout } from './ILayout';
-import { IAxis } from './IAxis';
+import { IAxes } from './IAxes';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
  * @param applications The structured application data having previously been prepared by a call to [prepareData].
- * @param x The x axis to use.
- * @param y The y axis to use.
+ * @param axes The x and y axis.
  */
-export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, x: IAxis, y: IAxis): Array<Array<IApplication & ILayout>> {
+export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes): Array<Array<IApplication & ILayout>> {
 	// create the x-axis heading
-	const result = [[cell({ id: "", name: "" }, "xAxis"), ...x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))]];
+	const result = [[cell({ id: "", name: "" }, "xAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))]];
 
 	// TODO: split cells on the x axis as well as the y axis
 
@@ -23,7 +22,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 		// add the rows to the resultant table
 		for(let rowSplitIndex = rowSplit; rowSplitIndex--; ){
 			// add the y-axis row heading and its applications
-			result.push([cell({ id: "", name: y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
+			result.push([cell({ id: "", name: axes.y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
 				const app = apps[Math.floor(rowSplitIndex * appsPerCell[columnIndex] / rowSplit)];
 				return app ? cell(app.detail, app.status, rowSplit) : cell({ id: "", name: "" }, "empty", rowSplit);
 			})]);

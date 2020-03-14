@@ -107,7 +107,7 @@
 		<p>Style of date slider in IE.</p>
 		<p>Base the date slider max and min values based on the underlying data.</p>
 
-		<!--script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch"></script-->
+		<script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch"></script>
 		<script src="./dist/landscape.min.js"></script>
 
 		<script>
@@ -150,19 +150,20 @@
 
 			function determineAxis() {
 				// extract the axes from the application data
-				const xAxis = landscape.deriveAxis(data, xAxisSelector.options[xAxisSelector.selectedIndex].value);
-				const yAxis = landscape.deriveAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
+				const axes = landscape.deriveAxes(data, xAxisSelector.options[xAxisSelector.selectedIndex].value, yAxisSelector.options[yAxisSelector.selectedIndex].value);
+//				const xAxis = landscape.deriveAxis(data, xAxisSelector.options[xAxisSelector.selectedIndex].value);
+//				const yAxis = landscape.deriveAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
 
 				// find the optimum layout scenarios
 				const start = new Date().getMilliseconds();
-				scenario = landscape.getOptimalAxes(data, xAxis, yAxis, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+				scenario = landscape.getOptimalAxes(data, axes, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 				const end = new Date().getMilliseconds();
 
 				console.log(`Optimising axes took: ${end-start}ms`);
 
 				// select the preferred scenario
 				if (scenario) {
-					flattened = landscape.prepareData(data, scenario.x, scenario.y);
+					flattened = landscape.prepareData(data, scenario);
 
 					displayAtDate();
 				}
@@ -175,7 +176,7 @@
 
 				// get the prepared table with applications filtered by the date of interest
 				const start = new Date().getMilliseconds();
-				const table = landscape.getTable(filtered, scenario.x, scenario.y);
+				const table = landscape.getTable(filtered, scenario);
 				const end = new Date().getMilliseconds();
 				console.log(`render took ${end - start}ms`);
 

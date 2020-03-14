@@ -10,14 +10,13 @@ export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
 /**
  * Determine the optimum order of the axes resulting in a layout with applications grouped together
  * @param applications The raw application data
- * @param x The x axis
- * @param y The y axis
+ * @param axes The x and y axes
  * @param axesSelector A function 
  * @param yF The algorithm to use the generate scenarios to test on the y axis; defaults to all permutations.
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
 	const interim: Array<IApplication & { status: string; usage: Array<{ x: string; y: string }> }> = [];
 
 	for (const app of applications) {
@@ -30,7 +29,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 				interim.push(interimApp);
 			}
 
-			interimApp.usage.push({ x: use.dimensions[x.name], y: use.dimensions[y.name] });
+			interimApp.usage.push({ x: use.dimensions[axes.x.name], y: use.dimensions[axes.y.name] });
 		}
 	}
 
@@ -42,7 +41,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 	let bestAdjacency = -1;
 
 	// iterate all X and Y using the formulas provided
-	for (const yValues of yF(y)) for (const xValues of xF(x)) {
+	for (const yValues of yF(axes.y)) for (const xValues of xF(axes.x)) {
 		let adjacency = 0;
 
 		// test each application/status combination individually
@@ -72,7 +71,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 				bestAdjacency = adjacency;
 			}
 
-			scenarios.push({ x: { name: x.name, values: xValues }, y: { name: y.name, values: yValues } });
+			scenarios.push({ x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
 		}
 	}
 
