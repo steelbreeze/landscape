@@ -17,7 +17,7 @@ The API is split into four main functions:
 5. getTable: returns the source data in an intermediary format ready for rendering instep 5.
 6. getHTML: generates an array of HTML table rows for insertion into a table or table body.
 
-Depending on your needs, you use a subset of these functions. For example, if you know the axes you want to display, you can omit step 1; if you know the sequence you'd like the axes displayed in, omit step 2; if you wish to render your own HTML or SVG in D3 or similar, you can omit step 5.
+Depending on your needs, you use a subset of these functions. For example, if you know the axes you want to display, you can omit step 1; if you know the sequence you'd like the axes displayed in, omit step 2 or 3; if you wish to render your own HTML or SVG in D3 or similar, you can omit step 6.
 
 The full API documentation can be found [here](https://steelbreeze.net/landscape/api/v1/).
 
