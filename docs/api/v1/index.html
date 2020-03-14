@@ -83,13 +83,17 @@
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-is-not-exported"><a href="index.html#denormalised" class="tsd-kind-icon">Denormalised</a></li>
 								<li class="tsd-kind-type-alias"><a href="index.html#scenariogenerator" class="tsd-kind-icon">Scenario<wbr>Generator</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="index.html#countadjacency" class="tsd-kind-icon">count<wbr>Adjacency</a></li>
+								<li class="tsd-kind-function tsd-is-not-exported"><a href="index.html#denormalise" class="tsd-kind-icon">denormalise</a></li>
 								<li class="tsd-kind-function"><a href="index.html#deriveaxes" class="tsd-kind-icon">derive<wbr>Axes</a></li>
+								<li class="tsd-kind-function"><a href="index.html#getgoodaxes" class="tsd-kind-icon">get<wbr>Good<wbr>Axes</a></li>
 								<li class="tsd-kind-function"><a href="index.html#gethtml" class="tsd-kind-icon">getHTML</a></li>
 								<li class="tsd-kind-function"><a href="index.html#getoptimalaxes" class="tsd-kind-icon">get<wbr>Optimal<wbr>Axes</a></li>
 								<li class="tsd-kind-function"><a href="index.html#gettable" class="tsd-kind-icon">get<wbr>Table</a></li>
@@ -101,13 +105,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-is-not-exported">
+					<a name="denormalised" class="tsd-anchor"></a>
+					<h3>Denormalised</h3>
+					<div class="tsd-signature tsd-kind-icon">Denormalised<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IApplication &amp; { status: string; usage: { x: string; y: string; }[]; }</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getOptimalAxes.ts#L10">getOptimalAxes.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="scenariogenerator" class="tsd-anchor"></a>
 					<h3>Scenario<wbr>Generator</h3>
 					<div class="tsd-signature tsd-kind-icon">Scenario<wbr>Generator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/getOptimalAxes.ts#L8">getOptimalAxes.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getOptimalAxes.ts#L8">getOptimalAxes.ts:8</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -140,6 +154,61 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="countadjacency" class="tsd-anchor"></a>
+					<h3>count<wbr>Adjacency</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">count<wbr>Adjacency<span class="tsd-signature-symbol">(</span>denormalised<span class="tsd-signature-symbol">: </span><a href="index.html#denormalised" class="tsd-signature-type">Denormalised</a>, xValues<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span>, yValues<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getOptimalAxes.ts#L124">getOptimalAxes.ts:124</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>denormalised: <a href="index.html#denormalised" class="tsd-signature-type">Denormalised</a></h5>
+								</li>
+								<li>
+									<h5>xValues: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>yValues: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-not-exported">
+					<a name="denormalise" class="tsd-anchor"></a>
+					<h3>denormalise</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">denormalise<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IApplication &amp; IUsage</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="index.html#denormalised" class="tsd-signature-type">Denormalised</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getOptimalAxes.ts#L103">getOptimalAxes.ts:103</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IApplication &amp; IUsage</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>axes: <a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="index.html#denormalised" class="tsd-signature-type">Denormalised</a></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="deriveaxes" class="tsd-anchor"></a>
 					<h3>derive<wbr>Axes</h3>
@@ -150,7 +219,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/deriveAxis.ts#L11">deriveAxis.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/deriveAxis.ts#L11">deriveAxis.ts:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -185,6 +254,80 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="getgoodaxes" class="tsd-anchor"></a>
+					<h3>get<wbr>Good<wbr>Axes</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Good<wbr>Axes<span class="tsd-signature-symbol">(</span>applications<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IApplication &amp; IUsage</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a>, axesSelector<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span>, xF<span class="tsd-signature-symbol">?: </span><a href="index.html#scenariogenerator" class="tsd-signature-type">ScenarioGenerator</a>, yF<span class="tsd-signature-symbol">?: </span><a href="index.html#scenariogenerator" class="tsd-signature-type">ScenarioGenerator</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getOptimalAxes.ts#L56">getOptimalAxes.ts:56</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Determine the a good order of the axes resulting in a layout with applications grouped together.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>applications: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IApplication &amp; IUsage</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The raw application data</p>
+									</div>
+								</li>
+								<li>
+									<h5>axes: <a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The x and y axes</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> axesSelector: <span class="tsd-signature-type">function</span><span class="tsd-signature-symbol"> =&nbsp;scenarios &#x3D;&gt; scenarios[0]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A function</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>scenarios<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>scenarios: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a><span class="tsd-signature-symbol">&gt;</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> xF: <a href="index.html#scenariogenerator" class="tsd-signature-type">ScenarioGenerator</a><span class="tsd-signature-symbol"> =&nbsp;flexOrder</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> yF: <a href="index.html#scenariogenerator" class="tsd-signature-type">ScenarioGenerator</a><span class="tsd-signature-symbol"> =&nbsp;flexOrder</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The algorithm to use the generate scenarios to test on the y axis; defaults to all permutations.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/iaxes.html" class="tsd-signature-type">IAxes</a></h4>
+							<p>Returns all conbinations of x and y axes with the greatest grouping of applications</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="gethtml" class="tsd-anchor"></a>
 					<h3>getHTML</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -194,7 +337,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/getHTML.ts#L8">getHTML.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getHTML.ts#L8">getHTML.ts:8</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -225,12 +368,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/getOptimalAxes.ts#L19">getOptimalAxes.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getOptimalAxes.ts#L21">getOptimalAxes.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Determine the optimum order of the axes resulting in a layout with applications grouped together</p>
+									<p>Determine the optimum order of the x and y axes resulting in a layout with applications grouped together.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -299,7 +442,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/getTable.ts#L10">getTable.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/getTable.ts#L10">getTable.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,7 +479,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/6ed4ade/src/prepareData.ts#L10">prepareData.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/18b5a54/src/prepareData.ts#L10">prepareData.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,11 +543,23 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/iusedetail.html" class="tsd-kind-icon">IUse<wbr>Detail</a>
 					</li>
+					<li class=" tsd-kind-type-alias tsd-is-not-exported">
+						<a href="index.html#denormalised" class="tsd-kind-icon">Denormalised</a>
+					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="index.html#scenariogenerator" class="tsd-kind-icon">Scenario<wbr>Generator</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="index.html#countadjacency" class="tsd-kind-icon">count<wbr>Adjacency</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="index.html#denormalise" class="tsd-kind-icon">denormalise</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="index.html#deriveaxes" class="tsd-kind-icon">derive<wbr>Axes</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="index.html#getgoodaxes" class="tsd-kind-icon">get<wbr>Good<wbr>Axes</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="index.html#gethtml" class="tsd-kind-icon">getHTML</a>

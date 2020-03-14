@@ -107,7 +107,7 @@
 		<p>Style of date slider in IE.</p>
 		<p>Base the date slider max and min values based on the underlying data.</p>
 
-		<script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch"></script>
+		<!--script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch"></script-->
 		<script src="./dist/landscape.min.js"></script>
 
 		<script>
@@ -151,12 +151,10 @@
 			function determineAxis() {
 				// extract the axes from the application data
 				const axes = landscape.deriveAxes(data, xAxisSelector.options[xAxisSelector.selectedIndex].value, yAxisSelector.options[yAxisSelector.selectedIndex].value);
-//				const xAxis = landscape.deriveAxis(data, xAxisSelector.options[xAxisSelector.selectedIndex].value);
-//				const yAxis = landscape.deriveAxis(data, yAxisSelector.options[yAxisSelector.selectedIndex].value);
 
 				// find the optimum layout scenarios
 				const start = new Date().getMilliseconds();
-				scenario = landscape.getOptimalAxes(data, axes, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+				scenario = landscape.getGoodAxes(data, axes, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 				const end = new Date().getMilliseconds();
 
 				console.log(`Optimising axes took: ${end-start}ms`);

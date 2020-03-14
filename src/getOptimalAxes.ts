@@ -7,8 +7,10 @@ import { IAxes } from './IAxes';
  */
 export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
 
+type Denormalised = Array<IApplication & { status: string; usage: Array<{ x: string; y: string }> }>;
+
 /**
- * Determine the optimum order of the axes resulting in a layout with applications grouped together
+ * Determine the optimum order of the x and y axes resulting in a layout with applications grouped together.
  * @param applications The raw application data
  * @param axes The x and y axes
  * @param axesSelector A function 
@@ -17,7 +19,89 @@ export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
 export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
-	const interim: Array<IApplication & { status: string; usage: Array<{ x: string; y: string }> }> = [];
+	const denormalised = denormalise(applications, axes);
+
+	// retain only the scenarios with the best adjacency
+	let scenarios: Array<IAxes> = [];
+	let bestAdjacency = -1;
+
+	// iterate all X and Y using the formulas provided
+	for (const yValues of yF(axes.y)) for (const xValues of xF(axes.x)) {
+		const adjacency = countAdjacency(denormalised, xValues, yValues);
+
+		// just keep the best scenarios
+		if (adjacency >= bestAdjacency) {
+			// reset the best if needed
+			if (adjacency > bestAdjacency) {
+				scenarios = [];
+				bestAdjacency = adjacency;
+			}
+
+			scenarios.push({ x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
+		}
+	}
+
+	return axesSelector(scenarios);
+}
+
+/**
+ * Determine the a good order of the axes resulting in a layout with applications grouped together.
+ * @param applications The raw application data
+ * @param axes The x and y axes
+ * @param axesSelector A function 
+ * @param yF The algorithm to use the generate scenarios to test on the y axis; defaults to all permutations.
+ * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
+ * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
+ */
+export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+	const denormalised = denormalise(applications, axes);
+
+	// retain only the scenarios with the best adjacency
+	let yScenarios: Array<Array<string>> = [];
+	let xyScenarios: Array<IAxes> = [];
+	let bestAdjacency = -1;
+
+	// iterate Y using the formulas provided with a constant X 
+	for (const yValues of yF(axes.y)) {
+		const adjacency = countAdjacency(denormalised, axes.x.values, yValues);
+
+		// just keep the best scenarios
+		if (adjacency >= bestAdjacency) {
+			// reset the best if needed
+			if (adjacency > bestAdjacency) {
+				yScenarios = [];
+				bestAdjacency = adjacency;
+			}
+
+			yScenarios.push(yValues);
+		}
+	}
+
+	// reset the best adjacency
+	bestAdjacency = -1;
+
+	// iterate all X and just the best Y using the formulas provided
+	for (const yValues of yScenarios) for (const xValues of xF(axes.x)) {
+		const adjacency = countAdjacency(denormalised, xValues, yValues);
+
+		// just keep the best scenarios
+		if (adjacency >= bestAdjacency) {
+			// reset the best if needed
+			if (adjacency > bestAdjacency) {
+				xyScenarios = [];
+				bestAdjacency = adjacency;
+			}
+
+			xyScenarios.push({ x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
+		}
+	}
+
+
+	return axesSelector(xyScenarios);
+}
+
+function denormalise(applications: Array<IApplication & IUsage>, axes: IAxes): Denormalised {
+	const interim: Denormalised = [];
 
 	for (const app of applications) {
 		for (const use of app.usage) {
@@ -34,15 +118,11 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	}
 
 	// delete single use app/status combinations as they cannot contribute to affinity score
-	const denormalised = interim.filter(app => app.usage.length > 1);
+	return interim.filter(app => app.usage.length > 1);
+}
 
-	// retain only the scenarios with the best adjacency
-	let scenarios: Array<IAxes> = [];
-	let bestAdjacency = -1;
-
-	// iterate all X and Y using the formulas provided
-	for (const yValues of yF(axes.y)) for (const xValues of xF(axes.x)) {
-		let adjacency = 0;
+function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>): number {
+	let adjacency = 0;
 
 		// test each application/status combination individually
 		for (const app of denormalised) {
@@ -63,21 +143,9 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 			}
 		}
 
-		// just keep the best scenarios
-		if (adjacency >= bestAdjacency) {
-			// reset the best if needed
-			if (adjacency > bestAdjacency) {
-				scenarios = [];
-				bestAdjacency = adjacency;
-			}
-
-			scenarios.push({ x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
-		}
+		return adjacency;
 	}
 
-
-	return axesSelector(scenarios);
-}
 
 /**
  * Allow an axis to be assessed in any order of the axis values.
