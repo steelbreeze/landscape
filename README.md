@@ -12,7 +12,7 @@ Download landscape.min.js from the Releases page. Once added into your project, 
 The API is split into four main functions:
 1. getAxes: analyses an array of source data and returns a pair of axis (the set of distinct values for given property names).
 2. getOptimalAxes: analyses the source data to return the optimal order of the axes values, where there is optimal adjacency across cells, resulting in the fewest boxes drawn. This uses a brute-force approach to ensure every combination of x and y axis order is evaluated; this therefore has O(x!y!) time complexity.
-3. getGoodAxes: analyses the source data to return the optimal order of the axes values, where there is goo adjacency across cells, resulting in the feweer boxes drawn. This uses a reduced version of brute-force approach to ensure every combination of y axis order is evaluated, then for the best ones, all x axis orders are evaluates; this therefore has O(nx! + y!) time complexity where n is source data dependant.
+3. getGoodAxes: an alternative to getOptimalAxes, this function analyses the source data to return the optimal order of the axes values, where there is good adjacency across cells, resulting in the feweer boxes drawn. This uses a reduced version of brute-force approach to ensure every combination of y axis order is evaluated, then for the best ones, all x axis orders are evaluates; this therefore has O(nx! + y!) time complexity where n is source data dependant.
 4. prepareData: structures the source data based on a pair of axes.
 5. getTable: returns the source data in an intermediary format ready for rendering instep 5.
 6. getHTML: generates an array of HTML table rows for insertion into a table or table body.
