@@ -55,9 +55,9 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  */
 export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
 	// determine the long and short axes; currently use y for the long axis, x for the short
-	const xIsLong = axes.x.values.length > axes.y.values.length;
-	const shortAxis = xIsLong ? axes.y : axes.x;
-	const longAxis = xIsLong ? axes.x : axes.y;
+	const isXLong = axes.x.values.length > axes.y.values.length;
+	const shortAxis = isXLong ? axes.y : axes.x;
+	const longAxis = isXLong ? axes.x : axes.y;
 	const denormalised = denormalise(applications, shortAxis, longAxis);
 
 	// retain only the scenarios with the best adjacency
@@ -66,8 +66,8 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	let bestAdjacency = -1;
 
 	// iterate the long axis using the provided short axis
-	for (const yValues of (xIsLong ? xF : yF)(longAxis)) {
-		const adjacency = countAdjacency(denormalised, shortAxis.values, yValues, false, true);
+	for (const lValues of (isXLong ? xF : yF)(longAxis)) {
+		const adjacency = countAdjacency(denormalised, shortAxis.values, lValues, false, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -77,7 +77,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 				bestAdjacency = adjacency;
 			}
 
-			lScenarios.push(yValues);
+			lScenarios.push(lValues);
 		}
 	}
 
@@ -85,8 +85,8 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	bestAdjacency = -1;
 
 	// iterate all X and just the best Y using the formulas provided
-	for (const yValues of lScenarios) for (const xValues of (xIsLong ? yF : xF)(shortAxis)) {
-		const adjacency = countAdjacency(denormalised, xValues, yValues, true, false);
+	for (const lValues of lScenarios) for (const sValues of (isXLong ? yF : xF)(shortAxis)) {
+		const adjacency = countAdjacency(denormalised, sValues, lValues, true, false);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -96,7 +96,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 				bestAdjacency = adjacency;
 			}
 
-			scenarios.push(xIsLong ? { y: { name: shortAxis.name, values: xValues }, x: { name: longAxis.name, values: yValues } } : { x: { name: shortAxis.name, values: xValues }, y: { name: longAxis.name, values: yValues } });
+			scenarios.push(isXLong ? { y: { name: shortAxis.name, values: sValues }, x: { name: longAxis.name, values: lValues } } : { x: { name: shortAxis.name, values: sValues }, y: { name: longAxis.name, values: lValues } });
 		}
 	}
 
