@@ -173,10 +173,7 @@
 				const filtered = filterByDate(flattened, date);
 
 				// get the prepared table with applications filtered by the date of interest
-				const start = new Date().getMilliseconds();
 				const table = landscape.getTable(filtered, scenario);
-				const end = new Date().getMilliseconds();
-				console.log(`render took ${end - start}ms`);
 
 				// update data of interest field
 				dateOfInterest.textContent = date.toLocaleDateString();

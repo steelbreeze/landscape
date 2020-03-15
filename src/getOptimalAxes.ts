@@ -27,7 +27,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 
 	// iterate all X and Y using the formulas provided
 	for (const yValues of yF(axes.y)) for (const xValues of xF(axes.x)) {
-		const adjacency = countAdjacency(denormalised, xValues, yValues);
+		const adjacency = countAdjacency(denormalised, xValues, yValues, true, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -63,7 +63,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 
 	// iterate Y using the formulas provided with a constant X 
 	for (const yValues of yF(axes.y)) {
-		const adjacency = countAdjacency(denormalised, axes.x.values, yValues);
+		const adjacency = countAdjacency(denormalised, axes.x.values, yValues, false, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -82,7 +82,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 
 	// iterate all X and just the best Y using the formulas provided
 	for (const yValues of yScenarios) for (const xValues of xF(axes.x)) {
-		const adjacency = countAdjacency(denormalised, xValues, yValues);
+		const adjacency = countAdjacency(denormalised, xValues, yValues, true, false);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -121,7 +121,7 @@ function denormalise(applications: Array<IApplication & IUsage>, axes: IAxes): D
 	return interim.filter(app => app.usage.length > 1);
 }
 
-function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>): number {
+function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>, countX: boolean, countY: boolean): number {
 	let adjacency = 0;
 
 		// test each application/status combination individually
@@ -132,11 +132,11 @@ function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yVal
 			// count adjacent cells
 			for (let iY = yValues.length; iY--;) for (let iX = xValues.length; iX--;) {
 				if (matrix[iY][iX]) {
-					if (iY && matrix[iY - 1][iX]) {
+					if (countY && iY && matrix[iY - 1][iX]) {
 						adjacency++;
 					}
 
-					if (iX && matrix[iY][iX - 1]) {
+					if (countX && iX && matrix[iY][iX - 1]) {
 						adjacency++;
 					}
 				}
