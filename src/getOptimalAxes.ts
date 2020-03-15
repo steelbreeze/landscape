@@ -53,7 +53,10 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+export function getGoodAxes(applications: Array<IApplication & IUsage>, taxes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+	const swapXY = taxes.x.values.length > taxes.y.values.length;
+	const axes = swapXY ? { x: taxes.y, y: taxes.x } : taxes;
+
 	const denormalised = denormalise(applications, axes);
 
 	// retain only the scenarios with the best adjacency
@@ -92,7 +95,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 				bestAdjacency = adjacency;
 			}
 
-			xyScenarios.push({ x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
+			xyScenarios.push(swapXY ? { y: { name: axes.x.name, values: xValues }, x: { name: axes.y.name, values: yValues } } : { x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
 		}
 	}
 
@@ -124,27 +127,27 @@ function denormalise(applications: Array<IApplication & IUsage>, axes: IAxes): D
 function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>, countX: boolean, countY: boolean): number {
 	let adjacency = 0;
 
-		// test each application/status combination individually
-		for (const app of denormalised) {
-			// create 2d boolean matrix where the application exists 
-			const matrix = yValues.map(yValue => xValues.map(xValue => app.usage.some(use => use.y === yValue && use.x === xValue)));
+	// test each application/status combination individually
+	for (const app of denormalised) {
+		// create 2d boolean matrix where the application exists 
+		const matrix = yValues.map(yValue => xValues.map(xValue => app.usage.some(use => use.y === yValue && use.x === xValue)));
 
-			// count adjacent cells
-			for (let iY = yValues.length; iY--;) for (let iX = xValues.length; iX--;) {
-				if (matrix[iY][iX]) {
-					if (countY && iY && matrix[iY - 1][iX]) {
-						adjacency++;
-					}
+		// count adjacent cells
+		for (let iY = yValues.length; iY--;) for (let iX = xValues.length; iX--;) {
+			if (matrix[iY][iX]) {
+				if (countY && iY && matrix[iY - 1][iX]) {
+					adjacency++;
+				}
 
-					if (countX && iX && matrix[iY][iX - 1]) {
-						adjacency++;
-					}
+				if (countX && iX && matrix[iY][iX - 1]) {
+					adjacency++;
 				}
 			}
 		}
-
-		return adjacency;
 	}
+
+	return adjacency;
+}
 
 
 /**
