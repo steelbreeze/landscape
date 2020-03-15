@@ -54,13 +54,20 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
 export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+	// determine the long and short axes; currently use y for the long axis, x for the short
 	const swapXY = axes.x.values.length > axes.y.values.length;
 	const axesToTest = swapXY ? { x: axes.y, y: axes.x } : axes;
 
 	const denormalised = denormalise(applications, axesToTest);
 
+	if(swapXY) {
+		const tF = yF;
+		yF = xF;
+		xF = tF;
+	}
+
 	// retain only the scenarios with the best adjacency
-	let yScenarios: Array<Array<string>> = [];
+	let lScenarios: Array<Array<string>> = [];
 	let xyScenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
 
@@ -72,11 +79,11 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 		if (adjacency >= bestAdjacency) {
 			// reset the best if needed
 			if (adjacency > bestAdjacency) {
-				yScenarios = [];
+				lScenarios = [];
 				bestAdjacency = adjacency;
 			}
 
-			yScenarios.push(yValues);
+			lScenarios.push(yValues);
 		}
 	}
 
@@ -84,7 +91,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	bestAdjacency = -1;
 
 	// iterate all X and just the best Y using the formulas provided
-	for (const yValues of yScenarios) for (const xValues of xF(axesToTest.x)) {
+	for (const yValues of lScenarios) for (const xValues of xF(axesToTest.x)) {
 		const adjacency = countAdjacency(denormalised, xValues, yValues, true, false);
 
 		// just keep the best scenarios
