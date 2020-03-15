@@ -20,14 +20,12 @@ type Denormalised = Array<IApplication & { status: string; usage: Array<{ x: str
  */
 export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
 	const denormalised = denormalise(applications, axes.x, axes.y);
-
-	// retain only the scenarios with the best adjacency
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
 
 	// iterate all X and Y using the formulas provided
-	for (const yValues of yF(axes.y)) for (const xValues of xF(axes.x)) {
-		const adjacency = countAdjacency(denormalised, xValues, yValues, true, true);
+	for (const yAxisValues of yF(axes.y)) for (const xAxisValues of xF(axes.x)) {
+		const adjacency = countAdjacency(denormalised, xAxisValues, yAxisValues, true, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -37,7 +35,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 				bestAdjacency = adjacency;
 			}
 
-			scenarios.push({ x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
+			scenarios.push({ x: { name: axes.x.name, values: xAxisValues }, y: { name: axes.y.name, values: yAxisValues } });
 		}
 	}
 
@@ -54,30 +52,27 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
 export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
-	// determine the long and short axes; currently use y for the long axis, x for the short
 	const isXLong = axes.x.values.length > axes.y.values.length;
 	const shortAxis = isXLong ? axes.y : axes.x;
 	const longAxis = isXLong ? axes.x : axes.y;
 	const denormalised = denormalise(applications, shortAxis, longAxis);
-
-	// retain only the scenarios with the best adjacency
-	let lScenarios: Array<Array<string>> = [];
+	let interimScenarios: Array<Array<string>> = [];
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
 
 	// iterate the long axis using the provided short axis
-	for (const lValues of (isXLong ? xF : yF)(longAxis)) {
-		const adjacency = countAdjacency(denormalised, shortAxis.values, lValues, false, true);
+	for (const longAxisValues of (isXLong ? xF : yF)(longAxis)) {
+		const adjacency = countAdjacency(denormalised, shortAxis.values, longAxisValues, false, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
 			// reset the best if needed
 			if (adjacency > bestAdjacency) {
-				lScenarios = [];
+				interimScenarios = [];
 				bestAdjacency = adjacency;
 			}
 
-			lScenarios.push(lValues);
+			interimScenarios.push(longAxisValues);
 		}
 	}
 
@@ -85,8 +80,8 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	bestAdjacency = -1;
 
 	// iterate all X and just the best Y using the formulas provided
-	for (const lValues of lScenarios) for (const sValues of (isXLong ? yF : xF)(shortAxis)) {
-		const adjacency = countAdjacency(denormalised, sValues, lValues, true, false);
+	for (const longAxisValues of interimScenarios) for (const shortAxisValues of (isXLong ? yF : xF)(shortAxis)) {
+		const adjacency = countAdjacency(denormalised, shortAxisValues, longAxisValues, true, false);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -96,7 +91,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 				bestAdjacency = adjacency;
 			}
 
-			scenarios.push(isXLong ? { y: { name: shortAxis.name, values: sValues }, x: { name: longAxis.name, values: lValues } } : { x: { name: shortAxis.name, values: sValues }, y: { name: longAxis.name, values: lValues } });
+			scenarios.push(isXLong ? { y: { name: shortAxis.name, values: shortAxisValues }, x: { name: longAxis.name, values: longAxisValues } } : { x: { name: shortAxis.name, values: shortAxisValues }, y: { name: longAxis.name, values: longAxisValues } });
 		}
 	}
 
