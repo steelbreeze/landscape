@@ -53,11 +53,11 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getGoodAxes(applications: Array<IApplication & IUsage>, taxes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
-	const swapXY = taxes.x.values.length > taxes.y.values.length;
-	const axes = swapXY ? { x: taxes.y, y: taxes.x } : taxes;
+export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+	const swapXY = axes.x.values.length > axes.y.values.length;
+	const axesToTest = swapXY ? { x: axes.y, y: axes.x } : axes;
 
-	const denormalised = denormalise(applications, axes);
+	const denormalised = denormalise(applications, axesToTest);
 
 	// retain only the scenarios with the best adjacency
 	let yScenarios: Array<Array<string>> = [];
@@ -65,8 +65,8 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, taxes: I
 	let bestAdjacency = -1;
 
 	// iterate Y using the formulas provided with a constant X 
-	for (const yValues of yF(axes.y)) {
-		const adjacency = countAdjacency(denormalised, axes.x.values, yValues, false, true);
+	for (const yValues of yF(axesToTest.y)) {
+		const adjacency = countAdjacency(denormalised, axesToTest.x.values, yValues, false, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -84,7 +84,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, taxes: I
 	bestAdjacency = -1;
 
 	// iterate all X and just the best Y using the formulas provided
-	for (const yValues of yScenarios) for (const xValues of xF(axes.x)) {
+	for (const yValues of yScenarios) for (const xValues of xF(axesToTest.x)) {
 		const adjacency = countAdjacency(denormalised, xValues, yValues, true, false);
 
 		// just keep the best scenarios
@@ -95,7 +95,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, taxes: I
 				bestAdjacency = adjacency;
 			}
 
-			xyScenarios.push(swapXY ? { y: { name: axes.x.name, values: xValues }, x: { name: axes.y.name, values: yValues } } : { x: { name: axes.x.name, values: xValues }, y: { name: axes.y.name, values: yValues } });
+			xyScenarios.push(swapXY ? { y: { name: axesToTest.x.name, values: xValues }, x: { name: axesToTest.y.name, values: yValues } } : { x: { name: axesToTest.x.name, values: xValues }, y: { name: axesToTest.y.name, values: yValues } });
 		}
 	}
 
