@@ -57,22 +57,15 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	// determine the long and short axes; currently use y for the long axis, x for the short
 	const swapXY = axes.x.values.length > axes.y.values.length;
 	const axesToTest = swapXY ? { x: axes.y, y: axes.x } : axes;
-
 	const denormalised = denormalise(applications, axesToTest);
-
-	if(swapXY) {
-		const tF = yF;
-		yF = xF;
-		xF = tF;
-	}
 
 	// retain only the scenarios with the best adjacency
 	let lScenarios: Array<Array<string>> = [];
-	let xyScenarios: Array<IAxes> = [];
+	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
 
-	// iterate Y using the formulas provided with a constant X 
-	for (const yValues of yF(axesToTest.y)) {
+	// iterate the long axis using the provided short axis
+	for (const yValues of (swapXY ? xF : yF)(axesToTest.y)) {
 		const adjacency = countAdjacency(denormalised, axesToTest.x.values, yValues, false, true);
 
 		// just keep the best scenarios
@@ -91,23 +84,23 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	bestAdjacency = -1;
 
 	// iterate all X and just the best Y using the formulas provided
-	for (const yValues of lScenarios) for (const xValues of xF(axesToTest.x)) {
+	for (const yValues of lScenarios) for (const xValues of (swapXY ? yF : xF)(axesToTest.x)) {
 		const adjacency = countAdjacency(denormalised, xValues, yValues, true, false);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
 			// reset the best if needed
 			if (adjacency > bestAdjacency) {
-				xyScenarios = [];
+				scenarios = [];
 				bestAdjacency = adjacency;
 			}
 
-			xyScenarios.push(swapXY ? { y: { name: axesToTest.x.name, values: xValues }, x: { name: axesToTest.y.name, values: yValues } } : { x: { name: axesToTest.x.name, values: xValues }, y: { name: axesToTest.y.name, values: yValues } });
+			scenarios.push(swapXY ? { y: { name: axesToTest.x.name, values: xValues }, x: { name: axesToTest.y.name, values: yValues } } : { x: { name: axesToTest.x.name, values: xValues }, y: { name: axesToTest.y.name, values: yValues } });
 		}
 	}
 
 
-	return axesSelector(xyScenarios);
+	return axesSelector(scenarios);
 }
 
 function denormalise(applications: Array<IApplication & IUsage>, axes: IAxes): Denormalised {
