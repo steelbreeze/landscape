@@ -19,7 +19,7 @@ type Denormalised = Array<IApplication & { status: string; usage: Array<{ x: str
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
 export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
-	const denormalised = denormalise(applications, axes);
+	const denormalised = denormalise(applications, axes.x, axes.y);
 
 	// retain only the scenarios with the best adjacency
 	let scenarios: Array<IAxes> = [];
@@ -55,9 +55,10 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  */
 export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
 	// determine the long and short axes; currently use y for the long axis, x for the short
-	const swapXY = axes.x.values.length > axes.y.values.length;
-	const axesToTest = swapXY ? { x: axes.y, y: axes.x } : axes;
-	const denormalised = denormalise(applications, axesToTest);
+	const xIsLong = axes.x.values.length > axes.y.values.length;
+	const shortAxis = xIsLong ? axes.y : axes.x;
+	const longAxis = xIsLong ? axes.x : axes.y;
+	const denormalised = denormalise(applications, shortAxis, longAxis);
 
 	// retain only the scenarios with the best adjacency
 	let lScenarios: Array<Array<string>> = [];
@@ -65,8 +66,8 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	let bestAdjacency = -1;
 
 	// iterate the long axis using the provided short axis
-	for (const yValues of (swapXY ? xF : yF)(axesToTest.y)) {
-		const adjacency = countAdjacency(denormalised, axesToTest.x.values, yValues, false, true);
+	for (const yValues of (xIsLong ? xF : yF)(longAxis)) {
+		const adjacency = countAdjacency(denormalised, shortAxis.values, yValues, false, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -84,7 +85,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	bestAdjacency = -1;
 
 	// iterate all X and just the best Y using the formulas provided
-	for (const yValues of lScenarios) for (const xValues of (swapXY ? yF : xF)(axesToTest.x)) {
+	for (const yValues of lScenarios) for (const xValues of (xIsLong ? yF : xF)(shortAxis)) {
 		const adjacency = countAdjacency(denormalised, xValues, yValues, true, false);
 
 		// just keep the best scenarios
@@ -95,7 +96,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 				bestAdjacency = adjacency;
 			}
 
-			scenarios.push(swapXY ? { y: { name: axesToTest.x.name, values: xValues }, x: { name: axesToTest.y.name, values: yValues } } : { x: { name: axesToTest.x.name, values: xValues }, y: { name: axesToTest.y.name, values: yValues } });
+			scenarios.push(xIsLong ? { y: { name: shortAxis.name, values: xValues }, x: { name: longAxis.name, values: yValues } } : { x: { name: shortAxis.name, values: xValues }, y: { name: longAxis.name, values: yValues } });
 		}
 	}
 
@@ -103,7 +104,7 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 	return axesSelector(scenarios);
 }
 
-function denormalise(applications: Array<IApplication & IUsage>, axes: IAxes): Denormalised {
+function denormalise(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis): Denormalised {
 	const interim: Denormalised = [];
 
 	for (const app of applications) {
@@ -116,7 +117,7 @@ function denormalise(applications: Array<IApplication & IUsage>, axes: IAxes): D
 				interim.push(interimApp);
 			}
 
-			interimApp.usage.push({ x: use.dimensions[axes.x.name], y: use.dimensions[axes.y.name] });
+			interimApp.usage.push({ x: use.dimensions[x.name], y: use.dimensions[y.name] });
 		}
 	}
 
@@ -148,7 +149,6 @@ function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yVal
 
 	return adjacency;
 }
-
 
 /**
  * Allow an axis to be assessed in any order of the axis values.
