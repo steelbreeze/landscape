@@ -155,7 +155,7 @@
 
 				// find the optimum layout scenarios
 				const start = performance.now();
-				scenario = landscape.getGoodAxes(data, axes, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+				scenario = landscape.getOptimalAxes(data, axes, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 				const end = performance.now();
 
 				console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);

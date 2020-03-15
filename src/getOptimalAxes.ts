@@ -18,7 +18,7 @@ type Denormalised = Array<IApplication & { status: string; usage: Array<{ x: str
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+export function getOptimalAxesBruteForce(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
 	const denormalised = denormalise(applications, axes.x, axes.y);
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
@@ -51,7 +51,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
 	const isXLong = axes.x.values.length > axes.y.values.length;
 	const shortAxis = isXLong ? axes.y : axes.x;
 	const longAxis = isXLong ? axes.x : axes.y;
@@ -95,7 +95,6 @@ export function getGoodAxes(applications: Array<IApplication & IUsage>, axes: IA
 		}
 	}
 
-
 	return axesSelector(scenarios);
 }
 
@@ -126,7 +125,7 @@ function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yVal
 	// test each application/status combination individually
 	for (const app of denormalised) {
 		// create 2d boolean matrix where the application exists 
-		const matrix = yValues.map(yValue => xValues.map(xValue => app.usage.some(use => use.y === yValue && use.x === xValue)));
+		const matrix = yValues.map(y => xValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
 
 		// count adjacent cells
 		for (let iY = yValues.length; iY--;) for (let iX = xValues.length; iX--;) {
