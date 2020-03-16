@@ -14,9 +14,10 @@ export function prepareData(applications: Array<IApplication & IUsage>, axes: IA
 	// denormalise and position each application within the correct table cell
 	for (const app of applications) {
 		for (const use of app.usage) {
-			const yIndex = axes.y.values.indexOf(use.dimensions[axes.y.name]), xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
+			const yIndex = axes.y.values.indexOf(use.dimensions[axes.y.name]),
+			      xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
 
-			if (yIndex >= 0 && xIndex >= 0) {
+			if (yIndex !== -1 && xIndex !== -1) {
 				result[yIndex][xIndex].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 			}
 		}

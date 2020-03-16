@@ -60,8 +60,9 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
 
-	// iterate the long axis using the provided short axis
+	// iterate permutations of the long axis, use the short axis as provided
 	for (const longAxisValues of (isXLong ? xF : yF)(longAxis)) {
+		// count only adjacency along the long axis
 		const adjacency = countAdjacency(denormalised, shortAxis.values, longAxisValues, false, true);
 
 		// just keep the best scenarios
@@ -79,8 +80,9 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	// reset the best adjacency
 	bestAdjacency = -1;
 
-	// iterate all X and just the best Y using the formulas provided
+	// iterate just the best long axis results and iterate permutations of the short axis
 	for (const longAxisValues of interimScenarios) for (const shortAxisValues of (isXLong ? yF : xF)(shortAxis)) {
+		// count only adjacency alony the short axis
 		const adjacency = countAdjacency(denormalised, shortAxisValues, longAxisValues, true, false);
 
 		// just keep the best scenarios
@@ -98,6 +100,9 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	return axesSelector(scenarios);
 }
 
+/**
+ * @hidden
+ */
 function denormalise(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis): Denormalised {
 	const interim: Denormalised = [];
 
@@ -119,6 +124,9 @@ function denormalise(applications: Array<IApplication & IUsage>, x: IAxis, y: IA
 	return interim.filter(app => app.usage.length > 1);
 }
 
+/**
+ * @hidden
+ */
 function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>, countX: boolean, countY: boolean): number {
 	let adjacency = 0;
 
