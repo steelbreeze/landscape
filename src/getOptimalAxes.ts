@@ -10,39 +10,6 @@ export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
 type Denormalised = Array<IApplication & { status: string; usage: Array<{ x: string; y: string }> }>;
 
 /**
- * Determine the optimum order of the x and y axes resulting in a layout with applications grouped together.
- * @param applications The raw application data
- * @param axes The x and y axes
- * @param axesSelector A function 
- * @param yF The algorithm to use the generate scenarios to test on the y axis; defaults to all permutations.
- * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
- * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
- */
-export function getOptimalAxesBruteForce(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: ScenarioGenerator = flexOrder, yF: ScenarioGenerator = flexOrder): IAxes {
-	const denormalised = denormalise(applications, axes.x, axes.y);
-	let scenarios: Array<IAxes> = [];
-	let bestAdjacency = -1;
-
-	// iterate all X and Y using the formulas provided
-	for (const yAxisValues of yF(axes.y)) for (const xAxisValues of xF(axes.x)) {
-		const adjacency = countAdjacency(denormalised, xAxisValues, yAxisValues, true, true);
-
-		// just keep the best scenarios
-		if (adjacency >= bestAdjacency) {
-			// reset the best if needed
-			if (adjacency > bestAdjacency) {
-				scenarios = [];
-				bestAdjacency = adjacency;
-			}
-
-			scenarios.push({ x: { name: axes.x.name, values: xAxisValues }, y: { name: axes.y.name, values: yAxisValues } });
-		}
-	}
-
-	return axesSelector(scenarios);
-}
-
-/**
  * Determine the a good order of the axes resulting in a layout with applications grouped together.
  * @param applications The raw application data
  * @param axes The x and y axes
@@ -135,14 +102,19 @@ function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yVal
 		// create 2d boolean matrix where the application exists 
 		const matrix = yValues.map(y => xValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
 
-		// count adjacent cells
-		for (let iY = yValues.length; iY--;) for (let iX = xValues.length; iX--;) {
-			if (matrix[iY][iX]) {
-				if (countY && iY && matrix[iY - 1][iX]) {
+		// count adjacent cells on the y axis
+		if (countY) {
+			for (let iY = yValues.length; --iY;) for (let iX = xValues.length; iX--;) {
+				if (matrix[iY][iX] && matrix[iY - 1][iX]) {
 					adjacency++;
 				}
+			}
+		}
 
-				if (countX && iX && matrix[iY][iX - 1]) {
+		// count adjacent cells on the x axis
+		if (countX) {
+			for (let iY = yValues.length; iY--;) for (let iX = xValues.length; --iX;) {
+				if (matrix[iY][iX] && matrix[iY][iX - 1]) {
 					adjacency++;
 				}
 			}
