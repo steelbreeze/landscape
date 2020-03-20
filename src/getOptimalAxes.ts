@@ -30,7 +30,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	// iterate permutations of the long axis, use the short axis as provided
 	for (const longAxisValues of (isXLong ? xF : yF)(longAxis)) {
 		// count only adjacency along the long axis
-		const adjacency = countAdjacency(denormalised, shortAxis.values, longAxisValues, false, true);
+		const adjacency = countAdjacency(denormalised, shortAxis.values, longAxisValues, false);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -50,7 +50,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	// iterate just the best long axis results and iterate permutations of the short axis
 	for (const longAxisValues of interimScenarios) for (const shortAxisValues of (isXLong ? yF : xF)(shortAxis)) {
 		// count only adjacency alony the short axis
-		const adjacency = countAdjacency(denormalised, shortAxisValues, longAxisValues, true, false);
+		const adjacency = countAdjacency(denormalised, shortAxisValues, longAxisValues, true);
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -94,7 +94,7 @@ function denormalise(applications: Array<IApplication & IUsage>, x: IAxis, y: IA
 /**
  * @hidden
  */
-function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>, countX: boolean, countY: boolean): number {
+function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>, countX: boolean): number {
 	let adjacency = 0;
 
 	// test each application/status combination individually
@@ -102,19 +102,19 @@ function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yVal
 		// create 2d boolean matrix where the application exists 
 		const matrix = yValues.map(y => xValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
 
-		// count adjacent cells on the y axis
-		if (countY) {
-			for (let iY = yValues.length; --iY;) for (let iX = xValues.length; iX--;) {
-				if (matrix[iY][iX] && matrix[iY - 1][iX]) {
+		// count adjacent cells on the x axis
+		if (countX) {
+			for (let iY = yValues.length; iY--;) for (let iX = xValues.length; --iX;) {
+				if (matrix[iY][iX] && matrix[iY][iX - 1]) {
 					adjacency++;
 				}
 			}
 		}
 
-		// count adjacent cells on the x axis
-		if (countX) {
-			for (let iY = yValues.length; iY--;) for (let iX = xValues.length; --iX;) {
-				if (matrix[iY][iX] && matrix[iY][iX - 1]) {
+		// count adjacent cells on the y axis
+		else {
+			for (let iY = yValues.length; --iY;) for (let iX = xValues.length; iX--;) {
+				if (matrix[iY][iX] && matrix[iY - 1][iX]) {
 					adjacency++;
 				}
 			}
