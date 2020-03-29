@@ -48,7 +48,19 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	// iterate permutations of the long axis, use the short axis as provided
 	for (const longAxisValues of (isXLong ? xF : yF)(longAxis)) {
 		// count only adjacency along the long axis
-		const adjacency = countAdjacency(denormalised, shortAxis.values, longAxisValues, false);
+		let adjacency = 0;
+
+		// test each application/status combination individually
+		for (const app of denormalised) {
+			// create 2d boolean matrix where the application exists 
+			const matrix = longAxisValues.map(y => shortAxis.values.map(x => app.usage.some(use => use.y === y && use.x === x)));
+
+			for (let iL = longAxisValues.length; --iL;) for (let iS = shortAxis.values.length; iS--;) {
+				if (matrix[iL][iS] && matrix[iL - 1][iS]) {
+					adjacency++;
+				}
+			}
+		}
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -68,7 +80,20 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	// iterate just the best long axis results and iterate permutations of the short axis
 	for (const longAxisValues of interimScenarios) for (const shortAxisValues of (isXLong ? yF : xF)(shortAxis)) {
 		// count only adjacency alony the short axis
-		const adjacency = countAdjacency(denormalised, shortAxisValues, longAxisValues, true);
+		let adjacency = 0;
+
+		// test each application/status combination individually
+		for (const app of denormalised) {
+			// create 2d boolean matrix where the application exists 
+			const matrix = longAxisValues.map(y => shortAxisValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
+
+			// count adjacent cells on the x axis
+			for (let iL = longAxisValues.length; iL--;) for (let iS = shortAxisValues.length; --iS;) {
+				if (matrix[iL][iS] && matrix[iL][iS - 1]) {
+					adjacency++;
+				}
+			}
+		}
 
 		// just keep the best scenarios
 		if (adjacency >= bestAdjacency) {
@@ -83,39 +108,6 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	}
 
 	return axesSelector(scenarios);
-}
-
-/**
- * @hidden
- */
-function countAdjacency(denormalised: Array<Denormalised>, xValues: Array<string>, yValues: Array<string>, countX: boolean): number {
-	let adjacency = 0;
-
-	// test each application/status combination individually
-	for (const app of denormalised) {
-		// create 2d boolean matrix where the application exists 
-		const matrix = yValues.map(y => xValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
-
-		// count adjacent cells on the x axis
-		if (countX) {
-			for (let iY = yValues.length; iY--;) for (let iX = xValues.length; --iX;) {
-				if (matrix[iY][iX] && matrix[iY][iX - 1]) {
-					adjacency++;
-				}
-			}
-		}
-
-		// count adjacent cells on the y axis
-		else {
-			for (let iY = yValues.length; --iY;) for (let iX = xValues.length; iX--;) {
-				if (matrix[iY][iX] && matrix[iY - 1][iX]) {
-					adjacency++;
-				}
-			}
-		}
-	}
-
-	return adjacency;
 }
 
 /**
