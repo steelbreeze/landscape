@@ -7,7 +7,7 @@ import { IAxes } from './IAxes';
  */
 export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
 
-type Denormalised = Array<IApplication & { status: string; usage: Array<{ x: string; y: string }> }>;
+type Denormalised = IApplication & { status: string; usage: Array<{ x: string; y: string }> };
 
 /**
  * Determine the a good order of the axes resulting in a layout with applications grouped together.
@@ -22,10 +22,28 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	const isXLong = axes.x.values.length > axes.y.values.length;
 	const shortAxis = isXLong ? axes.y : axes.x;
 	const longAxis = isXLong ? axes.x : axes.y;
-	const denormalised = denormalise(applications, shortAxis, longAxis);
 	let interimScenarios: Array<Array<string>> = [];
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
+
+	// denormalise the data
+	const denormalised = applications.reduce<Array<Denormalised>>((result, app) => {
+		const interim: Array<Denormalised> = [];
+
+		for (const use of app.usage) {
+			let denormalisedApp = interim.filter(a => a.status === use.status)[0];
+
+			if (!denormalisedApp) {
+				denormalisedApp = { detail: app.detail, status: use.status, usage: [] };
+
+				interim.push(denormalisedApp);
+			}
+
+			denormalisedApp.usage.push({ x: use.dimensions[shortAxis.name], y: use.dimensions[longAxis.name] });
+		}
+
+		return result.concat(...interim.filter(app => app.usage.length > 1));
+	}, []);
 
 	// iterate permutations of the long axis, use the short axis as provided
 	for (const longAxisValues of (isXLong ? xF : yF)(longAxis)) {
@@ -70,31 +88,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 /**
  * @hidden
  */
-function denormalise(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis): Denormalised {
-	const interim: Denormalised = [];
-
-	for (const app of applications) {
-		for (const use of app.usage) {
-			let interimApp = interim.filter(a => a.detail.id === app.detail.id && a.status === use.status)[0];
-
-			if (!interimApp) {
-				interimApp = { detail: app.detail, status: use.status, usage: [] };
-
-				interim.push(interimApp);
-			}
-
-			interimApp.usage.push({ x: use.dimensions[x.name], y: use.dimensions[y.name] });
-		}
-	}
-
-	// delete single use app/status combinations as they cannot contribute to affinity score
-	return interim.filter(app => app.usage.length > 1);
-}
-
-/**
- * @hidden
- */
-function countAdjacency(denormalised: Denormalised, xValues: Array<string>, yValues: Array<string>, countX: boolean): number {
+function countAdjacency(denormalised: Array<Denormalised>, xValues: Array<string>, yValues: Array<string>, countX: boolean): number {
 	let adjacency = 0;
 
 	// test each application/status combination individually
