@@ -7,7 +7,7 @@ import { IAxes } from './IAxes';
  */
 export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
 
-type Denormalised = IApplication & { status: string; usage: Array<{ x: string; y: string }> };
+type Denormalised = IApplication & { status: string; usage: Array<{ s: string; l: string }> };
 
 /**
  * Determine the a good order of the axes resulting in a layout with applications grouped together.
@@ -39,7 +39,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 				interim.push(denormalisedApp);
 			}
 
-			denormalisedApp.usage.push({ x: use.dimensions[shortAxis.name], y: use.dimensions[longAxis.name] });
+			denormalisedApp.usage.push({ s: use.dimensions[shortAxis.name], l: use.dimensions[longAxis.name] });
 		}
 
 		return result.concat(...interim.filter(app => app.usage.length > 1));
@@ -53,7 +53,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 		// test each application/status combination individually
 		for (const app of denormalised) {
 			// create 2d boolean matrix where the application exists 
-			const matrix = longAxisValues.map(y => shortAxis.values.map(x => app.usage.some(use => use.y === y && use.x === x)));
+			const matrix = longAxisValues.map(l => shortAxis.values.map(s => app.usage.some(use => use.l === l && use.s === s)));
 
 			for (let iL = longAxisValues.length; --iL;) for (let iS = shortAxis.values.length; iS--;) {
 				if (matrix[iL][iS] && matrix[iL - 1][iS]) {
@@ -85,7 +85,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 		// test each application/status combination individually
 		for (const app of denormalised) {
 			// create 2d boolean matrix where the application exists 
-			const matrix = longAxisValues.map(y => shortAxisValues.map(x => app.usage.some(use => use.y === y && use.x === x)));
+			const matrix = longAxisValues.map(l => shortAxisValues.map(s => app.usage.some(use => use.l === l && use.s === s)));
 
 			// count adjacent cells on the x axis
 			for (let iL = longAxisValues.length; iL--;) for (let iS = shortAxisValues.length; --iS;) {
