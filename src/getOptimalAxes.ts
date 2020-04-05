@@ -7,7 +7,22 @@ import { IAxes } from './IAxes';
  */
 export type ScenarioGenerator = (axis: IAxis) => Array<Array<string>>;
 
-type Denormalised = IApplication & { status: string; usage: Array<{ s: string; l: string }> };
+/**
+ * @hidden
+ */
+interface LongAndShort { 
+	l: string;
+	s: string;
+}
+
+/**
+ * @hidden
+ */
+interface IDenormalised {
+	status: string;
+
+	usage: Array<LongAndShort>;
+}
 
 /**
  * Determine the a good order of the axes resulting in a layout with applications grouped together.
@@ -27,8 +42,8 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes:
 	let bestAdjacency = -1;
 
 	// denormalise the data
-	const denormalised = applications.reduce<Array<Denormalised>>((result, app) => {
-		const interim: Array<Denormalised> = [];
+	const denormalised = applications.reduce<Array<IApplication & IDenormalised>>((result, app) => {
+		const interim: Array<IApplication & IDenormalised> = [];
 
 		for (const use of app.usage) {
 			let denormalisedApp = interim.filter(a => a.status === use.status)[0];
