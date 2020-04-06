@@ -1,0 +1,10 @@
+{
+    "inputFiles": "src",
+    "readme": "none",
+    "mode": "file",
+    "excludeExternals": true,
+    "excludeNotExported": true,
+    "excludePrivate": true,
+    "name": "Landscape",
+    "out": "docs/api/v1"
+}
