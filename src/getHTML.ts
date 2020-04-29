@@ -13,7 +13,7 @@ export function getHTML(table: Array<Array<IApplication & ILayout>>, renderer: (
  * Creates a table row.
  * @hidden
  */
-function rowsBuilder( row: Array<IApplication & ILayout>, renderer: (detail: IDetail) => string): string {
+function rowsBuilder(row: Array<IApplication & ILayout>, renderer: (detail: IDetail) => string): string {
 	return `<tr>${row.reduce((res, cell) => `${res}${cellsBuilder(cell, renderer)}`, "")}</tr>`;
 }
 
