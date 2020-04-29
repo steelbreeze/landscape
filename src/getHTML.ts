@@ -1,26 +1,26 @@
-import { IApplication } from './IApplication';
+import { IApplication, IDetail } from './IApplication';
 import { ILayout } from './ILayout';
 
 /**
  * Renders a table as HTML.
  * @param table The application table, returned by [getTable]
  */
-export function getHTML(table: Array<Array<IApplication & ILayout>>): string {
-	return table.reduce(rowsBuilder, "");
+export function getHTML(table: Array<Array<IApplication & ILayout>>, renderer: (detail: IDetail) => string = (detail) => detail.name): string {
+	return table.reduce((res, row) => `${res}${rowsBuilder(row, renderer)}`, "");
 }
 
 /**
  * Creates a table row.
  * @hidden
  */
-function rowsBuilder(res: string, row: Array<IApplication & ILayout>): string {
-	return `${res}<tr>${row.reduce(cellsBuilder, "")}</tr>`;
+function rowsBuilder( row: Array<IApplication & ILayout>, renderer: (detail: IDetail) => string): string {
+	return `<tr>${row.reduce((res, cell) => `${res}${cellsBuilder(cell, renderer)}`, "")}</tr>`;
 }
 
 /**
  * Creates the cells within a table row.
  * @hidden
  */
-function cellsBuilder(res: string, cell: IApplication & ILayout): string {
-	return `${res}<td class="${cell.style} height${Math.round(cell.height * 10)}" colspan="${cell.cols}" rowspan="${cell.rows}">${cell.detail.name}</td>`;
+function cellsBuilder(cell: IApplication & ILayout, renderer: (detail: IDetail) => string): string {
+	return `<td class="${cell.style} height${Math.round(cell.height * 10)}" colspan="${cell.cols}" rowspan="${cell.rows}">${renderer(cell.detail)}</td>`;
 }
