@@ -131,6 +131,7 @@
 			const slider = document.getElementById("slider");
 
 			let data = undefined;
+			let axesDic = undefined;
 			let flattened = undefined;
 			let scenario = undefined;
 
@@ -144,17 +145,16 @@
 				// normalise the data - convert dates as strings to dates
 				data = convertRawJson(json);
 
+				axesDic = landscape.deriveDimensions(data);
+
 				// create the initial table
 				determineAxis();
 			});
 
 			function determineAxis() {
-				// extract the axes from the application data
-				const axes = landscape.deriveAxes(data, xAxisSelector.options[xAxisSelector.selectedIndex].value, yAxisSelector.options[yAxisSelector.selectedIndex].value);
-
 				// find the optimum layout scenarios
 				const start = performance.now();
-				scenario = landscape.getOptimalAxes(data, axes, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+				scenario = landscape.getOptimalAxes(data, { x: axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], y: axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value] }, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 				const end = performance.now();
 
 				console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
@@ -177,12 +177,12 @@
 
 				// get the prepared table with applications filtered by the date of interest
 				const start = performance.now();
-				const html = renderTable(landscape.getTable(filtered, scenario));
+				const html = landscape.getTable(filtered, scenario);
+				const mid = performance.now();
+				lineOfBusiness.innerHTML = renderTable(html);
 				const end = performance.now();
 
-				lineOfBusiness.innerHTML = html;
-
-				console.log(`Render took: ${((end - start) * 1000).toFixed(0)}μs`);
+				console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
 			}
 
 			// alternative function to considering all permutations an axis

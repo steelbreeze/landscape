@@ -6,7 +6,8 @@ import { IUsage } from './IApplication';
  * @param applications The underlying application data.
  * @param x The name of the dimension to use as the x axis.
  * @param y The name of the dimension to use as the y axis.
- * @returns Returns an [IAxis] structure for hte 
+ * @returns Returns an [IAxes] structure containing x and y axes.
+ * @deprecated Migrate to [deriveDimensions].
  */
 export function deriveAxes(applications: Array<IUsage>, x: string, y: string): IAxes {
 	const xValues: Array<string> = [];
