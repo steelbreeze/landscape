@@ -13,8 +13,8 @@
 
 <body>
 	<header>
-		<h2>Mythical bank</h2>
-		<h1>Application landscape</h1>
+		<h2>steelbreeze</h2>
+		<h1>Landscape map viewpoint</h1>
 	</header>
 	<table class="landscape">
 		<caption>Test</caption>
@@ -26,11 +26,7 @@
 			<tr>
 				<td colspan="3">
 					<label for="xAxisSelector">x axis:</label>
-					<select id="xAxisSelector" onchange="determineAxis()">
-						<option value="capability">Capability</option>
-						<option value="location">Location</option>
-						<option value="product" selected="selected">Product</option>
-					</select>
+					<select id="xAxisSelector" onchange="determineAxis()"></select>
 					<label for="xAxisOptimised">optimised:</label>
 					<input type="checkbox" id="xAxisOptimised" onchange="determineAxis()" checked />
 				</td>
@@ -38,11 +34,7 @@
 			<tr>
 				<td colspan="3">
 					<label for="yAxisSelector">y axis:</label>
-					<select id="yAxisSelector" onchange="determineAxis()">
-						<option value="capability" selected="selected">Capability</option>
-						<option value="location">Location</option>
-						<option value="product">Product</option>
-					</select>
+					<select id="yAxisSelector" onchange="determineAxis()"></select>
 					<label for="yAxisOptimised">optimised:</label>
 					<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()" checked />
 				</td>
@@ -146,6 +138,12 @@
 				data = convertRawJson(json);
 
 				axesDic = landscape.deriveDimensions(data);
+
+				// populate the drop-downs for the axes
+				Object.getOwnPropertyNames(axesDic).forEach(function(axis) {
+					xAxisSelector.innerHTML += `<option value="${axis}"${axis === "product" ? " selected" : ""}>${axis}</option>`;
+					yAxisSelector.innerHTML += `<option value="${axis}"${axis === "capability" ? " selected" : ""}>${axis}</option>`;
+				});
 
 				// create the initial table
 				determineAxis();
