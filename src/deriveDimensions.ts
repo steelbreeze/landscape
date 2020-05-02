@@ -12,8 +12,8 @@ export function deriveDimensions(applications: Array<IUsage>): Record<string, IA
 	for (const application of applications) {
 		for (const use of application.usage) {
 			for (const name of Object.getOwnPropertyNames(use.dimensions)) {
-				const value = use.dimensions[name];
 				const axis = index[name] || (index[name] = { name, values: [] });
+				const value = use.dimensions[name];
 
 				if (axis.values.indexOf(value) === -1) {
 					axis.values.push(value)
