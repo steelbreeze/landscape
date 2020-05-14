@@ -259,7 +259,7 @@
 					html += '<tr>';
 
 					for (const cell of row) {
-						html += '<td class="' + cell.style + ' height' + Math.round(cell.height * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '">' + cell.detail.name + '</td>';
+						html += '<td class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '">' + cell.detail.name + '</td>';
 					}
 
 					html += '</tr>';
