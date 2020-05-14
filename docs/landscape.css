@@ -52,6 +52,14 @@ p {
     background: #6CC24A;
   }
   
+.xAxis {
+    width: 25%;
+}
+
+.yAxis {
+    width: 10em;
+}
+
 table.landscape {
     width: 100%;
 
@@ -70,11 +78,9 @@ table.landscape td {
     font-weight: normal;
     text-align: center;
 
-	text-overflow: ellipsis;
-}
-
-table.landscape tr td:first-child {
-	white-space: nowrap;
+    max-height: 2.5em;
+    white-space: nowrap;
+    text-overflow: clip;
 }
 
 table.landscape th.tableHeading {

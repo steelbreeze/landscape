@@ -11,6 +11,9 @@ export interface ILayout {
 	/** The number of rows that this cell will span in the rendered table. */
 	rows: number;
 
-	/** The height of a row as a percentage of a full row. */
+	/** The height of a cell as a percentage of a full row. */
 	height: number;
+
+	/** The width of a cell as a percentage of a full column. */
+	width: number;
 }

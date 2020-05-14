@@ -79,7 +79,7 @@ export function getTable3(applications: Array<Array<Array<IApplication & IUseDet
 			// add the y-axis row heading and its applications
 			interim.push([cell({ id: "", name: axes.x.values[rowIndex] }, "xAxis"), ...row.map((apps, columnIndex) => {
 				const app = apps[Math.floor(rowSplitIndex * appsPerCell[columnIndex] / rowSplit)];
-				return app ? cell(app.detail, app.status, rowSplit) : cell({ id: "", name: "" }, "empty", rowSplit);
+				return app ? cell(app.detail, app.status, 1, rowSplit) : cell({ id: "", name: "" }, "empty", rowSplit);
 			})]);
 		}
 	});
@@ -170,8 +170,8 @@ export function getTable2(applications: Array<Array<Array<IApplication & IUseDet
  * Creates a cell for the output table
  * @hidden
  */
-function cell(detail: IDetail, style: string, split: number = 1): IApplication & ILayout {
-	return { detail, style, cols: 1, rows: 1, height: 1 / split };
+function cell(detail: IDetail, style: string, rowSplit: number = 1, colSplit: number = 1): IApplication & ILayout {
+	return { detail, style, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
 }
 
 /**
