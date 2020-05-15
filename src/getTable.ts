@@ -8,21 +8,22 @@ import { IAxes } from './IAxes';
  * @param axes The x and y axis.
  */
 export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes): Array<Array<IApplication & ILayout>> {
+	// determine the number of rows and columns each cell need to be split into
+	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
+	const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));
+//	const colSplits = appCounts[0].map((col, i) => appCounts.map(row => row[i]).reduce(leastCommonMultiple, 1));
+
 	// create the x-axis heading
 	const result = [[cell({ id: "", name: "" }, "xAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))]];
 
 	// create the rows in the result table
 	applications.forEach((row, rowIndex) => {
-		// determine the number of rows each y axis value need to be expanded to
-		const appsPerCell = row.map(apps => apps.length || 1);
-		const rowSplit = appsPerCell.reduce(leastCommonMultiple, 1);
-
 		// add the rows to the resultant table
-		for (let rowSplitIndex = rowSplit; rowSplitIndex--;) {
+		for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
 			// add the y-axis row heading and its applications
 			result.push([cell({ id: "", name: axes.y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
-				const app = apps[Math.floor(rowSplitIndex * appsPerCell[columnIndex] / rowSplit)];
-				return app ? cell(app.detail, app.status, rowSplit) : cell({ id: "", name: "" }, "empty", rowSplit);
+				const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
+				return app ? cell(app.detail, app.status, rowSplits[rowIndex]) : cell({ id: "", name: "" }, "empty", rowSplits[rowIndex]);
 			})]);
 		}
 	});
