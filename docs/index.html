@@ -175,7 +175,7 @@
 
 				// get the prepared table with applications filtered by the date of interest
 				const start = performance.now();
-				const html = landscape.getTable(filtered, scenario);
+				const html = landscape.getTable(filtered, scenario, false);
 				const mid = performance.now();
 				lineOfBusiness.innerHTML = renderTable(html);
 				const end = performance.now();

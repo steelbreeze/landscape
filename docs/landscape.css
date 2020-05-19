@@ -79,8 +79,10 @@ table.landscape td {
     text-align: center;
 
     max-height: 2.5em;
+    /*
     white-space: nowrap;
     text-overflow: clip;
+    */
 }
 
 table.landscape th.tableHeading {
@@ -119,6 +121,8 @@ table.landscape .height7  {
     padding: 0em;
 }
 
+table.landscape .width3,
+table.landscape .width5,
 table.landscape .height6,
 table.landscape .height5,
 table.landscape .height4  {
@@ -137,7 +141,7 @@ table.landscape td:empty {
     background: repeating-linear-gradient(135deg, white, white 4px, #D0D5DA 4px, #D0D5DA 6px);
 }
 
-table.landscape td.xAxis:empty {
+table.landscape td.yAxis:empty {
     background: none;
 }
 

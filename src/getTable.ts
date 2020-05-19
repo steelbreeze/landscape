@@ -7,26 +7,57 @@ import { IAxes } from './IAxes';
  * @param applications The structured application data having previously been prepared by a call to [prepareData].
  * @param axes The x and y axis.
  */
-export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes): Array<Array<IApplication & ILayout>> {
+export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes, rows: boolean = true): Array<Array<IApplication & ILayout>> {
+	const result: Array<Array<IApplication & ILayout>> = [];
+
 	// determine the number of rows and columns each cell need to be split into
 	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
-	const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));
-//	const colSplits = appCounts[0].map((col, i) => appCounts.map(row => row[i]).reduce(leastCommonMultiple, 1));
 
-	// create the x-axis heading
-	const result = [[cell({ id: "", name: "" }, "xAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))]];
+	// create the top row heading
+	const topRow = [cell({ id: "", name: "" }, "yAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))];
 
-	// create the rows in the result table
-	applications.forEach((row, rowIndex) => {
-		// add the rows to the resultant table
-		for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
-			// add the y-axis row heading and its applications
-			result.push([cell({ id: "", name: axes.y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
-				const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
-				return app ? cell(app.detail, app.status, rowSplits[rowIndex]) : cell({ id: "", name: "" }, "empty", rowSplits[rowIndex]);
-			})]);
-		}
-	});
+	if (rows) {
+		const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));
+
+		result.push(topRow);
+
+		// create the rows in the result table
+		applications.forEach((row, rowIndex) => {
+			// add the rows to the resultant table
+			for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
+				// add the y-axis row heading and its applications
+				result.push([cell({ id: "", name: axes.y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
+					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
+					return app ? cell(app.detail, app.status, 1, rowSplits[rowIndex]) : cell({ id: "", name: "" }, "empty", 1, rowSplits[rowIndex]);
+				})]);
+			}
+		});
+	} else {
+		const colSplits = [1, ...appCounts[0].map((col, i) => appCounts.map(row => row[i]).reduce(leastCommonMultiple, 1))];
+		let rr: Array<IApplication & ILayout> = [];
+
+		topRow.forEach((app, index) => {
+			for (let i = 0; i < colSplits[index]; i++) {
+				rr.push(cell(app.detail, app.style, 1, colSplits[index]));
+			}
+		});
+
+		result.push(rr);
+
+		applications.forEach((row, rowIndex) => {
+			const rr = [cell({ id: "", name: axes.y.values[rowIndex] }, "yAxis")];
+
+			row.forEach((apps, colIndex) => {
+				for (let i = 0; i < colSplits[colIndex + 1]; i++) {
+					const app = apps[Math.floor(i * appCounts[rowIndex][colIndex] / colSplits[colIndex + 1])];
+
+					rr.push(app ? cell(app.detail, app.status, 1, colSplits[colIndex + 1]) : cell({id:"", name:""}, "empty", 1, colSplits[colIndex + 1]));
+				}
+			});
+
+			result.push(rr);
+		});
+	}
 
 	// merge adjacent cells
 	let app, adjacent: IApplication & ILayout;
@@ -50,6 +81,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 			else if (iX && (adjacent = result[iY][iX - 1]) && (adjacent.detail.name === app.detail.name && adjacent.style === app.style && adjacent.rows === app.rows)) {
 				// update the cell left to spread across into this cells space
 				adjacent.cols += app.cols;
+				adjacent.width += app.width;
 
 				// remove this cell
 				result[iY].splice(iX, 1);
