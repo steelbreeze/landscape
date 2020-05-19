@@ -40,6 +40,15 @@
 				</td>
 			</tr>
 			<tr>
+				<td colspan="3">
+					<label for="splitAxisSelector">Axis to split cells by:</label>
+					<select id="splitAxisSelector" onchange="determineAxis()">
+						<option value="x" selected>x</option>
+						<option value="y">y</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="3">View as of: <span id="dateOfInterest"></span></td>
 			</tr>
 			<tr>
@@ -118,6 +127,7 @@
 			const lineOfBusiness = document.getElementById("lineOfBusiness");
 			const xAxisSelector = document.getElementById("xAxisSelector");
 			const yAxisSelector = document.getElementById("yAxisSelector");
+			const splitAxisSelector = document.getElementById("splitAxisSelector");
 			const xAxisOptimised = document.getElementById("xAxisOptimised");
 			const yAxisOptimised = document.getElementById("yAxisOptimised");
 			const slider = document.getElementById("slider");
@@ -173,9 +183,14 @@
 				// update data of interest field
 				dateOfInterest.textContent = date.toLocaleDateString();
 
+				// determine which 
+				const splitAxis = splitAxisSelector.options[splitAxisSelector.selectedIndex].value;
+
+				console.log(splitAxis);
+
 				// get the prepared table with applications filtered by the date of interest
 				const start = performance.now();
-				const html = landscape.getTable(filtered, scenario, false);
+				const html = landscape.getTable(filtered, scenario, splitAxis === 'y');
 				const mid = performance.now();
 				lineOfBusiness.innerHTML = renderTable(html);
 				const end = performance.now();

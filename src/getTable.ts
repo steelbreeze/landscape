@@ -7,7 +7,7 @@ import { IAxes } from './IAxes';
  * @param applications The structured application data having previously been prepared by a call to [prepareData].
  * @param axes The x and y axis.
  */
-export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes, rows: boolean = true): Array<Array<IApplication & ILayout>> {
+export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes, splitOnY: boolean = true): Array<Array<IApplication & ILayout>> {
 	const result: Array<Array<IApplication & ILayout>> = [];
 
 	// determine the number of rows and columns each cell need to be split into
@@ -16,7 +16,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	// create the top row heading
 	const topRow = [cell({ id: "", name: "" }, "yAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))];
 
-	if (rows) {
+	if (splitOnY) {
 		const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));
 
 		result.push(topRow);
@@ -28,7 +28,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 				// add the y-axis row heading and its applications
 				result.push([cell({ id: "", name: axes.y.values[rowIndex] }, "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
-					return app ? cell(app.detail, app.status, 1, rowSplits[rowIndex]) : cell({ id: "", name: "" }, "empty", 1, rowSplits[rowIndex]);
+					return app ? cell(app.detail, app.status, rowSplits[rowIndex], 1) : cell({ id: "", name: "" }, "empty", rowSplits[rowIndex], 1);
 				})]);
 			}
 		});
