@@ -129,6 +129,58 @@
 	},
 	{
 		"detail": {
+			"id": 4,
+			"name": "Summit"
+		},
+		"usage": [
+			{
+				"dimensions": {
+					"capability": "Market gateway",
+					"product": "FX",
+					"location": "United Kingdom"
+				},
+				"status": "green",
+				"decommissioned": "2021-04-15"
+			},
+			{
+				"dimensions": {
+					"capability": "Order execution",
+					"product": "FX",
+					"location": "United Kingdom"
+				},
+				"status": "green",
+				"decommissioned": "2021-01-15"
+			},
+			{
+				"dimensions": {
+					"capability": "Market gateway",
+					"product": "Rates",
+					"location": "United Kingdom"
+				},
+				"status": "green",
+				"decommissioned": "2021-04-15"
+			},
+			{
+				"dimensions": {
+					"capability": "Order management",
+					"product": "Rates",
+					"location": "United Kingdom"
+				},
+				"status": "green",
+				"commissioned": "2021-09-15"
+			},
+			{
+				"dimensions": {
+					"capability": "Order execution",
+					"product": "Rates",
+					"location": "United Kingdom"
+				},
+				"status": "green"
+			}
+		]
+	},
+	{
+		"detail": {
 			"id": 2,
 			"name": "Wall St"
 		},
@@ -209,58 +261,6 @@
 				},
 				"status": "amber",
 				"decommissioned": "2020-03-01"
-			}
-		]
-	},
-	{
-		"detail": {
-			"id": 4,
-			"name": "Summit"
-		},
-		"usage": [
-			{
-				"dimensions": {
-					"capability": "Market gateway",
-					"product": "FX",
-					"location": "United Kingdom"
-				},
-				"status": "green",
-				"decommissioned": "2021-04-15"
-			},
-			{
-				"dimensions": {
-					"capability": "Order execution",
-					"product": "FX",
-					"location": "United Kingdom"
-				},
-				"status": "green",
-				"decommissioned": "2021-01-15"
-			},
-			{
-				"dimensions": {
-					"capability": "Market gateway",
-					"product": "Rates",
-					"location": "United Kingdom"
-				},
-				"status": "green",
-				"decommissioned": "2021-04-15"
-			},
-			{
-				"dimensions": {
-					"capability": "Order management",
-					"product": "Rates",
-					"location": "United Kingdom"
-				},
-				"status": "green",
-				"commissioned": "2021-09-15"
-			},
-			{
-				"dimensions": {
-					"capability": "Order execution",
-					"product": "Rates",
-					"location": "United Kingdom"
-				},
-				"status": "green"
 			}
 		]
 	},
