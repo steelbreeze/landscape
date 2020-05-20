@@ -15,10 +15,21 @@ export function prepareData(applications: Array<IApplication & IUsage>, axes: IA
 	for (const app of applications) {
 		for (const use of app.usage) {
 			const yIndex = axes.y.values.indexOf(use.dimensions[axes.y.name]),
-			      xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
+				xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
 
 			if (yIndex !== -1 && xIndex !== -1) {
-				result[yIndex][xIndex].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
+				let exists = false;
+
+				for (const existing of result[yIndex][xIndex]) {
+					if (app.detail.id === existing.detail.id && use.status === existing.status) {
+						exists = true;
+						break;
+					}
+				}
+
+				if (!exists) {
+					result[yIndex][xIndex].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
+				}
 			}
 		}
 	}
