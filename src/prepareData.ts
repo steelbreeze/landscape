@@ -14,27 +14,15 @@ export function prepareData(applications: Array<IApplication & IUsage>, axes: IA
 	// denormalise and position each application within the correct table cell
 	for (const app of applications) {
 		for (const use of app.usage) {
-			const yIndex = axes.y.values.indexOf(use.dimensions[axes.y.name]),
-				xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
+			const yIndex = axes.y.values.indexOf(use.dimensions[axes.y.name]);
+			const xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
 
-			if (yIndex !== -1 && xIndex !== -1) {
-				let exists = false;
-
-				for (const existing of result[yIndex][xIndex]) {
-					if (app.detail.id === existing.detail.id && use.status === existing.status) {
-						exists = true;
-						break;
-					}
-				}
-
-				if (!exists) {
-					result[yIndex][xIndex].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
-				}
+			// only add the app / use combination if there is a cell in the target table and the app/status combination is unique within that cell
+			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.detail.id === app.detail.id && da.status === use.status)) {
+				result[yIndex][xIndex].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 			}
 		}
 	}
-
-	// TODO: consider the order of applications within a cell to promote merges in getTable
 
 	return result;
 }
