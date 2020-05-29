@@ -2,287 +2,351 @@
 <html lang="en">
 
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="description" content="Landscape map viewpoint visualisation generation tool for HTML." />
 	<meta name="robots" content="index, follow" />
 	<title>Landscape map viewpoint</title>
-	<link rel="stylesheet" href="./landscape.css" media="all">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://steelbreeze.net/style/steelbreeze.css">
+	<link rel="stylesheet" href="./landscape.css">
+
 </head>
 
 <body>
 	<header>
-		<h2>steelbreeze</h2>
-		<h1>Landscape map viewpoint</h1>
+		<div class="fixedWidth">
+			<nav>
+				<a href="https://steelbreeze.net">
+					<h1>steelbreeze</h1>
+				</a>
+			</nav>
+			<nav>
+				<a href="https://steelbreeze.net/landscape" class="selected">landscape</a>
+				<a href="https://steelbreeze.net/state">state</a>
+			</nav>
+		</div>
 	</header>
-	<table class="landscape">
-		<caption>Test</caption>
-		<tbody id="lineOfBusiness">
-		</tbody>
-	</table>
-	<table class="timeline">
-		<tbody>
-			<tr>
-				<td colspan="3">
-					<label for="xAxisSelector">x axis:</label>
-					<select id="xAxisSelector" onchange="determineAxis()"></select>
-					<label for="xAxisOptimised">optimised:</label>
-					<input type="checkbox" id="xAxisOptimised" onchange="determineAxis()" checked />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<label for="yAxisSelector">y axis:</label>
-					<select id="yAxisSelector" onchange="determineAxis()"></select>
-					<label for="yAxisOptimised">optimised:</label>
-					<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()" checked />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<label for="splitAxisSelector">Axis to split cells by:</label>
-					<select id="splitAxisSelector" onchange="determineAxis()">
-						<option value="x" selected>x</option>
-						<option value="y">y</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3">View as of: <span id="dateOfInterest"></span></td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
-						oninput="displayAtDate()" onchange="displayAtDate()" /></td>
-			</tr>
-			<tr>
-				<td id="earliestDate">Earliest</td>
-				<td id="todaysDate">Today</td>
-				<td id="latestDate">Latest</td>
-			</tr>
-		</tbody>
-	</table>
-	<h3>Links</h3>
-	<p><a href="https://github.com/steelbreeze/landscape">GitHub repository</a></p>
-	<p><a href="./api/v1/">API reference</a>
-		<h3>Notes</h3>
-		<p>The application landscape map viewpoint above is auto-generated from a <a
-				href="./data/mythicalBank.json">JSON file</a>
-			containing
-			information about applications and the context in which they are used. The landscape maps viewpoint conveys
-			a great deal of information in a compact form, showing the health of a domain clearly and consisely. For
-			more information see the <a
-				href="https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248"
-				target="_blank">Archimate architecture viewpoints</a> documentation.</p>
-		<p>In this example, we are fixing the y-axis with a pre-defined order of capabilities and determining the
-			optimal
-			sequence of the x-axis. The process from raw data to the table above is as follows:</p>
-		<ol>
-			<li>Extract the unique values for the x and y axis;</li>
-			<li>Determine the optimal sequences of values on the x-axis to position the same applications of the same
-				status
-				together in an order that is closest to the ideal desired order;</li>
-			<li>Produce a table using the optimal x-axis and y-axis where cells containing multiple applications are
-				split
-				and
-				applications of the same status in neighbouring cells merged.</li>
-		</ol>
-		<p>These operations are performed in seperate calls to the library, therefore if you want a preset x and y axis,
-			you
-			can skip the first two steps alltogether, or substitute your own methods.</p>
-		<h3>Browser support</h3>
-		<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should therefore work in
-			any
-			browser. The json data in this example is loaded with <code>window.fetch</code> therefore a polyfil is
-			required
-			for older browsers.</p>
-		<h3>Rendering</h3>
-		<p>Google Chrome, Mozilla Firefox and Opera all render well. Apple Safari and Microsoft Edge and IE all have
-			rowspan
-			table
-			rendering issues where there are complex split cell scenarios.</p>
-		<h3>Outstanding work</h3>
-		<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
-		<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
-		<p>Style of date slider in IE.</p>
-		<p>Base the date slider max and min values based on the underlying data.</p>
+	<main>
+		<div class="mainSection">
+			<div class="fixedWidth">
+				<article>
 
-		<script crossorigin="anonymous"
-			src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch%2Cperformance.now"></script>
-		<script src="./dist/landscape.min.js"></script>
-		<script>
-			// define the preferred sequence of the dimensions
-			// this order will be used if optimised is unchecked
-			// the closest optimised scenario to this will be used if optimised is checked
-			const dimensions = {
-				"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
-				"product": ["FX", "MM", "Rates", "Credit", "Equities"],
-				"status": ["green", "amber", "red"],
-				"location": ["United States", "United Kingdom", "Germany", "Italy"]
-			};
+					<table class="landscape">
+						<tbody id="lineOfBusiness">
+						</tbody>
+					</table>
+					<table class="timeline">
+						<tbody>
+							<tr>
+								<td colspan="3">
+									<label for="xAxisSelector">x axis:</label>
+									<select id="xAxisSelector" onchange="determineAxis()"></select>
+									<label for="xAxisOptimised">optimised:</label>
+									<input type="checkbox" id="xAxisOptimised" onchange="determineAxis()" checked />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label for="yAxisSelector">y axis:</label>
+									<select id="yAxisSelector" onchange="determineAxis()"></select>
+									<label for="yAxisOptimised">optimised:</label>
+									<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()" checked />
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label for="splitAxisSelector">Axis to split cells by:</label>
+									<select id="splitAxisSelector" onchange="determineAxis()">
+										<option value="x" selected>x</option>
+										<option value="y">y</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">View as of: <span id="dateOfInterest"></span></td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
+										oninput="displayAtDate()" onchange="displayAtDate()" /></td>
+							</tr>
+							<tr>
+								<td id="earliestDate">Earliest</td>
+								<td id="todaysDate">Today</td>
+								<td id="latestDate">Latest</td>
+							</tr>
+						</tbody>
+					</table>
+					<p>Links: <a href="/landscape">Project</a>; <a
+						href="https://github.com/steelbreeze/landscape">GitHub</a>; <a
+						href="https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248">Archimate</a>.
+				</p>
+				</article>
+				</div>
+			</div>
+			<div class="mainSection">
+				<div class="fixedWidth">
+					<article>
+						<h1>Notes</h1>
+					<p>The application landscape map viewpoint above is auto-generated from a <a
+							href="./data/mythicalBank.json">JSON file</a>
+						containing
+						information about applications and the context in which they are used. The landscape maps
+						viewpoint conveys
+						a great deal of information in a compact form, showing the health of a domain clearly and
+						consisely. For
+						more information see the <a
+							href="https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248"
+							target="_blank">Archimate architecture viewpoints</a> documentation.</p>
+					<p>In this example, we are fixing the y-axis with a pre-defined order of capabilities and
+						determining the
+						optimal
+						sequence of the x-axis. The process from raw data to the table above is as follows:</p>
+					<ol>
+						<li>Extract the unique values for the x and y axis;</li>
+						<li>Determine the optimal sequences of values on the x-axis to position the same applications of
+							the same
+							status
+							together in an order that is closest to the ideal desired order;</li>
+						<li>Produce a table using the optimal x-axis and y-axis where cells containing multiple
+							applications are
+							split
+							and
+							applications of the same status in neighbouring cells merged.</li>
+					</ol>
+					<p>These operations are performed in seperate calls to the library, therefore if you want a preset x
+						and y axis,
+						you
+						can skip the first two steps alltogether, or substitute your own methods.</p>
+					</article>
+				</div>
+			</div>
+			<div class="mainSection">
+				<div class="fixedWidth">
+					<article>
+						<h1>Browser support</h1>
+					<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should
+						therefore work in
+						any
+						browser. The json data in this example is loaded with <code>window.fetch</code> therefore a
+						polyfil is
+						required
+						for older browsers.</p>
+					</article>
+				</div>
+			</div>
+			<div class="mainSection">
+				<div class="fixedWidth">
+					<article>
+						<h1>Rendering</h1>
+					<p>Google Chrome, Mozilla Firefox and Opera all render well. Apple Safari and Microsoft Edge and IE
+						all have
+						rowspan
+						table
+						rendering issues where there are complex split cell scenarios.</p>
+					</article>
+				</div>
+			</div>
+			<div class="mainSection">
+				<div class="fixedWidth">
+					<article>
+						<h1>Outstanding work</h1>
+					<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
+					<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
+					<p>Style of date slider in IE.</p>
+					<p>Base the date slider max and min values based on the underlying data.</p>
+				</article>
+			</div>
+		</div>
+	</main>
+	<footer>
+		<div class="fixedWidth">
+			<article>
+				<a href="https://www.linkedin.com/in/mesmo/" class="fa fa-linkedin"></a>
+				<a href="https://twitter.com/David13276770" class="fa fa-twitter"></a>
+			</article>
+			<article>
+				Copyright &copy; 2020 David Mesquita-Morris.
+			</article>
+		</div>
+	</footer>
+	<script crossorigin="anonymous"
+		src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch%2Cperformance.now"></script>
+	<script src="./dist/landscape.min.js"></script>
+	<script>
+		// define the preferred sequence of the dimensions
+		// this order will be used if optimised is unchecked
+		// the closest optimised scenario to this will be used if optimised is checked
+		const dimensions = {
+			"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
+			"product": ["FX", "MM", "Rates", "Credit", "Equities"],
+			"status": ["green", "amber", "red"],
+			"location": ["United States", "United Kingdom", "Germany", "Italy"]
+		};
 
-			// get DOM elements that are frequently changed
-			const dateOfInterest = document.getElementById("dateOfInterest");
-			const lineOfBusiness = document.getElementById("lineOfBusiness");
-			const xAxisSelector = document.getElementById("xAxisSelector");
-			const yAxisSelector = document.getElementById("yAxisSelector");
-			const splitAxisSelector = document.getElementById("splitAxisSelector");
-			const xAxisOptimised = document.getElementById("xAxisOptimised");
-			const yAxisOptimised = document.getElementById("yAxisOptimised");
-			const slider = document.getElementById("slider");
+		// get DOM elements that are frequently changed
+		const dateOfInterest = document.getElementById("dateOfInterest");
+		const lineOfBusiness = document.getElementById("lineOfBusiness");
+		const xAxisSelector = document.getElementById("xAxisSelector");
+		const yAxisSelector = document.getElementById("yAxisSelector");
+		const splitAxisSelector = document.getElementById("splitAxisSelector");
+		const xAxisOptimised = document.getElementById("xAxisOptimised");
+		const yAxisOptimised = document.getElementById("yAxisOptimised");
+		const slider = document.getElementById("slider");
 
-			let data = undefined;
-			let axesDic = undefined;
-			let flattened = undefined;
-			let scenario = undefined;
+		let data = undefined;
+		let axesDic = undefined;
+		let flattened = undefined;
+		let scenario = undefined;
 
-			// one-off DOM element updates
-			document.getElementById("earliestDate").textContent = fromToday(-1095).toLocaleDateString();
-			document.getElementById("todaysDate").textContent = fromToday().toLocaleDateString();
-			document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
+		// one-off DOM element updates
+		document.getElementById("earliestDate").textContent = fromToday(-1095).toLocaleDateString();
+		document.getElementById("todaysDate").textContent = fromToday().toLocaleDateString();
+		document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
 
-			// load the applications data
-			window.fetch("./data/mythicalBank.json").then(function (response) { return response.json() }).then(function (json) {
-				// normalise the data - convert dates as strings to dates
-				data = convertRawJson(json);
+		// load the applications data
+		window.fetch("./data/mythicalBank.json").then(function (response) { return response.json() }).then(function (json) {
+			// normalise the data - convert dates as strings to dates
+			data = convertRawJson(json);
 
-				axesDic = landscape.deriveDimensions(data);
+			axesDic = landscape.deriveDimensions(data);
 
-				// populate the drop-downs for the axes
-				Object.getOwnPropertyNames(axesDic).forEach(function(axis) {
-					xAxisSelector.innerHTML += `<option value="${axis}"${axis === "product" ? " selected" : ""}>${axis}</option>`;
-					yAxisSelector.innerHTML += `<option value="${axis}"${axis === "capability" ? " selected" : ""}>${axis}</option>`;
-				});
-
-				// create the initial table
-				determineAxis();
+			// populate the drop-downs for the axes
+			Object.getOwnPropertyNames(axesDic).forEach(function (axis) {
+				xAxisSelector.innerHTML += `<option value="${axis}"${axis === "product" ? " selected" : ""}>${axis}</option>`;
+				yAxisSelector.innerHTML += `<option value="${axis}"${axis === "capability" ? " selected" : ""}>${axis}</option>`;
 			});
 
-			function determineAxis() {
-				// find the optimum layout scenarios
-				const start = performance.now();
-				scenario = landscape.getOptimalAxes(data, { x: axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], y: axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value] }, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
-				const end = performance.now();
+			// create the initial table
+			determineAxis();
+		});
 
-				console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
+		function determineAxis() {
+			// find the optimum layout scenarios
+			const start = performance.now();
+			scenario = landscape.getOptimalAxes(data, { x: axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], y: axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value] }, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+			const end = performance.now();
 
-				// select the preferred scenario
-				if (scenario) {
-					flattened = landscape.prepareData(data, scenario);
+			console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
 
-					displayAtDate();
-				}
+			// select the preferred scenario
+			if (scenario) {
+				flattened = landscape.prepareData(data, scenario);
+
+				displayAtDate();
 			}
+		}
 
-			function displayAtDate() {
-				// filter the application date using the date of interest
-				const date = fromToday(slider.value);
-				const filtered = filterByDate(flattened, date);
+		function displayAtDate() {
+			// filter the application date using the date of interest
+			const date = fromToday(slider.value);
+			const filtered = filterByDate(flattened, date);
 
-				// update data of interest field
-				dateOfInterest.textContent = date.toLocaleDateString();
+			// update data of interest field
+			dateOfInterest.textContent = date.toLocaleDateString();
 
-				// determine which 
-				const splitAxis = splitAxisSelector.options[splitAxisSelector.selectedIndex].value;
+			// determine which 
+			const splitAxis = splitAxisSelector.options[splitAxisSelector.selectedIndex].value;
 
-				console.log(splitAxis);
+			console.log(splitAxis);
 
-				// get the prepared table with applications filtered by the date of interest
-				const start = performance.now();
-				const html = landscape.getTable(filtered, scenario, splitAxis === 'y');
-				const mid = performance.now();
-				lineOfBusiness.innerHTML = renderTable(html);
-				const end = performance.now();
+			// get the prepared table with applications filtered by the date of interest
+			const start = performance.now();
+			const html = landscape.getTable(filtered, scenario, splitAxis === 'y');
+			const mid = performance.now();
+			lineOfBusiness.innerHTML = renderTable(html);
+			const end = performance.now();
 
-				console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
-			}
+			console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
+		}
 
-			// alternative function to considering all permutations an axis
-			function fixOrder(axis) {
-				return [dimensions[axis.name].filter(function (capability) { return axis.values.indexOf(capability) !== -1 })];
-			}
+		// alternative function to considering all permutations an axis
+		function fixOrder(axis) {
+			return [dimensions[axis.name].filter(function (capability) { return axis.values.indexOf(capability) !== -1 })];
+		}
 
-			// map raw JSON data to format required in layout engine (transform date strings into dates)
-			function convertRawJson(json) {
-				return json.map(function (app) {
-					return {
-						detail: app.detail,
-						usage: app.usage.map(function (use) {
-							return {
-								dimensions: use.dimensions,
-								commissioned: use.commissioned ? new Date(use.commissioned) : undefined,
-								decommissioned: use.decommissioned ? new Date(use.decommissioned) : undefined,
-								status: use.status
-							};
-						})
-					};
-				});
-			}
+		// map raw JSON data to format required in layout engine (transform date strings into dates)
+		function convertRawJson(json) {
+			return json.map(function (app) {
+				return {
+					detail: app.detail,
+					usage: app.usage.map(function (use) {
+						return {
+							dimensions: use.dimensions,
+							commissioned: use.commissioned ? new Date(use.commissioned) : undefined,
+							decommissioned: use.decommissioned ? new Date(use.decommissioned) : undefined,
+							status: use.status
+						};
+					})
+				};
+			});
+		}
 
-			function between(date, start, end) {
-				return (start === undefined || date >= start) && (end === undefined || date <= end);
-			}
+		function between(date, start, end) {
+			return (start === undefined || date >= start) && (end === undefined || date <= end);
+		}
 
-			function filterByDate(applications, date) {
-				return applications.map(y => y.map(x => x.filter(app => between(date, app.commissioned, app.decommissioned))));
-			}
+		function filterByDate(applications, date) {
+			return applications.map(y => y.map(x => x.filter(app => between(date, app.commissioned, app.decommissioned))));
+		}
 
-			// helper function to add days to a date
-			function fromToday(offset) {
-				var result = new Date();
+		// helper function to add days to a date
+		function fromToday(offset) {
+			var result = new Date();
 
-				result.setMilliseconds(result.getMilliseconds() + ((offset || 0) * 86400000));
+			result.setMilliseconds(result.getMilliseconds() + ((offset || 0) * 86400000));
 
-				return result;
-			}
+			return result;
+		}
 
-			// pick the scenario closest to the desired layout
-			function selectScenario(scenarios) {
+		// pick the scenario closest to the desired layout
+		function selectScenario(scenarios) {
 
-				let bestScore = 1000000;
-				let bestScenario = 0;
-				const xPreferred = dimensions[scenarios[0].x.name].filter(function (v) { return scenarios[0].x.values.indexOf(v) !== -1; });
-				const yPreferred = dimensions[scenarios[0].y.name].filter(function (v) { return scenarios[0].y.values.indexOf(v) !== -1; });
+			let bestScore = 1000000;
+			let bestScenario = 0;
+			const xPreferred = dimensions[scenarios[0].x.name].filter(function (v) { return scenarios[0].x.values.indexOf(v) !== -1; });
+			const yPreferred = dimensions[scenarios[0].y.name].filter(function (v) { return scenarios[0].y.values.indexOf(v) !== -1; });
 
-				scenarios.forEach(function (scenario, scenarioIndex) {
-					const xAxis = scenario.x;
-					const yAxis = scenario.y;
-					let score = 0;
+			scenarios.forEach(function (scenario, scenarioIndex) {
+				const xAxis = scenario.x;
+				const yAxis = scenario.y;
+				let score = 0;
 
-					xAxis.values.forEach(function (value, valueIndex) {
-						score += Math.abs(xPreferred.indexOf(value) - valueIndex);
-					});
-
-					yAxis.values.forEach(function (value, valueIndex) {
-						score += Math.abs(yPreferred.indexOf(value) - valueIndex);
-					});
-
-					if (score < bestScore) {
-						bestScenario = scenarioIndex;
-						bestScore = score;
-					}
+				xAxis.values.forEach(function (value, valueIndex) {
+					score += Math.abs(xPreferred.indexOf(value) - valueIndex);
 				});
 
-				return scenarios[bestScenario];
-			}
+				yAxis.values.forEach(function (value, valueIndex) {
+					score += Math.abs(yPreferred.indexOf(value) - valueIndex);
+				});
 
-			function renderTable(table) {
-				let html = '';
+				if (score < bestScore) {
+					bestScenario = scenarioIndex;
+					bestScore = score;
+				}
+			});
 
-				for (const row of table) {
-					html += '<tr>';
+			return scenarios[bestScenario];
+		}
 
-					for (const cell of row) {
-						html += '<td class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '">' + cell.detail.name + '</td>';
-					}
+		function renderTable(table) {
+			let html = '';
 
-					html += '</tr>';
+			for (const row of table) {
+				html += '<tr>';
+
+				for (const cell of row) {
+					html += '<td class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '">' + cell.detail.name + '</td>';
 				}
 
-				return html;
+				html += '</tr>';
 			}
-		</script>
+
+			return html;
+		}
+	</script>
 </body>
 
 </html>
