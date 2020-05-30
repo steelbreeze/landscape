@@ -1,4 +1,5 @@
-
+@import 'rally';
+@import 'reply';
 
 .slider {
     -webkit-appearance: none;
@@ -50,7 +51,7 @@ table.landscape {
 }
 
 table.landscape td {
-    border: 1px solid #4A6572;
+    border: 1px solid $ReplyLightBlue;
     padding: 0.8em;
     font-weight: normal;
     text-align: center;
@@ -62,29 +63,25 @@ table.landscape td {
     */
 }
 
-table.landscape th.tableHeading {
-    color: #D0D5DA;
-}
-
 table.landscape td.xAxis {
-    background: #607D8B;
+    background: $ReplyBlue;
     padding: 0.25em 0.75em;
 }
 
 table.landscape td.yAxis {
-    background: #607D8B;
+    background: $ReplyBlue;
 }
 
 table.landscape .green {
-    background: #6CC24A;
+    background: $RallyGreen;
 }
 
 table.landscape .amber {
-    background: #FFAD00;
+    background: $RallyYellow;
 }
 
 table.landscape .red {
-    background: #F93822;
+    background: $RallyOrange;
 }
 
 table.landscape .blue {
