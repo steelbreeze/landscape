@@ -42,7 +42,6 @@
 table.landscape {
     width: 100%;
 
-    margin: 1em 0;
     border-collapse: separate;
     border-spacing: 0;
     font-size: 0.8em;
@@ -51,7 +50,7 @@ table.landscape {
 }
 
 table.landscape td {
-    border: 1px solid $ReplyLightBlue;
+    border: 1px solid $ReplyBlue;
     padding: 0.8em;
     font-weight: normal;
     text-align: center;
