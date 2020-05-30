@@ -206,7 +206,7 @@
 		document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
 
 		// load the applications data
-		window.fetch("./data/mythicalBank.json").then(function (response) { return response.json() }).then(function (json) {
+		window.fetch("./data/mythicalBank.json", { cache: "no-cache" }).then(function (response) { return response.json() }).then(function (json) {
 			// normalise the data - convert dates as strings to dates
 			data = convertRawJson(json);
 
