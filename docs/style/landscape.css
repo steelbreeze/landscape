@@ -50,19 +50,19 @@ table.landscape td {
   font-weight: normal;
   text-align: center;
   max-height: 2.5em;
-  /*
   white-space: nowrap;
+  /*
   text-overflow: clip;
   */
 }
 
 table.landscape td.xAxis {
-  background: #344955;
+  background: #4A6572;
   padding: 0.25em 0.75em;
 }
 
 table.landscape td.yAxis {
-  background: #344955;
+  background: #4A6572;
 }
 
 table.landscape .green {
@@ -84,6 +84,7 @@ table.landscape .blue {
 /* NOTE: cell have a scale size: 10 is a normal height cell, smaller ones may need adjustment. */
 table.landscape .width3,
 table.landscape .width5 {
+  padding: 0;
   font-size: 0.75em;
 }
 
@@ -104,10 +105,6 @@ table.landscape .height2,
 table.landscape .height1 {
   font-size: 0.5em;
   padding: 0em;
-}
-
-table.landscape td:empty {
-  background: repeating-linear-gradient(135deg, #4A6572, #4A6572 4px, #607D8B 4px, #607D8B 6px);
 }
 
 table.landscape td.yAxis:empty {
