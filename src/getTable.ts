@@ -14,7 +14,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
 
 	// create the top row heading
-	const topRow = [cell({ id: "", name: "" }, "yAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))];
+	const topRow = [cell({ id: "", name: "" }, "xAxis"), ...axes.x.values.map(xValue => cell({ id: "", name: xValue }, "xAxis"))];
 
 	if (splitOnY) {
 		const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));

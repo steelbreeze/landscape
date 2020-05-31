@@ -63,12 +63,29 @@ table.landscape td {
 }
 
 table.landscape td.xAxis {
-    background: $ReplyLightBlue;
-    padding: 0.25em 0.75em;
+    padding: 1px 0;
+
+    border-bottom: none;
 }
 
+table.landscape td.xAxis div {        
+    padding: 0.25em 0em;
+    border-bottom: 0.2em solid rgba(white, 87%);
+}
+table.landscape td.xAxis:first-child div {        
+   border-bottom: none;
+}
+            
 table.landscape td.yAxis {
-    background: $ReplyLightBlue;
+    margin: 0;
+    padding: 0 1px;
+    border-right: none;
+}
+
+table.landscape td.yAxis div {
+    padding: 1em;
+    border-right: 0.2em solid rgba(white, 87%);
+    text-align: right;
 }
 
 table.landscape .green {
