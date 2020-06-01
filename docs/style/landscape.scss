@@ -70,7 +70,7 @@ table.landscape td.xAxis {
 
 table.landscape td.xAxis div {        
     padding: 0.25em 0em;
-    border-bottom: 0.2em solid rgba(white, 87%);
+    border-bottom: 0.2em solid $RallyBlue;// rgba(white, 87%);
 }
 table.landscape td.xAxis:first-child div {        
    border-bottom: none;
@@ -84,7 +84,7 @@ table.landscape td.yAxis {
 
 table.landscape td.yAxis div {
     padding: 1em;
-    border-right: 0.2em solid rgba(white, 87%);
+    border-right: 0.2em solid $RallyBlue;// rgba(white, 87%);
     text-align: right;
 }
 

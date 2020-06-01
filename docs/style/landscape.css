@@ -63,7 +63,7 @@ table.landscape td.xAxis {
 
 table.landscape td.xAxis div {
   padding: 0.25em 0em;
-  border-bottom: 0.2em solid rgba(255, 255, 255, 0.87);
+  border-bottom: 0.2em solid #72DEFF;
 }
 
 table.landscape td.xAxis:first-child div {
@@ -78,7 +78,7 @@ table.landscape td.yAxis {
 
 table.landscape td.yAxis div {
   padding: 1em;
-  border-right: 0.2em solid rgba(255, 255, 255, 0.87);
+  border-right: 0.2em solid #72DEFF;
   text-align: right;
 }
 
