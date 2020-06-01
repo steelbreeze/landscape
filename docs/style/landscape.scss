@@ -31,14 +31,6 @@
     background: #6CC24A;
   }
   
-.xAxis {
-    width: 25%;
-}
-
-.yAxis {
-    width: 10em;
-}
-
 table.landscape {
     width: 100%;
 
@@ -62,6 +54,14 @@ table.landscape td {
     */
 }
 
+.xAxis {
+    width: 25%;
+}
+
+.yAxis, .xyAxis {
+    width: 8.5em;
+}
+
 table.landscape td.xAxis {
     padding: 1px 0;
 
@@ -83,7 +83,7 @@ table.landscape td.yAxis {
 }
 
 table.landscape td.yAxis div {
-    padding: 1em;
+    padding: 1em 1em 1em 0em;
     border-right: 0.2em solid $RallyBlue;// rgba(white, 87%);
     text-align: right;
 }
@@ -155,4 +155,8 @@ table.timeline td:first-child{
 }
 table.timeline td:last-child{
     text-align: right;
+}
+
+ol {
+    margin: 1.1em;
 }
