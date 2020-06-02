@@ -30,22 +30,17 @@
 
 table.landscape {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
   font-size: 0.8em;
   table-layout: fixed;
 }
 
 table.landscape td {
-  border: 1px solid #344955;
+  border: 2px solid transparent;
   padding: 0.8em;
   font-weight: normal;
   text-align: center;
   max-height: 2.5em;
   white-space: nowrap;
-  /*
-  text-overflow: clip;
-  */
 }
 
 .xAxis {
@@ -57,7 +52,7 @@ table.landscape td {
 }
 
 table.landscape td.xAxis {
-  padding: 1px 0;
+  padding: 0;
   border-bottom: none;
 }
 
@@ -72,7 +67,7 @@ table.landscape td.xAxis:first-child div {
 
 table.landscape td.yAxis {
   margin: 0;
-  padding: 0 1px;
+  padding: 0;
   border-right: none;
 }
 
@@ -92,10 +87,6 @@ table.landscape .amber {
 
 table.landscape .red {
   background: #FF6859;
-}
-
-table.landscape .blue {
-  background: #B1C9E8;
 }
 
 /* NOTE: cell have a scale size: 10 is a normal height cell, smaller ones may need adjustment. */
@@ -122,10 +113,6 @@ table.landscape .height2,
 table.landscape .height1 {
   font-size: 0.5em;
   padding: 0em;
-}
-
-table.landscape td.yAxis:empty {
-  background: none;
 }
 
 table.timeline {
