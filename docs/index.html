@@ -40,9 +40,7 @@
 						know shapes and patterns are acceptable or not.</p>
 				</article>
 				<article class="widget">
-					<table class="landscape">
-						<tbody id="lineOfBusiness">
-						</tbody>
+					<table class="landscape" id="lineOfBusiness">
 					</table>
 				</article>
 				<article class="widget">
@@ -347,6 +345,16 @@
 		function renderTable(table) {
 			let html = '';
 
+			html += '<colgroup>';
+
+				for(const cell of table[0]) {
+					html += '<col colspan="' + cell.cols +'"></col>'
+				}
+
+			html += '</colgroup>';
+
+
+
 			for (const row of table) {
 				html += '<tr>';
 
@@ -356,6 +364,8 @@
 
 				html += '</tr>';
 			}
+
+			console.log(html);
 
 			return html;
 		}
