@@ -345,16 +345,6 @@
 		function renderTable(table) {
 			let html = '';
 
-			html += '<colgroup>';
-
-				for(const cell of table[0]) {
-					html += '<col colspan="' + cell.cols +'"></col>'
-				}
-
-			html += '</colgroup>';
-
-
-
 			for (const row of table) {
 				html += '<tr>';
 
