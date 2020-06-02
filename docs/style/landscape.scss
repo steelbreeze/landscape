@@ -39,12 +39,12 @@ table.landscape {
 
 table.landscape td {
     border: 2px solid transparent;
-    padding: 0.8em;
+//    padding: 0.8em;
     font-weight: normal;
     text-align: center;
 
     max-height: 2.5em;
-    white-space: nowrap;
+//    white-space: nowrap;
 }
 
 .xAxis {
@@ -52,7 +52,7 @@ table.landscape td {
 }
 
 .yAxis, .xyAxis {
-    width: 8.5em;
+    width: 8em;
 }
 
 table.landscape td.xAxis {
@@ -76,7 +76,7 @@ table.landscape td.yAxis {
 }
 
 table.landscape td.yAxis div {
-    padding: 1em 1em 1em 0em;
+    padding: 1em 0.5em 1em 0em;
     border-right: 0.2em solid $RallyBlue;// rgba(white, 87%);
     text-align: right;
 }
@@ -94,26 +94,26 @@ table.landscape .red {
 }
 
 /* NOTE: cell have a scale size: 10 is a normal height cell, smaller ones may need adjustment. */
-table.landscape .width3,
-table.landscape .width5 {
+table.landscape .width3 div,
+table.landscape .width5 div {
     padding: 0;
-    font-size: 0.75em;
+//    font-size: 0.75em;
 }
 
-table.landscape .height9,
-table.landscape .height8,
-table.landscape .height7  {
+table.landscape .height9 div,
+table.landscape .height8 div,
+table.landscape .height7 div  {
     padding: 0em;
 }
-table.landscape .height6,
-table.landscape .height5,
-table.landscape .height4  {
+table.landscape .height6 div,
+table.landscape .height5 div,
+table.landscape .height4 div  {
     padding: 0em;
 }
 
-table.landscape .height3,
-table.landscape .height2,
-table.landscape .height1 {
+table.landscape .height3 div,
+table.landscape .height2 div,
+table.landscape .height1 div {
     font-size: 0.5em;
     padding: 0em;
 }
