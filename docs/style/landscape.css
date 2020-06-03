@@ -1,33 +1,3 @@
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 10px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
-  border-radius: 50%;
-  background: #6CC24A;
-  cursor: pointer;
-}
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  border: 2px solid white;
-  border-radius: 50%;
-  background: #6CC24A;
-}
-
 table.landscape {
   width: 100%;
   font-size: 0.8em;
@@ -53,10 +23,6 @@ td div {
 
 .yAxis, .xyAxis {
   width: 8em;
-}
-
-.yAxis div {
-  white-space: nowrap;
 }
 
 table.landscape td.xAxis {
@@ -121,32 +87,6 @@ table.landscape .height2,
 table.landscape .height1 {
   font-size: 0.5em;
   padding: 0em;
-}
-
-table.timeline {
-  width: 100%;
-  margin: 1em 0;
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 0.8em;
-  table-layout: fixed;
-  text-align: center;
-}
-
-table.timeline td {
-  padding: 0.25em 0;
-}
-
-table.timeline td:first-child {
-  text-align: left;
-}
-
-table.timeline td:last-child {
-  text-align: right;
-}
-
-ol {
-  margin: 1.1em;
 }
 
 /*# sourceMappingURL=landscape.css.map */

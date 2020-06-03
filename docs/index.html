@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://steelbreeze.net/style/steelbreeze.css">
 	<link rel="stylesheet" href="./style/landscape.css">
+	<link rel="stylesheet" href="./style/controls.css">
 </head>
 
 <body>
@@ -345,17 +346,15 @@
 		function renderTable(table) {
 			let html = '';
 
-			for (const row of table) {
-				html += '<tr>';
+			table.forEach(function (row, rowIndex) {
+				html += rowIndex ? '<tr>' : '<tr>'; // TODO: move to th for x-axis
 
-				for (const cell of row) {
+					row.forEach(function (cell) {
 					html += '<td class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '"><div>' + cell.detail.name + '</div></td>';
-				}
+				});
 
-				html += '</tr>';
-			}
-
-			console.log(html);
+				html += rowIndex ? '</tr>' : '</tr>';
+			});
 
 			return html;
 		}
