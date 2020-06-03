@@ -43,8 +43,12 @@ table.landscape td {
     font-weight: normal;
     text-align: center;
 
-    max-height: 2.5em;
-    white-space: nowrap;
+    min-height: 3em;
+}
+
+td div {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .xAxis {
@@ -54,6 +58,11 @@ table.landscape td {
 .yAxis, .xyAxis {
     width: 8em;
 }
+
+.yAxis div {
+    white-space: nowrap;
+}
+    
 
 table.landscape td.xAxis {
     padding: 0;
