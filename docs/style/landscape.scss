@@ -7,7 +7,7 @@ table.landscape {
     table-layout: fixed;
 }
 
-table.landscape td {
+table.landscape td, table.landscape th {
     border: 2px solid transparent; // NOTE: this method results in a more stable table structure as cells are split
     padding: 0.8em;
     font-weight: normal;
@@ -16,7 +16,7 @@ table.landscape td {
     min-height: 3em;
 }
 
-td div {
+td div, th div {
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -29,20 +29,17 @@ td div {
     width: 8em; // TODO: find a way to have the y-axis sized to its content while allowing the other columns to auto-size
 }
     
-table.landscape td.xAxis {
+table.landscape th.xAxis {
     padding: 0;
 
     border-bottom: none;
 }
 
-table.landscape td.xAxis div {        
+table.landscape th.xAxis div {        
     padding: 0.25em 0em;
     border-bottom: 0.2em solid $RallyBlue;// rgba(white, 87%);
 }
-table.landscape td.xAxis:first-child div {        
-   border-bottom: none;
-}
-            
+
 table.landscape td.yAxis {
     margin: 0;
     padding: 0;

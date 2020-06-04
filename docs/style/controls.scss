@@ -1,0 +1,56 @@
+@import 'reply';
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%; 
+    background: $ReplyOrange;
+    cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: $ReplyOrange;
+  }
+  
+
+table.timeline {
+    width: 100%;
+
+    margin: 1em 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.8em;
+
+    table-layout: fixed;
+
+    text-align: center;
+}
+
+table.timeline td {
+    padding: 0.25em 0;
+}
+
+table.timeline td:first-child{
+    text-align: left;
+}
+table.timeline td:last-child{
+    text-align: right;
+}

@@ -344,17 +344,22 @@
 		}
 
 		function renderTable(table) {
-			let html = '';
+			let html = '<thead>';
 
 			table.forEach(function (row, rowIndex) {
-				html += rowIndex ? '<tr>' : '<tr>'; // TODO: move to th for x-axis
-
-					row.forEach(function (cell) {
-					html += '<td class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '"><div>' + cell.detail.name + '</div></td>';
+				html += '<tr>';
+				row.forEach(function (cell) {
+					html += '<' + (rowIndex ?'td':'th') + ' class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '"><div>' + cell.detail.name + '</div></' + (rowIndex?'td':'th') + '>';
 				});
 
-				html += rowIndex ? '</tr>' : '</tr>';
+				html += '</tr>';
+
+				if(rowIndex === 0) {
+					html += '</thead><tbody>';
+				}
 			});
+
+			html += '</tbody>'
 
 			return html;
 		}
