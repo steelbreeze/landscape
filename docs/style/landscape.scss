@@ -26,13 +26,15 @@ td div, th div {
 }
 
 .yAxis, .xyAxis {
-    width: 8em; // TODO: find a way to have the y-axis sized to its content while allowing the other columns to auto-size
+    width: 8.5em; // TODO: find a way to have the y-axis sized to its content while allowing the other columns to auto-size
 }
     
 table.landscape th.xAxis {
     padding: 0;
 
     border-bottom: none;
+
+    background-color: $ReplyLightBlue;
 }
 
 table.landscape th.xAxis div {        
@@ -43,7 +45,7 @@ table.landscape th.xAxis div {
 table.landscape td.yAxis {
     margin: 0;
     padding: 0;
-    border-right: none;
+    background-color: $ReplyLightBlue;
 }
 
 table.landscape td.yAxis div {

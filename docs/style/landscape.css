@@ -22,12 +22,13 @@ td div, th div {
 }
 
 .yAxis, .xyAxis {
-  width: 8em;
+  width: 8.5em;
 }
 
 table.landscape th.xAxis {
   padding: 0;
   border-bottom: none;
+  background-color: #4A6572;
 }
 
 table.landscape th.xAxis div {
@@ -38,7 +39,7 @@ table.landscape th.xAxis div {
 table.landscape td.yAxis {
   margin: 0;
   padding: 0;
-  border-right: none;
+  background-color: #4A6572;
 }
 
 table.landscape td.yAxis div {
