@@ -40,9 +40,7 @@
 						it could be over-extended. The colour-coding speaks for itself. Knowing your domain, you will
 						know shapes and patterns are acceptable or not.</p>
 				</article>
-				<article class="widget">
-					<table class="landscape" id="lineOfBusiness">
-					</table>
+				<article class="widget" id="landscapeTarget">
 				</article>
 				<article class="widget">
 					<table class="timeline">
@@ -200,7 +198,7 @@
 
 		// get DOM elements that are frequently changed
 		const dateOfInterest = document.getElementById("dateOfInterest");
-		const lineOfBusiness = document.getElementById("lineOfBusiness");
+		const landscapeTarget = document.getElementById("landscapeTarget");
 		const xAxisSelector = document.getElementById("xAxisSelector");
 		const yAxisSelector = document.getElementById("yAxisSelector");
 		const splitAxisSelector = document.getElementById("splitAxisSelector");
@@ -268,7 +266,7 @@
 			const start = performance.now();
 			const html = landscape.getTable(filtered, scenario, splitAxis === 'y');
 			const mid = performance.now();
-			lineOfBusiness.innerHTML = renderTable(html);
+			landscapeTarget.innerHTML = renderTable(html);
 			const end = performance.now();
 
 			console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
@@ -344,7 +342,7 @@
 		}
 
 		function renderTable(table) {
-			let html = '<thead>';
+			let html = '<table class="landscape"><thead>';
 
 			table.forEach(function (row, rowIndex) {
 				html += '<tr>';
@@ -359,7 +357,7 @@
 				}
 			});
 
-			html += '</tbody>'
+			html += '</tbody></table>'
 
 			return html;
 		}
