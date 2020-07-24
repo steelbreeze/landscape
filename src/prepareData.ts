@@ -1,4 +1,4 @@
-import { IApplication, IUsage, IUseDetail } from './IApplication';
+import { IApplication, IUsage, IUseDetail, IDimensions} from './IApplication';
 import { IAxes } from './IAxes';
 
 /**
@@ -7,9 +7,9 @@ import { IAxes } from './IAxes';
  * @param axes The chosen x and y axis.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplication & IUsage>, axes: IAxes): Array<Array<Array<IApplication & IUseDetail>>> {
+export function prepareData(applications: Array<IApplication & IUsage>, axes: IAxes): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {
 	// create the empty destination table structure
-	const result: Array<Array<Array<IApplication & IUseDetail>>> = axes.y.values.map(() => axes.x.values.map(() => []));
+	const result: Array<Array<Array<IApplication & IDimensions & IUseDetail>>> = axes.y.values.map(() => axes.x.values.map(() => []));
 
 	// denormalise and position each application within the correct table cell
 	for (const app of applications) {
@@ -19,7 +19,7 @@ export function prepareData(applications: Array<IApplication & IUsage>, axes: IA
 
 			// only add the app / use combination if there is a cell in the target table and the app/status combination is unique within that cell
 			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.detail.id === app.detail.id && da.status === use.status)) {
-				result[yIndex][xIndex].push({ detail: app.detail, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
+				result[yIndex][xIndex].push({ detail: app.detail, dimensions: use.dimensions, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 			}
 		}
 	}
