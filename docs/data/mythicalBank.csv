@@ -1,31 +1,31 @@
 id,name,capability,product,location,commissioned,decommissioned,status
-6,Thunderhead,Confirmations,FX,United Kingdom,undefined,undefined,green
-6,Thunderhead,Confirmations,MM,United Kingdom,undefined,undefined,green
-6,Thunderhead,Confirmations,Rates,United Kingdom,undefined,undefined,green
-6,Thunderhead,Confirmations,Credit,United Kingdom,undefined,undefined,green
-6,Thunderhead,Market gateway,Credit,United Kingdom,undefined,Thu Oct 01 2020 01:00:00 GMT+0100 (British Summer Time),red
-6,Thunderhead,Confirmations,Equities,United Kingdom,Mon Jun 06 2022 01:00:00 GMT+0100 (British Summer Time),undefined,green
-0,Azure API GW,Market gateway,MM,Italy,Wed Jan 01 2020 00:00:00 GMT+0000 (Greenwich Mean Time),undefined,green
-0,Azure API GW,Market gateway,Credit,Italy,Fri May 01 2020 01:00:00 GMT+0100 (British Summer Time),undefined,green
-0,Azure API GW,Market gateway,Rates,Italy,Sat Feb 20 2021 00:00:00 GMT+0000 (Greenwich Mean Time),undefined,green
-0,Azure API GW,Market gateway,FX,Italy,Sat Feb 20 2021 00:00:00 GMT+0000 (Greenwich Mean Time),undefined,green
-1,ION,Market gateway,MM,Italy,undefined,Wed Jan 01 2020 00:00:00 GMT+0000 (Greenwich Mean Time),red
-1,ION,Market gateway,Credit,United Kingdom,undefined,Fri May 01 2020 01:00:00 GMT+0100 (British Summer Time),red
-4,Summit,Market gateway,FX,United Kingdom,undefined,Thu Apr 15 2021 01:00:00 GMT+0100 (British Summer Time),green
-4,Summit,Order execution,FX,United Kingdom,undefined,Fri Jan 15 2021 00:00:00 GMT+0000 (Greenwich Mean Time),green
-4,Summit,Market gateway,Rates,United Kingdom,undefined,Thu Apr 15 2021 01:00:00 GMT+0100 (British Summer Time),green
-4,Summit,Order management,Rates,United Kingdom,Wed Sep 15 2021 01:00:00 GMT+0100 (British Summer Time),undefined,green
-4,Summit,Order execution,Rates,United Kingdom,undefined,undefined,green
-2,Wall St,Market gateway,MM,United Kingdom,undefined,Thu Oct 01 2020 01:00:00 GMT+0100 (British Summer Time),green
-2,Wall St,Order management,MM,United Kingdom,undefined,undefined,green
-2,Wall St,Order execution,FX,United Kingdom,Sun Nov 15 2020 00:00:00 GMT+0000 (Greenwich Mean Time),undefined,green
-2,Wall St,Order execution,MM,United Kingdom,Sun Nov 15 2020 00:00:00 GMT+0000 (Greenwich Mean Time),undefined,green
-2,Wall St,Order management,FX,United Kingdom,undefined,undefined,green
-3,MX II,Order execution,Credit,United Kingdom,undefined,undefined,amber
-3,MX II,Order execution,MM,United Kingdom,undefined,Fri Jan 15 2021 00:00:00 GMT+0000 (Greenwich Mean Time),amber
-3,MX II,Market gateway,MM,United Kingdom,undefined,Sun Mar 01 2020 00:00:00 GMT+0000 (Greenwich Mean Time),amber
-5,Kdb,Order management,Equities,Germany,undefined,undefined,green
-5,Kdb,Market gateway,Equities,Germany,undefined,undefined,green
-5,Kdb,Confirmations,Equities,Germany,undefined,Fri Sep 09 2022 01:00:00 GMT+0100 (British Summer Time),red
-5,Kdb,Order execution,Equities,Germany,Mon Jun 01 2020 01:00:00 GMT+0100 (British Summer Time),undefined,green
-5,Kdb,Order execution,Equities,Germany,undefined,Wed Jul 01 2020 01:00:00 GMT+0100 (British Summer Time),amber
+6,Thunderhead,Confirmations,FX,United Kingdom,,,green
+6,Thunderhead,Confirmations,MM,United Kingdom,,,green
+6,Thunderhead,Confirmations,Rates,United Kingdom,,,green
+6,Thunderhead,Confirmations,Credit,United Kingdom,,,green
+6,Thunderhead,Market gateway,Credit,United Kingdom,,Thu Oct 01 2020 01:00:00 GMT+0100 (British Summer Time),red
+6,Thunderhead,Confirmations,Equities,United Kingdom,Mon Jun 06 2022 01:00:00 GMT+0100 (British Summer Time),,green
+0,Azure API GW,Market gateway,MM,Italy,Wed Jan 01 2020 00:00:00 GMT+0000 (Greenwich Mean Time),,green
+0,Azure API GW,Market gateway,Credit,Italy,Fri May 01 2020 01:00:00 GMT+0100 (British Summer Time),,green
+0,Azure API GW,Market gateway,Rates,Italy,Sat Feb 20 2021 00:00:00 GMT+0000 (Greenwich Mean Time),,green
+0,Azure API GW,Market gateway,FX,Italy,Sat Feb 20 2021 00:00:00 GMT+0000 (Greenwich Mean Time),,green
+1,ION,Market gateway,MM,Italy,,Wed Jan 01 2020 00:00:00 GMT+0000 (Greenwich Mean Time),red
+1,ION,Market gateway,Credit,United Kingdom,,Fri May 01 2020 01:00:00 GMT+0100 (British Summer Time),red
+4,Summit,Market gateway,FX,United Kingdom,,Thu Apr 15 2021 01:00:00 GMT+0100 (British Summer Time),green
+4,Summit,Order execution,FX,United Kingdom,,Fri Jan 15 2021 00:00:00 GMT+0000 (Greenwich Mean Time),green
+4,Summit,Market gateway,Rates,United Kingdom,,Thu Apr 15 2021 01:00:00 GMT+0100 (British Summer Time),green
+4,Summit,Order management,Rates,United Kingdom,Wed Sep 15 2021 01:00:00 GMT+0100 (British Summer Time),,green
+4,Summit,Order execution,Rates,United Kingdom,,,green
+2,Wall St,Market gateway,MM,United Kingdom,,Thu Oct 01 2020 01:00:00 GMT+0100 (British Summer Time),green
+2,Wall St,Order management,MM,United Kingdom,,,green
+2,Wall St,Order execution,FX,United Kingdom,Sun Nov 15 2020 00:00:00 GMT+0000 (Greenwich Mean Time),,green
+2,Wall St,Order execution,MM,United Kingdom,Sun Nov 15 2020 00:00:00 GMT+0000 (Greenwich Mean Time),,green
+2,Wall St,Order management,FX,United Kingdom,,,green
+3,MX II,Order execution,Credit,United Kingdom,,,amber
+3,MX II,Order execution,MM,United Kingdom,,Fri Jan 15 2021 00:00:00 GMT+0000 (Greenwich Mean Time),amber
+3,MX II,Market gateway,MM,United Kingdom,,Sun Mar 01 2020 00:00:00 GMT+0000 (Greenwich Mean Time),amber
+5,Kdb,Order management,Equities,Germany,,,green
+5,Kdb,Market gateway,Equities,Germany,,,green
+5,Kdb,Confirmations,Equities,Germany,,Fri Sep 09 2022 01:00:00 GMT+0100 (British Summer Time),red
+5,Kdb,Order execution,Equities,Germany,Mon Jun 01 2020 01:00:00 GMT+0100 (British Summer Time),,green
+5,Kdb,Order execution,Equities,Germany,,Wed Jul 01 2020 01:00:00 GMT+0100 (British Summer Time),amber
