@@ -9,6 +9,4 @@ for(const application of applications) {
 	}
 }
 
-console.log(csv);
-
 fs.writeFileSync('./mythicalBank.csv', csv);
