@@ -1,0 +1,32 @@
+{
+  "name": "landscape",
+  "version": "2.0.0-rc.1",
+  "description": "Landscape map viewpoint visualisation",
+  "main": "lib/index.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@steelbreeze/tilly": "^1.0.0-rc.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steelbreeze/landscape.git"
+  },
+  "keywords": [
+    "landscape",
+    "map",
+    "viewponit"
+  ],
+  "author": "mesmo@steelbreeze.net",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steelbreeze/landscape/issues"
+  },
+  "homepage": "https://github.com/steelbreeze/landscape#readme"
+}
