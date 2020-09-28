@@ -6,6 +6,7 @@ import { IAxes } from './IAxes';
  * Prepares application data for rendering according to a selected set of axes. 
  * @param applications The structured application data having previously been prepared by a call to [prepareData].
  * @param axes The x and y axis.
+ * @param key The item within the application detail to use as the main key for laying out.
  */
 export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
 	const result: Array<Array<IApplication & ILayout>> = [];
@@ -94,8 +95,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 
 /**
  * Creates a dummy detail record for the creation of 
- * @param key 
- * @param value 
+ * @hidden
  */
 function detail(key: string, value: string): IDetail {
 	let result: IDetail = {};

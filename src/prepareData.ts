@@ -5,9 +5,10 @@ import { IAxes } from './IAxes';
  * Structures and denormalises the application data aligned to a chosen pair of axes.
  * @param applications The application data to prepare.
  * @param axes The chosen x and y axis.
+ * @param key The key to use for uniqueness checking
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplication & IUsage>, axes: IAxes, key: string = "id"): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {
+export function prepareData(applications: Array<IApplication & IUsage>, axes: IAxes, key: string = "name"): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {
 	// create the empty destination table structure
 	const result: Array<Array<Array<IApplication & IDimensions & IUseDetail>>> = axes.y.values.map(() => axes.x.values.map(() => []));
 
