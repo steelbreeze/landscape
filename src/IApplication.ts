@@ -9,11 +9,7 @@ export interface IApplication {
  * Note: this is designed to be enriched and no type erasure will occur within the landscape library.
  */
 export interface IDetail {
-	/** An identifier for the application. */
-	id: string | number;
-
-	/** The name of the application. */
-	name: string;
+	[key: string]: string;	
 }
 
 export interface IUsage {

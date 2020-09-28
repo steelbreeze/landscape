@@ -7,7 +7,7 @@ import { IAxes } from './IAxes';
  * @param axes The chosen x and y axis.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplication & IUsage>, axes: IAxes): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {
+export function prepareData(applications: Array<IApplication & IUsage>, axes: IAxes, key: string = "id"): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {
 	// create the empty destination table structure
 	const result: Array<Array<Array<IApplication & IDimensions & IUseDetail>>> = axes.y.values.map(() => axes.x.values.map(() => []));
 
@@ -18,7 +18,7 @@ export function prepareData(applications: Array<IApplication & IUsage>, axes: IA
 			const xIndex = axes.x.values.indexOf(use.dimensions[axes.x.name]);
 
 			// only add the app / use combination if there is a cell in the target table and the app/status combination is unique within that cell
-			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.detail.id === app.detail.id && da.status === use.status)) {
+			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.detail[key] === app.detail[key] && da.status === use.status)) {
 				result[yIndex][xIndex].push({ detail: app.detail, dimensions: use.dimensions, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 			}
 		}
