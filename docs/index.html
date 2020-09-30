@@ -237,7 +237,7 @@
 		function determineAxis() {
 			// find the optimum layout scenarios
 			const start = performance.now();
-			scenario = landscape.getOptimalAxes(data, { x: axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], y: axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value] }, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value], selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 			const end = performance.now();
 
 			console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
@@ -265,7 +265,7 @@
 
 			// get the prepared table with applications filtered by the date of interest
 			const start = performance.now();
-			const html = landscape.getTable(filtered, scenario, splitAxis === 'y');
+			const html = landscape.getTable(filtered, scenario.x, scenario.y, splitAxis === 'y');
 			const mid = performance.now();
 			landscapeTarget.innerHTML = renderTable(html);
 			const end = performance.now();

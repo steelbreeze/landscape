@@ -1,6 +1,6 @@
 import { IApplication, IDetail, IUseDetail } from './IApplication';
 import { ILayout } from './ILayout';
-import { IAxes } from './IAxes';
+import { IAxis } from './IAxis';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
@@ -8,14 +8,14 @@ import { IAxes } from './IAxes';
  * @param axes The x and y axis.
  * @param key The item within the application detail to use as the main key for laying out.
  */
-export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, axes: IAxes, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
+export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
 	const result: Array<Array<IApplication & ILayout>> = [];
 
 	// determine the number of rows and columns each cell need to be split into
 	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
 
 	// create the top row heading
-	const topRow = [cell(detail(key, ""), "xyAxis"), ...axes.x.values.map(xValue => cell(detail(key, xValue), "xAxis"))];
+	const topRow = [cell(detail(key, ""), "xyAxis"), ...x.values.map(xValue => cell(detail(key, xValue), "xAxis"))];
 
 	if (splitOnY) {
 		const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));
@@ -27,7 +27,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 			// add the rows to the resultant table
 			for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
 				// add the y-axis row heading and its applications
-				result.push([cell(detail(key, axes.y.values[rowIndex]), "yAxis"), ...row.map((apps, columnIndex) => {
+				result.push([cell(detail(key, y.values[rowIndex]), "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
 					return app ? cell(app.detail, app.status, rowSplits[rowIndex], 1) : cell(detail(key, ""), "empty", rowSplits[rowIndex], 1);
 				})]);
@@ -46,7 +46,7 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
 		result.push(rr);
 
 		applications.forEach((row, rowIndex) => {
-			const rr = [cell(detail(key, axes.y.values[rowIndex]), "yAxis")];
+			const rr = [cell(detail(key, y.values[rowIndex]), "yAxis")];
 
 			row.forEach((apps, colIndex) => {
 				for (let i = 0; i < colSplits[colIndex + 1]; i++) {

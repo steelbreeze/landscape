@@ -28,10 +28,10 @@ interface IDenormalised {
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication & IUsage>, axes: IAxes, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
-	const isXLong = axes.x.values.length > axes.y.values.length;
-	const shortAxis = isXLong ? axes.y : axes.x;
-	const longAxis = isXLong ? axes.x : axes.y;
+export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
+	const isXLong = x.values.length > y.values.length;
+	const shortAxis = isXLong ? y : x;
+	const longAxis = isXLong ? x : y;
 	let interimScenarios: Array<Array<string>> = [];
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
