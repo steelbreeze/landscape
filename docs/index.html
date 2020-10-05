@@ -244,7 +244,7 @@
 
 			// select the preferred scenario
 			if (scenario) {
-				flattened = landscape.prepareData(data, scenario);
+				flattened = landscape.prepareData(data, scenario.x, scenario.y);
 
 				displayAtDate();
 			}
