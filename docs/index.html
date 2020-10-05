@@ -244,10 +244,14 @@
 
 			// select the preferred scenario
 			if (scenario) {
-				flattened = landscape.prepareData(data, scenario.x, scenario.y);
+				flattened = landscape.prepareData(data, scenario.x, scenario.y, nameAndStatus);
 
 				displayAtDate();
 			}
+		}
+
+		function nameAndStatus(detail, use) {
+			return { name: detail.name, status: use.status };
 		}
 
 		function displayAtDate() {
@@ -348,12 +352,12 @@
 			table.forEach(function (row, rowIndex) {
 				html += '<tr>';
 				row.forEach(function (cell) {
-					html += '<' + (rowIndex ?'td':'th') + ' class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '"><div>' + cell.detail.name + '</div></' + (rowIndex?'td':'th') + '>';
+					html += '<' + (rowIndex ? 'td' : 'th') + ' class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '"><div>' + cell.detail.name + '</div></' + (rowIndex ? 'td' : 'th') + '>';
 				});
 
 				html += '</tr>';
 
-				if(rowIndex === 0) {
+				if (rowIndex === 0) {
 					html += '</thead><tbody>';
 				}
 			});
