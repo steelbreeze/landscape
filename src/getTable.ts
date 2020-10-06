@@ -1,4 +1,4 @@
-import { IApplication, IDetail, IUseDetail } from './IApplication';
+import { IApplication, Properties, IUseDetail } from './IApplication';
 import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 
@@ -97,8 +97,8 @@ export function getTable(applications: Array<Array<Array<IApplication & IUseDeta
  * Creates a dummy detail record for the creation of 
  * @hidden
  */
-function detail(key: string, value: string): IDetail {
-	let result: IDetail = {};
+function detail(key: string, value: unknown): Properties {
+	let result: Properties = {};
 
 	result[key] = value;
 
@@ -109,7 +109,7 @@ function detail(key: string, value: string): IDetail {
  * Creates a cell for the output table
  * @hidden
  */
-function cell(detail: IDetail, style: string, rowSplit: number = 1, colSplit: number = 1): IApplication & ILayout {
+function cell(detail: Properties, style: string, rowSplit: number = 1, colSplit: number = 1): IApplication & ILayout {
 	return { detail, style, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
 }
 

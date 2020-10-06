@@ -1,26 +1,20 @@
-/** The core details of an application. */
-export interface IApplication {
-	/** The meta data associated with the application. */
-	detail: IDetail;
-}
-
 /**
- * The meta data associated with an application excluding its usage context.
- * Note: this is designed to be enriched and no type erasure will occur within the landscape library.
+ * An object whose properties are keyed by string and may all have a common type.
  */
-export interface IDetail {
-	[key: string]: string;	
-}
-
-export interface IUsage {
-	/** The data showing the application usage context over time. */
-	usage: Array<IDimensions & IUseDetail>;
+export interface Properties<TProperty = unknown> {
+	[key: string]: TProperty;	
 }
 
 /** A usage context of an application and its status. */
 export interface IDimensions {
 	/** The set of dimensions used to categorise this usage. */
-	dimensions: { [key: string]: string };
+	dimensions: Properties<string>;
+}
+
+/** The core details of an application. */
+export interface IApplication {
+	/** The meta data associated with the application. */
+	detail: Properties;
 }
 
 /**
@@ -41,4 +35,10 @@ export interface IUseDetail {
 	 * This is an optional field; undefined means that the decommissioning date is unknown and therfore this application usage will continue to the end of time.
 	 */
 	decommissioned: Date | undefined;
+}
+
+/** The usage that an application can be put to. */
+export interface IUsage {
+	/** The data showing the application usage context over time. */
+	usage: Array<IDimensions & IUseDetail>;
 }
