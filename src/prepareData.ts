@@ -9,7 +9,7 @@ import { IAxis } from './IAxis';
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & IUseDetail ) => string): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {	// create the empty destination table structure
+export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & IUseDetail ) => any): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {	// create the empty destination table structure
 	const result: Array<Array<Array<{ key: string } & IApplication & IDimensions & IUseDetail>>> = y.values.map(() => x.values.map(() => []));
 
 	// denormalise and position each application within the correct table cell
