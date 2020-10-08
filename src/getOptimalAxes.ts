@@ -1,4 +1,4 @@
-import { IApplication, IUsage } from './IApplication';
+import { IApplication, IUsage, Properties, IDimensions, IUseDetail, IKey } from './IApplication';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
 
@@ -14,21 +14,22 @@ interface LongAndShort {
  * @hidden
  */
 interface IDenormalised {
-	status: string;
-
+	key: IKey;
 	usage: Array<LongAndShort>;
 }
 
 /**
  * Determine the a good order of the axes resulting in a layout with applications grouped together.
  * @param applications The raw application data
- * @param axes The x and y axes
+ * @param x The chosen x axis.
+ * @param y The chosen y axis.
+ * @param getKey A callback to create a unique key for the reduction of applications into the cells.
  * @param axesSelector A function 
  * @param yF The algorithm to use the generate scenarios to test on the y axis; defaults to all permutations.
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & IUseDetail ) => IKey, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
 	const isXLong = x.values.length > y.values.length;
 	const shortAxis = isXLong ? y : x;
 	const longAxis = isXLong ? x : y;
@@ -41,10 +42,12 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 		const interim: Array<IApplication & IDenormalised> = [];
 
 		for (const use of app.usage) {
-			let denormalisedApp = interim.filter(a => a.status === use.status)[0];
+			const key = getKey(app.detail, use);
+
+			let denormalisedApp = interim.filter(a => a.key.minor === key.minor)[0];
 
 			if (!denormalisedApp) {
-				denormalisedApp = { detail: app.detail, status: use.status, usage: [] };
+				denormalisedApp = { detail: app.detail, key, usage: [] };
 
 				interim.push(denormalisedApp);
 			}
@@ -60,7 +63,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 		// count only adjacency along the long axis
 		let adjacency = 0;
 
-		// test each application/status combination individually
+		// test each combination individually
 		for (const app of denormalised) {
 			// create 2d boolean matrix where the application exists 
 			const matrix = longAxisValues.map(l => shortAxis.values.map(s => app.usage.some(use => use.l === l && use.s === s)));

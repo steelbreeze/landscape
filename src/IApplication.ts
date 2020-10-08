@@ -42,3 +42,9 @@ export interface IUsage {
 	/** The data showing the application usage context over time. */
 	usage: Array<IDimensions & IUseDetail>;
 }
+
+/** A user-defined key into the data for determining uniqueness */
+export interface IKey {
+	major: string;
+	minor: string | undefined;
+}

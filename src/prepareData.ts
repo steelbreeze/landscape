@@ -1,4 +1,4 @@
-import { IApplication, IUsage, IUseDetail, IDimensions, Properties } from './IApplication';
+import { IApplication, IUsage, IUseDetail, IDimensions, Properties, IKey } from './IApplication';
 import { IAxis } from './IAxis';
 
 /**
@@ -9,8 +9,8 @@ import { IAxis } from './IAxis';
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & IUseDetail ) => any): Array<Array<Array<IApplication & IDimensions & IUseDetail>>> {	// create the empty destination table structure
-	const result: Array<Array<Array<{ key: string } & IApplication & IDimensions & IUseDetail>>> = y.values.map(() => x.values.map(() => []));
+export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & IUseDetail ) => IKey): Array<Array<Array<{key: IKey} & IApplication & IDimensions & IUseDetail>>> {	// create the empty destination table structure
+	const result: Array<Array<Array<{ key: IKey } & IApplication & IDimensions & IUseDetail>>> = y.values.map(() => x.values.map(() => []));
 
 	// denormalise and position each application within the correct table cell
 	for (const app of applications) {
@@ -20,7 +20,7 @@ export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis
 			const xIndex = x.values.indexOf(use.dimensions[x.name]);
 
 			// only add the app / use combination if there is a cell if the key is not already there
-			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.key === key)) {
+			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.key.major === key.major && da.key.minor === key.minor )) {
 				result[yIndex][xIndex].push({ key, detail: app.detail, dimensions: use.dimensions, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
 			}
 			// TODO: merge usage rather than ignore it

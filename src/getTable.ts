@@ -10,7 +10,7 @@ import { IAxis } from './IAxis';
  */
 export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
 	const result: Array<Array<IApplication & ILayout>> = [];
-
+console.log(applications);
 	// determine the number of rows and columns each cell need to be split into
 	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
 

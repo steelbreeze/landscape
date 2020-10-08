@@ -237,21 +237,21 @@
 		function determineAxis() {
 			// find the optimum layout scenarios
 			const start = performance.now();
-			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value], selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value], key, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 			const end = performance.now();
 
 			console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
 
 			// select the preferred scenario
 			if (scenario) {
-				flattened = landscape.prepareData(data, scenario.x, scenario.y, nameAndStatus);
+				flattened = landscape.prepareData(data, scenario.x, scenario.y, key);
 
 				displayAtDate();
 			}
 		}
 
-		function nameAndStatus(detail, use) {
-			return { name: detail.name, status: use.status };
+		function key(detail, use) {
+			return { major: detail.name, minor: use.status };
 		}
 
 		function displayAtDate() {
