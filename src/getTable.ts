@@ -1,4 +1,4 @@
-import { IApplication, Properties, IUseDetail } from './IApplication';
+import { IApplication, Properties, IUseDetail, IKeyed } from './IApplication';
 import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 
@@ -8,9 +8,9 @@ import { IAxis } from './IAxis';
  * @param axes The x and y axis.
  * @param key The item within the application detail to use as the main key for laying out.
  */
-export function getTable(applications: Array<Array<Array<IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
+export function getTable(applications: Array<Array<Array<IKeyed & IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
 	const result: Array<Array<IApplication & ILayout>> = [];
-console.log(applications);
+
 	// determine the number of rows and columns each cell need to be split into
 	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
 

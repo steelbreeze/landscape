@@ -1,4 +1,4 @@
-import { IApplication, IUsage, Properties, IDimensions, IUseDetail, IKey } from './IApplication';
+import { IApplication, IUsage, Properties, IDimensions, IUseDetail, IKey, IKeyed } from './IApplication';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
 
@@ -39,7 +39,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 
 	// denormalise the data
 	const denormalised = applications.reduce<Array<IApplication & IDenormalised>>((result, app) => {
-		const interim: Array<IApplication & IDenormalised> = [];
+		const interim: Array<IKeyed & IApplication & IDenormalised> = [];
 
 		for (const use of app.usage) {
 			const key = getKey(app.detail, use);

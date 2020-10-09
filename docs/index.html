@@ -265,8 +265,6 @@
 			// determine which 
 			const splitAxis = splitAxisSelector.options[splitAxisSelector.selectedIndex].value;
 
-			console.log(splitAxis);
-
 			// get the prepared table with applications filtered by the date of interest
 			const start = performance.now();
 			const html = landscape.getTable(filtered, scenario.x, scenario.y, splitAxis === 'y');
