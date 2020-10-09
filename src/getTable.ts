@@ -1,21 +1,22 @@
-import { IApplication, Properties, IUseDetail, IKeyed } from './IApplication';
+import { IApplication, IUseDetail, IKeyed } from './IApplication';
 import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
  * @param applications The structured application data having previously been prepared by a call to [prepareData].
- * @param axes The x and y axis.
- * @param key The item within the application detail to use as the main key for laying out.
+ * @param x The chosen x axis.
+ * @param y The chosen y axis.
+ * @param splitOnY When splitting and merging cells use this to split on the x or y axis.
  */
-export function getTable(applications: Array<Array<Array<IKeyed & IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true, key: string = "name"): Array<Array<IApplication & ILayout>> {
-	const result: Array<Array<IApplication & ILayout>> = [];
+export function getTable(applications: Array<Array<Array<IKeyed & IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true): Array<Array<ILayout>> {
+	const result: Array<Array<ILayout>> = [];
 
 	// determine the number of rows and columns each cell need to be split into
 	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
 
 	// create the top row heading
-	const topRow = [cell(detail(key, ""), "xyAxis"), ...x.values.map(xValue => cell(detail(key, xValue), "xAxis"))];
+	const topRow = [cell("", "xyAxis"), ...x.values.map(xValue => cell(xValue, "xAxis"))];
 
 	if (splitOnY) {
 		const rowSplits = appCounts.map(row => row.reduce(leastCommonMultiple, 1));
@@ -27,32 +28,33 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 			// add the rows to the resultant table
 			for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
 				// add the y-axis row heading and its applications
-				result.push([cell(detail(key, y.values[rowIndex]), "yAxis"), ...row.map((apps, columnIndex) => {
+				result.push([cell(y.values[rowIndex], "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
-					return app ? cell(app.detail, app.status, rowSplits[rowIndex], 1) : cell(detail(key, ""), "empty", rowSplits[rowIndex], 1);
+
+					return app ? cell(app.key.major, app.key.minor, rowSplits[rowIndex]) : cell("", "", rowSplits[rowIndex]);
 				})]);
 			}
 		});
 	} else {
 		const colSplits = [1, ...appCounts[0].map((col, i) => appCounts.map(row => row[i]).reduce(leastCommonMultiple, 1))];
-		let rr: Array<IApplication & ILayout> = [];
+		let rr: Array<ILayout> = [];
 
 		topRow.forEach((app, index) => {
 			for (let i = 0; i < colSplits[index]; i++) {
-				rr.push(cell(app.detail, app.style, 1, colSplits[index]));
+				rr.push(cell(app.text, app.style, 1, colSplits[index]));
 			}
 		});
 
 		result.push(rr);
 
 		applications.forEach((row, rowIndex) => {
-			const rr = [cell(detail(key, y.values[rowIndex]), "yAxis")];
+			const rr = [cell(y.values[rowIndex], "yAxis")];
 
 			row.forEach((apps, colIndex) => {
 				for (let i = 0; i < colSplits[colIndex + 1]; i++) {
 					const app = apps[Math.floor(i * appCounts[rowIndex][colIndex] / colSplits[colIndex + 1])];
 
-					rr.push(app ? cell(app.detail, app.status, 1, colSplits[colIndex + 1]) : cell(detail(key, ""), "empty", 1, colSplits[colIndex + 1]));
+					rr.push(app ? cell(app.key.major, app.key.minor, 1, colSplits[colIndex + 1]) : cell("", "", 1, colSplits[colIndex + 1]));
 				}
 			});
 
@@ -61,7 +63,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 	}
 
 	// merge adjacent cells
-	let app, adjacent: IApplication & ILayout;
+	let app, adjacent: ILayout;
 
 	// iterate through the cells, from the bottom right to top left
 	for (let iY: number = result.length; iY--;) {
@@ -69,7 +71,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 			app = result[iY][iX];
 
 			// try merge with cell above first
-			if (iY && (adjacent = result[iY - 1][iX]) && (adjacent.detail[key] === app.detail[key] && adjacent.style === app.style && adjacent.cols === app.cols)) {
+			if (iY && (adjacent = result[iY - 1][iX]) && (adjacent.text === app.text && adjacent.style === app.style && adjacent.cols === app.cols)) {
 				// update the cell above to drop down into this cells space
 				adjacent.rows += app.rows;
 				adjacent.height += app.height;
@@ -79,7 +81,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 			}
 
 			// otherwise try cell to left
-			else if (iX && (adjacent = result[iY][iX - 1]) && (adjacent.detail[key] === app.detail[key] && adjacent.style === app.style && adjacent.rows === app.rows)) {
+			else if (iX && (adjacent = result[iY][iX - 1]) && (adjacent.text === app.text && adjacent.style === app.style && adjacent.rows === app.rows)) {
 				// update the cell left to spread across into this cells space
 				adjacent.cols += app.cols;
 				adjacent.width += app.width;
@@ -94,23 +96,11 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 }
 
 /**
- * Creates a dummy detail record for the creation of 
- * @hidden
- */
-function detail(key: string, value: unknown): Properties {
-	let result: Properties = {};
-
-	result[key] = value;
-
-	return result;
-}
-
-/**
  * Creates a cell for the output table
  * @hidden
  */
-function cell(detail: Properties, style: string, rowSplit: number = 1, colSplit: number = 1): IApplication & ILayout {
-	return { detail, style, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
+function cell(text: string, style: string, rowSplit: number = 1, colSplit: number = 1): ILayout {
+	return { text, style, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
 }
 
 /**

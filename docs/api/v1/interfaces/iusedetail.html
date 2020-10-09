@@ -55,7 +55,7 @@
 					<a href="iusedetail.html">IUseDetail</a>
 				</li>
 			</ul>
-			<h1>Interface IUseDetail</h1>
+			<h1>Interface IUseDetail&lt;TProperty&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -69,13 +69,35 @@
 					</div>
 				</div>
 			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>TProperty</h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IUseDetail</span>
+						<a href="properties.html" class="tsd-signature-type">Properties</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">IUseDetail</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
+			</section>
+			<section class="tsd-panel tsd-kind-interface tsd-has-type-parameter">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">TProperty</span></div>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The details of when a usage context started, ended and its status.</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
@@ -86,7 +108,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iusedetail.html#commissioned" class="tsd-kind-icon">commissioned</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iusedetail.html#decommissioned" class="tsd-kind-icon">decommissioned</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iusedetail.html#status" class="tsd-kind-icon">status</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">commissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/41180e4/src/IApplication.ts#L31">IApplication.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/9ea438c/src/IApplication.ts#L28">IApplication.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -116,28 +137,13 @@
 					<div class="tsd-signature tsd-kind-icon">decommissioned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/41180e4/src/IApplication.ts#L37">IApplication.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/9ea438c/src/IApplication.ts#L34">IApplication.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The date this this particular application usage was decommissioned.
 							This is an optional field; undefined means that the decommissioning date is unknown and therfore this application usage will continue to the end of time.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="status" class="tsd-anchor"></a>
-					<h3>status</h3>
-					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/41180e4/src/IApplication.ts#L25">IApplication.ts:25</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The status of an application in this usage context.</p>
 						</div>
 					</div>
 				</section>
@@ -179,7 +185,7 @@
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
 						<a href="iusedetail.html" class="tsd-kind-icon">IUse<wbr>Detail</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -187,9 +193,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iusedetail.html#decommissioned" class="tsd-kind-icon">decommissioned</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iusedetail.html#status" class="tsd-kind-icon">status</a>
 							</li>
 						</ul>
 					</li>

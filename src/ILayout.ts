@@ -2,6 +2,9 @@
  * A single cell in the final table structure, ready for transforming into HTML via the getHTML call or other method (e.g. D3)
  */
 export interface ILayout {
+	/** The text to display in a cell. */
+	text: string;
+
 	/** The style to use when rendering the table. */
 	style: string;
 

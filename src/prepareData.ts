@@ -21,7 +21,7 @@ export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis
 
 			// only add the app / use combination if there is a cell if the key is not already there
 			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.key.major === key.major && da.key.minor === key.minor)) {
-				result[yIndex][xIndex].push({ key, detail: app.detail, dimensions: use.dimensions, commissioned: use.commissioned, decommissioned: use.decommissioned, status: use.status });
+				result[yIndex][xIndex].push({ key, detail: app.detail, dimensions: use.dimensions, commissioned: use.commissioned, decommissioned: use.decommissioned });
 			}
 			// TODO: merge usage rather than ignore it
 		}

@@ -20,10 +20,7 @@ export interface IApplication {
 /**
  * The details of when a usage context started, ended and its status.
  */
-export interface IUseDetail {
-	/** The status of an application in this usage context. */
-	status: string;
-
+export interface IUseDetail extends Properties {
 	/**
 	 * The date this this particular application usage was commissioned.
 	 * This is an optional field; undefined means that the origional commissioning date is unknown and therfore the beginning of time.
@@ -43,10 +40,13 @@ export interface IUsage {
 	usage: Array<IDimensions & IUseDetail>;
 }
 
-/** A user-defined key into the data for determining uniqueness */
+/** A user-defined composite key into the data for determining uniqueness within the displayed data */
 export interface IKey {
+	/** The major key will be used for the text in the final displayed table */
 	major: string;
-	minor: string | undefined;
+
+	/** The minor key will be used to style */
+	minor: string;
 }
 
 /** A key in a wider data structure */
