@@ -17,27 +17,10 @@ export interface IApplication {
 	detail: Properties;
 }
 
-/**
- * The details of when a usage context started, ended and its status.
- */
-export interface IUseDetail extends Properties {
-	/**
-	 * The date this this particular application usage was commissioned.
-	 * This is an optional field; undefined means that the origional commissioning date is unknown and therfore the beginning of time.
-	 */
-	commissioned: Date | undefined;
-
-	/**
-	 * The date this this particular application usage was decommissioned.
-	 * This is an optional field; undefined means that the decommissioning date is unknown and therfore this application usage will continue to the end of time.
-	 */
-	decommissioned: Date | undefined;
-}
-
 /** The usage that an application can be put to. */
 export interface IUsage {
 	/** The data showing the application usage context over time. */
-	usage: Array<IDimensions & IUseDetail>;
+	usage: Array<IDimensions & Properties>;
 }
 
 /** A user-defined composite key into the data for determining uniqueness within the displayed data */

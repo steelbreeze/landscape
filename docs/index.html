@@ -297,12 +297,13 @@
 			});
 		}
 
+		function filterByDate(applications, date) {
+//			return applications.map(y => y.map(x => x.filter(app => between(date, app.commissioned, app.decommissioned))));
+			return applications.map(y => y.map(x => x.filter(app => app.usage.some(use => between(date, use.commissioned, use.decommissioned)))));
+}
+
 		function between(date, start, end) {
 			return (start === undefined || date >= start) && (end === undefined || date <= end);
-		}
-
-		function filterByDate(applications, date) {
-			return applications.map(y => y.map(x => x.filter(app => between(date, app.commissioned, app.decommissioned))));
 		}
 
 		// helper function to add days to a date

@@ -1,4 +1,4 @@
-import { IApplication, IUseDetail, IKeyed } from './IApplication';
+import { IApplication, Properties, IKeyed } from './IApplication';
 import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 
@@ -9,7 +9,7 @@ import { IAxis } from './IAxis';
  * @param y The chosen y axis.
  * @param splitOnY When splitting and merging cells use this to split on the x or y axis.
  */
-export function getTable(applications: Array<Array<Array<IKeyed & IApplication & IUseDetail>>>, x: IAxis, y: IAxis, splitOnY: boolean = true): Array<Array<ILayout>> {
+export function getTable(applications: Array<Array<Array<IKeyed & IApplication & Properties>>>, x: IAxis, y: IAxis, splitOnY: boolean = true): Array<Array<ILayout>> {
 	const result: Array<Array<ILayout>> = [];
 
 	// determine the number of rows and columns each cell need to be split into

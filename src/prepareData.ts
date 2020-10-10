@@ -1,4 +1,4 @@
-import { IApplication, IUsage, IUseDetail, IDimensions, Properties, IKey, IKeyed } from './IApplication';
+import { IApplication, IUsage, IDimensions, Properties, IKey, IKeyed } from './IApplication';
 import { IAxis } from './IAxis';
 
 /**
@@ -9,8 +9,8 @@ import { IAxis } from './IAxis';
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & IUseDetail) => IKey): Array<Array<Array<IKeyed & IApplication & IDimensions & IUseDetail>>> {
-	const result: Array<Array<Array<IKeyed & IApplication & IDimensions & IUseDetail>>> = y.values.map(() => x.values.map(() => []));
+export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & Properties) => IKey): Array<Array<Array<IKeyed & IApplication & IUsage>>> {
+	const result: Array<Array<Array<IKeyed & IApplication & IUsage>>> = y.values.map(() => x.values.map(() => []));
 
 	// denormalise and position each application within the correct table cell
 	for (const app of applications) {
@@ -18,12 +18,13 @@ export function prepareData(applications: Array<IApplication & IUsage>, x: IAxis
 			const key = getKey(app.detail, use);
 			const yIndex = y.values.indexOf(use.dimensions[y.name]);
 			const xIndex = x.values.indexOf(use.dimensions[x.name]);
+			const resApp = result[yIndex][xIndex].find(da => da.key === key);
 
-			// only add the app / use combination if there is a cell if the key is not already there
-			if (yIndex !== -1 && xIndex !== -1 && !result[yIndex][xIndex].some(da => da.key.major === key.major && da.key.minor === key.minor)) {
-				result[yIndex][xIndex].push({ key, detail: app.detail, dimensions: use.dimensions, commissioned: use.commissioned, decommissioned: use.decommissioned });
+			if (resApp) {
+				resApp.usage.push(use);
+			} else {
+				result[yIndex][xIndex].push({ key, detail: app.detail, usage: [use] });
 			}
-			// TODO: merge usage rather than ignore it
 		}
 	}
 
