@@ -44,7 +44,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
 		for (const use of app.usage) {
 			const key = getKey(app.detail, use);
 
-			let denormalisedApp = interim.filter(a => a.key.minor === key.minor)[0];
+			let denormalisedApp = interim.filter(a => a.key.style === key.style)[0];
 
 			if (!denormalisedApp) {
 				denormalisedApp = { detail: app.detail, key, usage: [] };

@@ -25,11 +25,11 @@ export interface IUsage {
 
 /** A user-defined composite key into the data for determining uniqueness within the displayed data */
 export interface IKey {
-	/** The major key will be used for the text in the final displayed table */
-	major: string;
+	/** The text that will be rendered by a call to getTable */
+	text: string;
 
-	/** The minor key will be used to style */
-	minor: string;
+	/** The style that will be returned by a call to getTable */
+	style: string;
 }
 
 /** A key in a wider data structure */

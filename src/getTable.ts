@@ -31,7 +31,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 				result.push([cell(y.values[rowIndex], "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
 
-					return app ? cell(app.key.major, app.key.minor, rowSplits[rowIndex]) : cell("", "", rowSplits[rowIndex]);
+					return app ? cell(app.key.text, app.key.style, rowSplits[rowIndex]) : cell("", "", rowSplits[rowIndex]);
 				})]);
 			}
 		});
@@ -54,7 +54,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 				for (let i = 0; i < colSplits[colIndex + 1]; i++) {
 					const app = apps[Math.floor(i * appCounts[rowIndex][colIndex] / colSplits[colIndex + 1])];
 
-					rr.push(app ? cell(app.key.major, app.key.minor, 1, colSplits[colIndex + 1]) : cell("", "", 1, colSplits[colIndex + 1]));
+					rr.push(app ? cell(app.key.text, app.key.style, 1, colSplits[colIndex + 1]) : cell("", "", 1, colSplits[colIndex + 1]));
 				}
 			});
 
