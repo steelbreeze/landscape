@@ -1,13 +1,9 @@
+import { IKey } from "./IApplication";
+
 /**
  * A single cell in the final table structure, ready for transforming into HTML via the getHTML call or other method (e.g. D3)
  */
-export interface ILayout {
-	/** The text to display in a cell. */
-	text: unknown;
-
-	/** The style to use when rendering the table. */
-	style: unknown;
-
+export interface ILayout extends IKey {
 	/** The number of columns that this cell will span in the rendered table. */
 	cols: number;
 
