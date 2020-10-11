@@ -6,8 +6,8 @@ import { IAxes } from './IAxes';
  * @hidden
  */
 interface LongAndShort { 
-	l: string;
-	s: string;
+	l: unknown;
+	s: unknown;
 }
 
 /**
@@ -29,11 +29,11 @@ interface IDenormalised {
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & Properties ) => IKey, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<string>> = flexOrder, yF: (axis: IAxis) => Array<Array<string>> = flexOrder): IAxes {
+export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IAxis, y: IAxis, getKey: (detail: Properties, use: IDimensions & Properties ) => IKey, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<unknown>> = flexOrder, yF: (axis: IAxis) => Array<Array<unknown>> = flexOrder): IAxes {
 	const isXLong = x.values.length > y.values.length;
 	const shortAxis = isXLong ? y : x;
 	const longAxis = isXLong ? x : y;
-	let interimScenarios: Array<Array<string>> = [];
+	let interimScenarios: Array<Array<unknown>> = [];
 	let scenarios: Array<IAxes> = [];
 	let bestAdjacency = -1;
 
@@ -128,7 +128,7 @@ export function getOptimalAxes(applications: Array<IApplication & IUsage>, x: IA
  * @param axis The axis to flex
  * @hidden
  */
-export function flexOrder(axis: IAxis): Array<Array<string>> {
+export function flexOrder(axis: IAxis): Array<Array<unknown>> {
 	return permutations(axis.values);
 }
 
@@ -143,7 +143,7 @@ function permutations<T>(source: Array<T>): Array<Array<T>> {
 		result = [source];
 	} else {
 		source.forEach(exclude => {
-			for (const excluded of permutations(source.filter(element => element !== exclude))) { // NOTE: we know we have unique values, so can compare the strings
+			for (const excluded of permutations(source.filter(element => element !== exclude))) {
 				result.push([exclude, ...excluded]);
 			}
 		});

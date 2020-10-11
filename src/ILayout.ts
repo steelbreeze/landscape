@@ -3,10 +3,10 @@
  */
 export interface ILayout {
 	/** The text to display in a cell. */
-	text: string;
+	text: unknown;
 
 	/** The style to use when rendering the table. */
-	style: string;
+	style: unknown;
 
 	/** The number of columns that this cell will span in the rendered table. */
 	cols: number;

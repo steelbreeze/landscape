@@ -99,7 +99,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
  * Creates a cell for the output table
  * @hidden
  */
-function cell(text: string, style: string, rowSplit: number = 1, colSplit: number = 1): ILayout {
+function cell(text: unknown, style: unknown, rowSplit: number = 1, colSplit: number = 1): ILayout {
 	return { text, style, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
 }
 

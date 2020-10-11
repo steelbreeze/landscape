@@ -4,5 +4,5 @@ export interface IAxis {
 	name: string;
 
 	/** The set of values on the axis. */
-	values: Array<string>
+	values: Array<unknown>
 }

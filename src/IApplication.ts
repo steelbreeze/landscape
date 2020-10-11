@@ -1,14 +1,14 @@
 /**
  * An object whose properties are keyed by string and may all have a common type.
  */
-export interface Properties<TProperty = unknown> {
-	[key: string]: TProperty;	
+export interface Properties {
+	[key: string]: unknown;	
 }
 
 /** A usage context of an application and its status. */
 export interface IDimensions {
 	/** The set of dimensions used to categorise this usage. */
-	dimensions: Properties<string>;
+	dimensions: Properties;
 }
 
 /** The core details of an application. */
@@ -26,10 +26,10 @@ export interface IUsage {
 /** A user-defined composite key into the data for determining uniqueness within the displayed data */
 export interface IKey {
 	/** The text that will be rendered by a call to getTable */
-	text: string;
+	text: unknown;
 
 	/** The style that will be returned by a call to getTable */
-	style: string;
+	style: unknown;
 }
 
 /** A key in a wider data structure */
