@@ -1,2 +1,2 @@
-export { prepareData } from './prepareData';
-export { getTable } from './getTable';
+export * from './prepareData';
+export * from './getTable';

@@ -1,19 +1,19 @@
-import { IApplication, Properties, IKeyed } from './IApplication';
+import { Dictionary, IKeyed } from './IApplication';
 import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 
 /**
  * Prepares application data for rendering according to a selected set of axes. 
- * @param applications The structured application data having previously been prepared by a call to [prepareData].
+ * @param prepared The structured application data having previously been prepared by a call to [prepareData].
  * @param x The chosen x axis.
  * @param y The chosen y axis.
  * @param splitOnY When splitting and merging cells use this to split on the x or y axis.
  */
-export function getTable(applications: Array<Array<Array<IKeyed & IApplication & Properties>>>, x: IAxis, y: IAxis, splitOnY: boolean = true): Array<Array<ILayout>> {
+export function getTable(prepared: Array<Array<Array<IKeyed & Dictionary>>>, x: IAxis, y: IAxis, splitOnY: boolean = true): Array<Array<ILayout>> {
 	const result: Array<Array<ILayout>> = [];
 
 	// determine the number of rows and columns each cell need to be split into
-	const appCounts = applications.map(row => row.map(cell => cell.length || 1));
+	const appCounts = prepared.map(row => row.map(cell => cell.length || 1));
 
 	// create the top row heading
 	const topRow = [cell("", "xyAxis"), ...x.values.map(xValue => cell(xValue, "xAxis"))];
@@ -24,7 +24,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 		result.push(topRow);
 
 		// create the rows in the result table
-		applications.forEach((row, rowIndex) => {
+		prepared.forEach((row, rowIndex) => {
 			// add the rows to the resultant table
 			for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
 				// add the y-axis row heading and its applications
@@ -47,7 +47,7 @@ export function getTable(applications: Array<Array<Array<IKeyed & IApplication &
 
 		result.push(rr);
 
-		applications.forEach((row, rowIndex) => {
+		prepared.forEach((row, rowIndex) => {
 			const rr = [cell(y.values[rowIndex], "yAxis")];
 
 			row.forEach((apps, colIndex) => {

@@ -102,7 +102,7 @@
 				<article>
 					<h1>Notes</h1>
 					<p>The application landscape map viewpoint above is auto-generated from a <a
-							href="./data/mythicalBank.json">JSON file</a>
+							href="./data/mythicalBank.csv" target="_top">CSV file</a>
 						containing
 						information about applications and the context in which they are used. The landscape maps
 						viewpoint conveys
@@ -164,9 +164,10 @@
 			<div class="fixedWidth">
 				<article>
 					<h1>Outstanding work</h1>
-					<p>Split cells with multiple application horizontally in addition to vertically if preferable.</p>
+					<p>Create a seperate standalone tool to create optimal axes where this is too time consuming to do in real time.</p>
+					<p>Further optimisations to the axes optimisation algorithm.</p>
+					<p>Split cells with multiple application horizontally and vertically for optimal layout.</p>
 					<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
-					<p>Style of date slider in IE.</p>
 					<p>Base the date slider max and min values based on the underlying data.</p>
 				</article>
 			</div>
@@ -185,6 +186,7 @@
 	</footer>
 	<script crossorigin="anonymous"
 		src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch%2Cperformance.now"></script>
+	<script src="./dist/d3-dsv.min.js"></script>
 	<script src="./dist/landscape.min.js"></script>
 	<script>
 		// define the preferred sequence of the dimensions
@@ -194,7 +196,9 @@
 			"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
 			"product": ["FX", "MM", "Rates", "Credit", "Equities"],
 			"status": ["green", "amber", "red"],
-			"location": ["United States", "United Kingdom", "Germany", "Italy"]
+			"location": ["United States", "United Kingdom", "Germany", "Italy"],
+			"supplier": ["Finastra", "ION", "Kx Systems", "Microsoft", "Murex", "Thunderhead", "Wall Street Systems"],
+			"status": ["green", "amber", "red"]
 		};
 
 		// get DOM elements that are frequently changed
@@ -218,11 +222,23 @@
 		document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
 
 		// load the applications data
-		window.fetch("./data/mythicalBank.json", { cache: "no-cache" }).then(function (response) { return response.json() }).then(function (json) {
-			// normalise the data - convert dates as strings to dates
-			data = convertRawJson(json);
+		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(function (response) { return response.text() }).then(function (csv) {
+			// convert the CSV data into a JSON array
+			data = d3.csvParse(csv, function (row) {
+				return {
+					name: row.name,
+					supplier: row.supplier,
+					capability: row.capability,
+					product: row.product,
+					location: row.location,
+					status: row.status,
+					decommissioned: row.decommissioned === "" ? undefined : new Date(row.decommissioned),
+					commissioned: row.commissioned === "" ? undefined : new Date(row.commissioned)
+				}
+			});
 
-			axesDic = landscape.deriveDimensions(data);
+			// extract the desired dimensions
+			axesDic = landscape.deriveDimensions(Object.getOwnPropertyNames(dimensions), data);
 
 			// populate the drop-downs for the axes
 			Object.getOwnPropertyNames(axesDic).forEach(function (axis) {
@@ -236,11 +252,12 @@
 
 		function determineAxis() {
 			// find the optimum layout scenarios
-//			const start = performance.now();
+			const start = performance.now();
 			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value], key, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
-//			const end = performance.now();
 
-//			console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
+			const end = performance.now();
+
+			console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
 
 			// select the preferred scenario
 			if (scenario) {
@@ -250,8 +267,8 @@
 			}
 		}
 
-		function key(detail, use) {
-			return { text: detail.name, style: use.status };
+		function key(app) {
+			return { text: app.name, style: app.status };
 		}
 
 		function displayAtDate() {
@@ -266,13 +283,13 @@
 			const splitAxis = splitAxisSelector.options[splitAxisSelector.selectedIndex].value;
 
 			// get the prepared table with applications filtered by the date of interest
-//			const start = performance.now();
+			const start = performance.now();
 			const html = landscape.getTable(filtered, scenario.x, scenario.y, splitAxis === 'y');
-//			const mid = performance.now();
+			const mid = performance.now();
 			landscapeTarget.innerHTML = renderTable(html);
-//			const end = performance.now();
+			const end = performance.now();
 
-//			console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
+			console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
 		}
 
 		// alternative function to considering all permutations an axis
@@ -280,27 +297,9 @@
 			return [dimensions[axis.name].filter(function (capability) { return axis.values.indexOf(capability) !== -1 })];
 		}
 
-		// map raw JSON data to format required in layout engine (transform date strings into dates)
-		function convertRawJson(json) {
-			return json.map(function (app) {
-				return {
-					detail: app.detail,
-					usage: app.usage.map(function (use) {
-						return {
-							dimensions: use.dimensions,
-							commissioned: use.commissioned ? new Date(use.commissioned) : undefined,
-							decommissioned: use.decommissioned ? new Date(use.decommissioned) : undefined,
-							status: use.status
-						};
-					})
-				};
-			});
-		}
-
 		function filterByDate(applications, date) {
-//			return applications.map(y => y.map(x => x.filter(app => between(date, app.commissioned, app.decommissioned))));
-			return applications.map(y => y.map(x => x.filter(app => app.usage.some(use => between(date, use.commissioned, use.decommissioned)))));
-}
+			return applications.map(y => y.map(x => x.filter(app => app.source.some(use => between(date, use.commissioned, use.decommissioned)))));
+		}
 
 		function between(date, start, end) {
 			return (start === undefined || date >= start) && (end === undefined || date <= end);

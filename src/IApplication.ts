@@ -1,26 +1,11 @@
-/**
- * An object whose properties are keyed by string and may all have a common type.
- */
-export interface Properties {
-	[key: string]: unknown;	
+/** An object whose properties are keyed by string and having a common type. */
+export interface Dictionary<TValue = unknown> {
+	[key: string]: TValue;
 }
 
-/** A usage context of an application and its status. */
-export interface IDimensions {
-	/** The set of dimensions used to categorise this usage. */
-	dimensions: Properties;
-}
-
-/** The core details of an application. */
-export interface IApplication {
-	/** The meta data associated with the application. */
-	detail: Properties;
-}
-
-/** The usage that an application can be put to. */
-export interface IUsage {
-	/** The data showing the application usage context over time. */
-	usage: Array<IDimensions & Properties>;
+/** The source data for the landscape tool, a table represented as an array of dictionaries */
+export interface Source extends Array<Dictionary> {
+	// TODO: could this move to a column-oriented structure?
 }
 
 /** A user-defined composite key into the data for determining uniqueness within the displayed data */

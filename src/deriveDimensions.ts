@@ -1,20 +1,21 @@
-import { IUsage } from './IApplication';
+import { Source, Dictionary } from './IApplication';
 import { IAxis } from './IAxis';
 
 /**
- * Extracts all the dimensions seen within the the use of the applications as a set of axis objects. 
- * @param applications The application data to extract the dimensions of.
+ * Extracts the unique values for particualar columns in the source data to be used as dimensions.
+ * @param columns The columns to extract the dimensions for (set of unique values).
+ * @param source The application data to extract the dimensions of.
  * @returns an dictionary of [IAxis] structures, keyed by the dimension name.
  */
-export function deriveDimensions(applications: Array<IUsage>): Record<string, IAxis> {
-	const index: Record<string, IAxis> = {};
+export function deriveDimensions(columns: Array<string>, source: Source): Dictionary<IAxis> {
+	const index: Dictionary<IAxis> = {};
 
-	for (const application of applications) {
-		for (const use of application.usage) {
-			for (const name of Object.getOwnPropertyNames(use.dimensions)) {
-				const axis = index[name] || (index[name] = { name, values: [] });
-				const value = use.dimensions[name];
+	for (const row of source) {
+		for (const name of columns) {
+			const axis = index[name] || (index[name] = { name, values: [] });
+			const value = row[name];
 
+			if (value) {
 				if (axis.values.indexOf(value) === -1) {
 					axis.values.push(value)
 				}
