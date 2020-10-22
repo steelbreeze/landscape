@@ -1,12 +1,8 @@
 /** An object whose properties are keyed by string and having a common type. */
-export interface Dictionary<TValue = unknown> {
-	[key: string]: TValue;
-}
+export type Dictionary<TValue = unknown> = { [key: string]: TValue };
 
 /** The source data for the landscape tool, a table represented as an array of dictionaries */
-export interface Source extends Array<Dictionary> {
-	// TODO: could this move to a column-oriented structure?
-}
+export type Source = Array<Dictionary>;
 
 /** A user-defined composite key into the data for determining uniqueness within the displayed data */
 export interface IKey {
