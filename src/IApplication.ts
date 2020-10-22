@@ -2,7 +2,7 @@
 export type Dictionary<TValue = unknown> = { [key: string]: TValue };
 
 /** The source data for the landscape tool, a table represented as an array of dictionaries */
-export type Source = Array<Dictionary>;
+export type Source<TValue = unknown> = Array<Dictionary<TValue>>;
 
 /** A user-defined composite key into the data for determining uniqueness within the displayed data */
 export interface IKey {
