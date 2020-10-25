@@ -1,4 +1,7 @@
-import { Source, Dictionary, IKey, IKeyed } from './IApplication';
+import { Tabular } from './Tabular';
+import { Dictionary } from './Dictionary';
+import { IKey } from './IKey';
+import { IKeyed } from './IKeyed';
 import { IAxis } from './IAxis';
 
 /**
@@ -9,11 +12,11 @@ import { IAxis } from './IAxis';
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(source: Source, x: IAxis, y: IAxis, getKey: (detail: Dictionary) => IKey): Array<Array<Array<IKeyed & {source: Source}>>> {
-	const result: Array<Array<Array<IKeyed & {source: Source}>>> = y.values.map(() => x.values.map(() => []));
+export function prepareData(tabular: Tabular, x: IAxis, y: IAxis, getKey: (detail: Dictionary) => IKey): Array<Array<Array<IKeyed & {source: Tabular}>>> {
+	const result: Array<Array<Array<IKeyed & {source: Tabular}>>> = y.values.map(() => x.values.map(() => []));
 
 	// denormalise and position each application within the correct table cell
-	for (const app of source) {
+	for (const app of tabular) {
 			const key = getKey(app);
 			const yIndex = y.values.indexOf(app[y.name]);
 			const xIndex = x.values.indexOf(app[x.name]);

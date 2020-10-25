@@ -1,4 +1,5 @@
-import { Dictionary, IKeyed } from './IApplication';
+import { Dictionary } from './Dictionary';
+import { IKeyed } from './IKeyed';
 import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 

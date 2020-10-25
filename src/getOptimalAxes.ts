@@ -1,4 +1,7 @@
-import { Dictionary, Source, IKeyed, IKey } from './IApplication';
+import { Dictionary } from './Dictionary';
+import { Tabular } from './Tabular';
+import { IKeyed } from './IKeyed';
+import { IKey } from './IKey';
 import { IAxis } from './IAxis';
 import { IAxes } from './IAxes';
 
@@ -19,7 +22,7 @@ interface IDenormalised extends IKeyed {
 
 /**
  * Determine the a good order of the axes resulting in a layout with applications grouped together.
- * @param source The sourlce data to analyse when determining the optimal axes.
+ * @param tabular The sourlce data to analyse when determining the optimal axes.
  * @param x The chosen x axis.
  * @param y The chosen y axis.
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
@@ -28,7 +31,7 @@ interface IDenormalised extends IKeyed {
  * @param xF The algorithm to use the generate scenarios to test on the x axis; defaults to all permutations.
  * @returns Returns all conbinations of x and y axes with the greatest grouping of applications
  */
-export function getOptimalAxes(source: Source, x: IAxis, y: IAxis, getKey: (detail: Dictionary) => IKey, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<unknown>> = flexOrder, yF: (axis: IAxis) => Array<Array<unknown>> = flexOrder): IAxes {
+export function getOptimalAxes(tabular: Tabular, x: IAxis, y: IAxis, getKey: (detail: Dictionary) => IKey, axesSelector: (scenarios: Array<IAxes>) => IAxes = scenarios => scenarios[0], xF: (axis: IAxis) => Array<Array<unknown>> = flexOrder, yF: (axis: IAxis) => Array<Array<unknown>> = flexOrder): IAxes {
 	const isXLong = x.values.length > y.values.length;
 	const shortAxis = isXLong ? y : x;
 	const longAxis = isXLong ? x : y;
@@ -39,7 +42,7 @@ export function getOptimalAxes(source: Source, x: IAxis, y: IAxis, getKey: (deta
 	// denormalise the data
 	const interim: Array<IDenormalised> = [];
 
-	for (const app of source) {
+	for (const app of tabular) {
 		const key = getKey(app);
 		const use = { l: app[longAxis.name], s: app[shortAxis.name] };
 		const resApp = interim.find(da => da.key.text === key.text && da.key.style === key.style);
@@ -50,7 +53,7 @@ export function getOptimalAxes(source: Source, x: IAxis, y: IAxis, getKey: (deta
 			interim.push({ key, usage: [use] });
 		}
 	}
-	
+
 	const denormalised = interim.filter(app => app.usage.length > 1);
 
 	// iterate permutations of the long axis, use the short axis as provided
@@ -117,7 +120,7 @@ export function getOptimalAxes(source: Source, x: IAxis, y: IAxis, getKey: (deta
 		}
 	}
 
-//	console.log(scenarios);
+	//	console.log(scenarios);
 
 	return axesSelector(scenarios);
 }
