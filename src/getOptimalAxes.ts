@@ -1,3 +1,5 @@
+// @steelbreeze/landscape
+// Copyright (c) 2019 David Mesquita-Morris
 import { Dictionary } from './Dictionary';
 import { Tabular } from './Tabular';
 import { IKeyed } from './IKeyed';

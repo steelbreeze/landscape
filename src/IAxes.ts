@@ -1,3 +1,5 @@
+// @steelbreeze/landscape
+// Copyright (c) 2019 David Mesquita-Morris
 import { IAxis } from "./IAxis";
 
 /** Represents a pair of axis. */
