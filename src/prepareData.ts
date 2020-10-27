@@ -1,7 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019 David Mesquita-Morris
 import { Tabular } from './Tabular';
-import { Dictionary } from './Dictionary';
 import { IKey } from './IKey';
 import { IKeyed } from './IKeyed';
 import { IAxis } from './IAxis';
@@ -14,7 +13,7 @@ import { IAxis } from './IAxis';
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
  * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
  */
-export function prepareData(tabular: Tabular, x: IAxis, y: IAxis, getKey: (detail: Dictionary) => IKey): Array<Array<Array<IKeyed & {source: Tabular}>>> {
+export function prepareData(tabular: Tabular, x: IAxis, y: IAxis, getKey: (detail: Record<string, unknown>) => IKey): Array<Array<Array<IKeyed & {source: Tabular}>>> {
 	const result: Array<Array<Array<IKeyed & {source: Tabular}>>> = y.values.map(() => x.values.map(() => []));
 
 	// denormalise and position each record within the correct table cell
