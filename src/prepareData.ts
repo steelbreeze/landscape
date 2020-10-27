@@ -7,8 +7,8 @@ import { IKeyed } from './IKeyed';
 import { IAxis } from './IAxis';
 
 /**
- * Structures and denormalises the application data aligned to a chosen pair of axes.
- * @param applications The application data to prepare.
+ * Structures and denormalises the source data aligned to a chosen pair of axes.
+ * @param tabular The source data to prepare.
  * @param x The chosen x axis.
  * @param y The chosen y axis.
  * @param getKey A callback to create a unique key for the reduction of applications into the cells.
@@ -17,7 +17,7 @@ import { IAxis } from './IAxis';
 export function prepareData(tabular: Tabular, x: IAxis, y: IAxis, getKey: (detail: Dictionary) => IKey): Array<Array<Array<IKeyed & {source: Tabular}>>> {
 	const result: Array<Array<Array<IKeyed & {source: Tabular}>>> = y.values.map(() => x.values.map(() => []));
 
-	// denormalise and position each application within the correct table cell
+	// denormalise and position each record within the correct table cell
 	for (const app of tabular) {
 			const key = getKey(app);
 			const yIndex = y.values.indexOf(app[y.name]);
