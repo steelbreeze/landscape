@@ -241,9 +241,9 @@
 			axesDic = landscape.deriveDimensions(Object.getOwnPropertyNames(dimensions), data);
 
 			// populate the drop-downs for the axes
-			Object.getOwnPropertyNames(axesDic).forEach(function (axis) {
-				xAxisSelector.innerHTML += `<option value="${axis}"${axis === "product" ? " selected" : ""}>${axis}</option>`;
-				yAxisSelector.innerHTML += `<option value="${axis}"${axis === "capability" ? " selected" : ""}>${axis}</option>`;
+			axesDic.forEach(function (axis, index) { 
+				xAxisSelector.innerHTML += `<option value="${index}"${axis.name === "product" ? " selected" : ""}>${axis.name}</option>`;
+				yAxisSelector.innerHTML += `<option value="${index}"${axis.name === "capability" ? " selected" : ""}>${axis.name}</option>`;
 			});
 
 			// create the initial table
@@ -253,7 +253,7 @@
 		function determineAxis() {
 			// find the optimum layout scenarios
 			const start = performance.now();
-			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.options[xAxisSelector.selectedIndex].value], axesDic[yAxisSelector.options[yAxisSelector.selectedIndex].value], key, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.value], axesDic[yAxisSelector.value], key, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
 
 			const end = performance.now();
 

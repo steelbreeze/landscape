@@ -1,28 +1,24 @@
 // @steelbreeze/landscape
-// Copyright (c) 2019 David Mesquita-Morris
-import { Dictionary } from './Dictionary';
 import { Tabular } from './Tabular';
 import { IAxis } from './IAxis';
 
 /**
  * Extracts the unique values for particualar columns in the source data to be used as dimensions.
  * @param columns The columns to extract the dimensions for (set of unique values).
- * @param tabular The application data to extract the dimensions of.
- * @returns an dictionary of [IAxis] structures, keyed by the dimension name.
+ * @param tabular The source data to extract the dimensions of.
+ * @returns an array of IAxis structures.
  */
-export function deriveDimensions(columns: Array<string>, tabular: Tabular): Dictionary<IAxis> {
-	const index: Dictionary<IAxis> = {};
+export function deriveDimensions(columns: Array<string>, tabular: Tabular): Array<IAxis> {
+	return columns.map(name => { return { name, values: tabular.map(row => row[name]).filter(distinct) }; });
+}
 
-	for (const row of tabular) {
-		for (const name of columns) {
-			const axis = index[name] || (index[name] = { name, values: [] });
-			const value = row[name];
-
-			if (value && axis.values.indexOf(value) === -1) {
-				axis.values.push(value)
-			}
-		}
-	}
-
-	return index;
+/**
+ * Filter to find unique values of an array.
+ * @param value The value to test.
+ * @param index The index of the value within the source array.
+ * @param source The source array.
+ * @hidden
+ */
+function distinct<TValue>(value: TValue, index: number, source: Array<TValue>): boolean {
+	return source.indexOf(value) === index;
 }
