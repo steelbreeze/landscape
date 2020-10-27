@@ -70,9 +70,11 @@ export function getOptimalAxes(tabular: Tabular, x: IAxis, y: IAxis, getKey: (de
 			// create 2d boolean matrix where the application exists 
 			const matrix = longAxisValues.map(l => shortAxis.values.map(s => app.usage.some(use => use.l === l && use.s === s)));
 
-			for (let iL = longAxisValues.length; --iL;) for (let iS = shortAxis.values.length; iS--;) {
-				if (matrix[iL][iS] && matrix[iL - 1][iS]) {
-					adjacency++;
+			for (let iL = longAxisValues.length; --iL;) {
+				for (let iS = shortAxis.values.length; iS--;) {
+					if (matrix[iL][iS] && matrix[iL - 1][iS]) {
+						adjacency++;
+					}
 				}
 			}
 		}
@@ -103,9 +105,11 @@ export function getOptimalAxes(tabular: Tabular, x: IAxis, y: IAxis, getKey: (de
 			const matrix = longAxisValues.map(l => shortAxisValues.map(s => app.usage.some(use => use.l === l && use.s === s)));
 
 			// count adjacent cells on the x axis
-			for (let iL = longAxisValues.length; iL--;) for (let iS = shortAxisValues.length; --iS;) {
-				if (matrix[iL][iS] && matrix[iL][iS - 1]) {
-					adjacency++;
+			for (let iL = longAxisValues.length; iL--;) {
+				for (let iS = shortAxisValues.length; --iS;) {
+					if (matrix[iL][iS] && matrix[iL][iS - 1]) {
+						adjacency++;
+					}
 				}
 			}
 		}
@@ -121,8 +125,6 @@ export function getOptimalAxes(tabular: Tabular, x: IAxis, y: IAxis, getKey: (de
 			scenarios.push(isXLong ? { y: { name: shortAxis.name, values: shortAxisValues }, x: { name: longAxis.name, values: longAxisValues } } : { x: { name: shortAxis.name, values: shortAxisValues }, y: { name: longAxis.name, values: longAxisValues } });
 		}
 	}
-
-	//	console.log(scenarios);
 
 	return axesSelector(scenarios);
 }

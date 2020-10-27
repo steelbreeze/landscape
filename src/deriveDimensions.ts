@@ -18,10 +18,8 @@ export function deriveDimensions(columns: Array<string>, tabular: Tabular): Dict
 			const axis = index[name] || (index[name] = { name, values: [] });
 			const value = row[name];
 
-			if (value) {
-				if (axis.values.indexOf(value) === -1) {
-					axis.values.push(value)
-				}
+			if (value && axis.values.indexOf(value) === -1) {
+				axis.values.push(value)
 			}
 		}
 	}
