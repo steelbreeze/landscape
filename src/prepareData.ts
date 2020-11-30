@@ -10,8 +10,8 @@ import { IAxis } from './IAxis';
  * @param tabular The source data to prepare.
  * @param x The chosen x axis.
  * @param y The chosen y axis.
- * @param getKey A callback to create a unique key for the reduction of applications into the cells.
- * @returns Returns a 2D array representing the chosen axis; each cell containing an array of the applications used in that context.
+ * @param getKey A callback to create a unique key for the reduction of source records into the cells.
+ * @returns Returns a 2D array representing the chosen axes; each cell containing an array of the keyed source data used in that context.
  */
 export function prepareData(tabular: Tabular, x: IAxis, y: IAxis, getKey: (detail: Record<string, unknown>) => IKey): Array<Array<Array<IKeyed & {source: Tabular}>>> {
 	const result: Array<Array<Array<IKeyed & {source: Tabular}>>> = y.values.map(() => x.values.map(() => []));

@@ -5,7 +5,7 @@ import { ILayout } from './ILayout';
 import { IAxis } from './IAxis';
 
 /**
- * Prepares application data for rendering according to a selected set of axes. 
+ * Returns a jagged two dimentional array ready for rendering on screen. 
  * @param prepared The structured data having previously been prepared by a call to [prepareData].
  * @param x The chosen x axis.
  * @param y The chosen y axis.
@@ -29,7 +29,7 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
 		prepared.forEach((row, rowIndex) => {
 			// add the rows to the resultant table
 			for (let rowSplitIndex = rowSplits[rowIndex]; rowSplitIndex--;) {
-				// add the y-axis row heading and its applications
+				// add the y-axis row heading and its source data
 				result.push([cell(y.values[rowIndex], "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
 

@@ -66,7 +66,7 @@ export function getOptimalAxes(tabular: Tabular, x: IAxis, y: IAxis, getKey: (de
 
 		// test each combination individually
 		for (const app of denormalised) {
-			// create 2d boolean matrix where the application exists 
+			// create 2d boolean matrix where the source record exists 
 			const matrix = longAxisValues.map(l => shortAxis.values.map(s => app.usage.some(use => use.l === l && use.s === s)));
 
 			for (let iL = longAxisValues.length; --iL;) {
@@ -98,9 +98,9 @@ export function getOptimalAxes(tabular: Tabular, x: IAxis, y: IAxis, getKey: (de
 		// count only adjacency alony the short axis
 		let adjacency = 0;
 
-		// test each application/status combination individually
+		// test each key individually
 		for (const app of denormalised) {
-			// create 2d boolean matrix where the application exists 
+			// create 2d boolean matrix where the record exists 
 			const matrix = longAxisValues.map(l => shortAxisValues.map(s => app.usage.some(use => use.l === l && use.s === s)));
 
 			// count adjacent cells on the x axis
