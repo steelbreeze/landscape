@@ -7,11 +7,15 @@
     "doc": "docs",
     "lib": "lib"
   },
-  "dependencies": {
-    "@steelbreeze/tilly": "^1.0.0-rc.10"
+  "devDependencies": {
+    "typedoc": "^0.20.36",
+    "typescript": "^4.2.4",
+    "webpack-cli": "^4.6.0"
   },
-  "devDependencies": {},
   "scripts": {
+    "build": "tsc -p .",
+    "package": "webpack",
+    "document": "typedoc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
