@@ -1,6 +1,6 @@
 {
   "name": "landscape",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "Landscape map viewpoint visualisation",
   "main": "lib/index.js",
   "directories": {
