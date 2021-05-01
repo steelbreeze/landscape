@@ -33,7 +33,7 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
 				result.push([cell(y.values[rowIndex], "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
 
-					return app ? cell(app.key.text, app.key.style, app.key.data, rowSplits[rowIndex]) : cell("", "", rowSplits[rowIndex]);
+					return app ? cell(app.key.text, app.key.style, app.key.data, rowSplits[rowIndex]) : cell("", "", undefined, rowSplits[rowIndex]);
 				})]);
 			}
 		});
@@ -56,7 +56,7 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
 				for (let i = 0; i < colSplits[colIndex + 1]; i++) {
 					const app = apps[Math.floor(i * appCounts[rowIndex][colIndex] / colSplits[colIndex + 1])];
 
-					rr.push(app ? cell(app.key.text, app.key.style, app.key.data, 1, colSplits[colIndex + 1]) : cell("", "", 1, colSplits[colIndex + 1]));
+					rr.push(app ? cell(app.key.text, app.key.style, app.key.data, 1, colSplits[colIndex + 1]) : cell("", "", undefined, 1, colSplits[colIndex + 1]));
 				}
 			});
 
