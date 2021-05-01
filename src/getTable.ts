@@ -33,7 +33,7 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
 				result.push([cell(y.values[rowIndex], "yAxis"), ...row.map((apps, columnIndex) => {
 					const app = apps[Math.floor(rowSplitIndex * appCounts[rowIndex][columnIndex] / rowSplits[rowIndex])];
 
-					return app ? cell(app.key.text, app.key.style, rowSplits[rowIndex]) : cell("", "", rowSplits[rowIndex]);
+					return app ? cell(app.key.text, app.key.style, app.key.data, rowSplits[rowIndex]) : cell("", "", rowSplits[rowIndex]);
 				})]);
 			}
 		});
@@ -43,7 +43,7 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
 
 		topRow.forEach((app, index) => {
 			for (let i = 0; i < colSplits[index]; i++) {
-				rr.push(cell(app.text, app.style, 1, colSplits[index]));
+				rr.push(cell(app.text, app.style, app.data, 1, colSplits[index]));
 			}
 		});
 
@@ -56,7 +56,7 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
 				for (let i = 0; i < colSplits[colIndex + 1]; i++) {
 					const app = apps[Math.floor(i * appCounts[rowIndex][colIndex] / colSplits[colIndex + 1])];
 
-					rr.push(app ? cell(app.key.text, app.key.style, 1, colSplits[colIndex + 1]) : cell("", "", 1, colSplits[colIndex + 1]));
+					rr.push(app ? cell(app.key.text, app.key.style, app.key.data, 1, colSplits[colIndex + 1]) : cell("", "", 1, colSplits[colIndex + 1]));
 				}
 			});
 
@@ -101,8 +101,8 @@ export function getTable(prepared: Array<Array<Array<IKeyed>>>, x: IAxis, y: IAx
  * Creates a cell for the output table
  * @hidden
  */
-function cell(text: unknown, style: unknown, rowSplit: number = 1, colSplit: number = 1): ILayout {
-	return { text, style, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
+function cell(text: any, style: any, data: any = undefined, rowSplit: number = 1, colSplit: number = 1): ILayout {
+	return { text, style, data, cols: 1, rows: 1, height: 1 / rowSplit, width: 1 / colSplit };
 }
 
 /**
