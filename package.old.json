@@ -1,18 +1,17 @@
 {
-  "name": "@steelbreeze/landscape",
-  "version": "2.0.0-rc.3",
+  "name": "landscape",
+  "version": "2.0.0-rc.2",
   "description": "Landscape map viewpoint visualisation",
   "main": "lib/index.js",
   "directories": {
     "doc": "docs",
     "lib": "lib"
   },
-  "dependencies": {
+  "devDependencies": {
     "typedoc": "^0.20.36",
     "typescript": "^4.2.4",
-    "webpack-cli": "^4.7.0"
+    "webpack-cli": "^4.6.0"
   },
-  "devDependencies": {},
   "scripts": {
     "build": "tsc -p .",
     "package": "webpack",
@@ -26,7 +25,7 @@
   "keywords": [
     "landscape",
     "map",
-    "viewpoint"
+    "viewponit"
   ],
   "author": "mesmo@steelbreeze.net",
   "license": "MIT",
