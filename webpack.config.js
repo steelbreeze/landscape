@@ -2,12 +2,12 @@ const path = require('path');
 
 module.exports = {
   entry: {
-	  landscape: [ './lib/index.js' ],
-	  render: [ './lib/render.js' ]
+	  landscape: [ './lib/node/index.js' ],
+	  render: [ './lib/node/render.js' ]
   },
   mode: 'production',
   output: {
-	path: path.resolve(__dirname, "docs/dist"),
+	path: path.resolve(__dirname, "lib/web"),
     filename: '[name].min.js',
     library: '[name]',
     libraryTarget: 'var'
