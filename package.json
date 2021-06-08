@@ -7,11 +7,12 @@
     "lib": "lib"
   },
   "dependencies": {
+  },
+  "devDependencies": {
     "typedoc": "^0.20.36",
     "typescript": "^4.2.4",
     "webpack-cli": "^4.7.0"
   },
-  "devDependencies": {},
   "scripts": {
     "build": "tsc -p .",
     "package": "webpack && cp ./lib/web/*.js ./docs/dist/",
