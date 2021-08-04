@@ -42,6 +42,7 @@
 						know shapes and patterns are acceptable or not.</p>
 				</article>
 				<article class="widget" id="landscapeTarget">
+					<table id="tablan" class="landscape"></table>
 				</article>
 				<article class="widget">
 					<table class="timeline">
@@ -49,26 +50,31 @@
 							<tr>
 								<td colspan="3">
 									<label for="xAxisSelector">x axis:</label>
-									<select id="xAxisSelector" onchange="determineAxis()"></select>
-									<label for="xAxisOptimised">optimised:</label>
-									<input type="checkbox" id="xAxisOptimised" onchange="determineAxis()" checked />
+									<select id="xAxisSelector" onchange="createCube()"></select>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3">
 									<label for="yAxisSelector">y axis:</label>
-									<select id="yAxisSelector" onchange="determineAxis()"></select>
-									<label for="yAxisOptimised">optimised:</label>
-									<input type="checkbox" id="yAxisOptimised" onchange="determineAxis()" checked />
+									<select id="yAxisSelector" onchange="createCube()"></select>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3">
-									<label for="splitAxisSelector">Axis to split cells by:</label>
-									<select id="splitAxisSelector" onchange="determineAxis()">
+									<label for="splitAxis">Split cells by:</label>
+									<select id="splitAxis" onchange="filterCube()">
 										<option value="x" selected>x</option>
 										<option value="y">y</option>
 									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<label>Merge by</label>
+									<label for="mergeByY">y:</label>
+									<input type="checkbox" id="mergeByY" onchange="renderCube()" checked />
+									<label for="mergeByX">x:</label>
+									<input type="checkbox" id="mergeByX" onchange="renderCube()" checked />
 								</td>
 							</tr>
 							<tr>
@@ -77,7 +83,8 @@
 							<tr>
 								<td colspan="3">
 									<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
-										oninput="displayAtDate()" onchange="displayAtDate()" /></td>
+										oninput="filterCube()" />
+								</td>
 							</tr>
 							<tr>
 								<td id="earliestDate">Earliest</td>
@@ -164,7 +171,8 @@
 			<div class="fixedWidth">
 				<article>
 					<h1>Outstanding work</h1>
-					<p>Create a seperate standalone tool to create optimal axes where this is too time consuming to do in real time.</p>
+					<p>Create a seperate standalone tool to create optimal axes where this is too time consuming to do
+						in real time.</p>
 					<p>Further optimisations to the axes optimisation algorithm.</p>
 					<p>Split cells with multiple application horizontally and vertically for optimal layout.</p>
 					<p>Smarter ordering of split cells to expliot affinity with neighbouring cells.</p>
@@ -187,122 +195,108 @@
 	<script crossorigin="anonymous"
 		src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch%2Cperformance.now"></script>
 	<script src="./dist/d3-dsv.min.js"></script>
+	<script src="./dist/pivot.min.js"></script>
 	<script src="./dist/landscape.min.js"></script>
 	<script>
-		// define the preferred sequence of the dimensions
-		// this order will be used if optimised is unchecked
-		// the closest optimised scenario to this will be used if optimised is checked
-		const dimensions = {
-			"capability": ["Market gateway", "Order management", "Order execution", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
-			"product": ["FX", "MM", "Rates", "Credit", "Equities"],
-			"status": ["green", "amber", "red"],
-			"location": ["United States", "United Kingdom", "Germany", "Italy"],
-			"supplier": ["Finastra", "ION", "Kx Systems", "Microsoft", "Murex", "Thunderhead", "Wall Street Systems"],
-			"status": ["green", "amber", "red"]
-		};
-
 		// get DOM elements that are frequently changed
 		const dateOfInterest = document.getElementById("dateOfInterest");
 		const landscapeTarget = document.getElementById("landscapeTarget");
 		const xAxisSelector = document.getElementById("xAxisSelector");
 		const yAxisSelector = document.getElementById("yAxisSelector");
-		const splitAxisSelector = document.getElementById("splitAxisSelector");
+		const splitAxis = document.getElementById("splitAxis");
 		const xAxisOptimised = document.getElementById("xAxisOptimised");
 		const yAxisOptimised = document.getElementById("yAxisOptimised");
 		const slider = document.getElementById("slider");
+		const mergeByX = document.getElementById("mergeByX");
+		const mergeByY = document.getElementById("mergeByY");
 
-		let data = undefined;
-		let axesDic = undefined;
-		let flattened = undefined;
-		let scenario = undefined;
+		// the two methods of splitting prior to merging
+		const splitter = {
+			x: landscape.splitX,
+			y: landscape.splitY
+		};
+
+		// define the preferred sequence of each dimension
+		const dimensions = {
+			"Capability": ["Market gateway", "Order execution", "Order management", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
+			"Product": ["Rates", "FX", "MM", "Credit", "Equities"],
+			"Status": ["green", "amber", "red"],
+			"Location": ["United States", "United Kingdom", "Germany", "Italy"],
+			"Supplier": ["Finastra", "ION", "Kx Systems", "Microsoft", "Murex", "Thunderhead", "Wall Street Systems"],
+			"Status": ["green", "amber", "red"]
+		};
+
+		// globals that we need to keep track of acros functions
+		let data;
+		let yAxis;
+		let xAxis;
+		let cube;
+		let filtered;
+
+		// populate the drop-downs for the axes
+		Object.keys(dimensions).forEach(function (axis, index) {
+			xAxisSelector.innerHTML += `<option value="${axis}"${axis === "Product" ? " selected" : ""}>${axis}</option>`;
+			yAxisSelector.innerHTML += `<option value="${axis}"${axis === "Capability" ? " selected" : ""}>${axis}</option>`;
+		});
 
 		// one-off DOM element updates
-		document.getElementById("earliestDate").textContent = fromToday(-1095).toLocaleDateString();
-		document.getElementById("todaysDate").textContent = fromToday().toLocaleDateString();
-		document.getElementById("latestDate").textContent = fromToday(1096).toLocaleDateString();
+		document.getElementById("earliestDate").textContent = fromToday(-1095);
+		document.getElementById("todaysDate").textContent = fromToday();
+		document.getElementById("latestDate").textContent = fromToday(1096);
 
 		// load the applications data
 		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(function (response) { return response.text() }).then(function (csv) {
-			// convert the CSV data into a JSON array
-			data = d3.csvParse(csv, function (row) {
-				return {
-					name: row.name,
-					supplier: row.supplier,
-					capability: row.capability,
-					product: row.product,
-					location: row.location,
-					status: row.status,
-					decommissioned: row.decommissioned === "" ? undefined : new Date(row.decommissioned),
-					commissioned: row.commissioned === "" ? undefined : new Date(row.commissioned)
-				}
-			});
+			// convert the CSV data into a JSON array and save it
+			data = d3.csvParse(csv);
 
-			// extract the desired dimensions
-			axesDic = landscape.deriveDimensions(Object.getOwnPropertyNames(dimensions), data);
-
-			// populate the drop-downs for the axes
-			axesDic.forEach(function (axis, index) { 
-				xAxisSelector.innerHTML += `<option value="${index}"${axis.name === "product" ? " selected" : ""}>${axis.name}</option>`;
-				yAxisSelector.innerHTML += `<option value="${index}"${axis.name === "capability" ? " selected" : ""}>${axis.name}</option>`;
-			});
-
-			// create the initial table
-			determineAxis();
+			createCube();
 		});
 
-		function determineAxis() {
-			// find the optimum layout scenarios
-			const start = performance.now();
-			scenario = landscape.getOptimalAxes(data, axesDic[xAxisSelector.value], axesDic[yAxisSelector.value], key, selectScenario, xAxisOptimised.checked ? landscape.flexOrder : fixOrder, yAxisOptimised.checked ? landscape.flexOrder : fixOrder);
+		// create the cube on initial load or when an axis changes
+		function createCube() {
+			// create the axes based on the user selection
+			yAxis = pivot.columnAxis(data, yAxisSelector.value, { sort: listSort(dimensions[yAxisSelector.value]) });
+			xAxis = pivot.columnAxis(data, xAxisSelector.value, { sort: listSort(dimensions[xAxisSelector.value]) });
 
-			const end = performance.now();
+			// create the cube
+			cube = pivot.cube(data, yAxis, xAxis);
 
-			console.log(`Optimising axes took: ${(end - start).toFixed(3)}ms`);
+			filterCube();
+		}
 
-			// select the preferred scenario
-			if (scenario) {
-				flattened = landscape.prepareData(data, scenario.x, scenario.y, key);
+		// filter the cube on initial load or when the cube changes then create the raw table
+		function filterCube() {
+			// get the date of interet from the slider control
+			const date = fromToday(slider.value);
 
-				displayAtDate();
-			}
+			// update the date in the page
+			document.getElementById("todaysDate").textContent = date;
+
+			// filter the cube using the date of interest
+			filtered = pivot.filter(cube, app => (!app.from || app.from < date) && (!app.to || date < app.to));
+
+			renderCube();
+		}
+
+		// merge adjacent cells based on user
+		function renderCube() {
+			// split the cube and axes along the desired axis, creating a table
+			const table = splitter[splitAxis.value](filtered, yAxis, xAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
+
+			// merge the split cube along the desired axes
+			landscape.merge(table, mergeByY.checked, mergeByX.checked);
+
+			// render the table in the target element
+			renderTable2(table, 'tablan');
+		}
+
+		/** Generator to create a sort callback that orders by a preferred list */
+		function listSort(list) {
+			return (a, b) => list.indexOf(a) - list.indexOf(b);
 		}
 
 		function key(app) {
-			return { text: app.name, style: app.status };
-		}
-
-		function displayAtDate() {
-			// filter the application date using the date of interest
-			const date = fromToday(slider.value);
-			const filtered = filterByDate(flattened, date);
-
-			// update data of interest field
-			dateOfInterest.textContent = date.toLocaleDateString();
-
-			// determine which 
-			const splitAxis = splitAxisSelector.options[splitAxisSelector.selectedIndex].value;
-
-			// get the prepared table with applications filtered by the date of interest
-			const start = performance.now();
-			const html = landscape.getTable(filtered, scenario.x, scenario.y, splitAxis === 'y');
-			const mid = performance.now();
-			landscapeTarget.innerHTML = renderTable(html);
-			const end = performance.now();
-
-			console.log(`Table creation took: ${((mid - start) * 1000).toFixed(0)}μs; render DOM took: ${((end - mid) * 1000).toFixed(0)}μs`);
-		}
-
-		// alternative function to considering all permutations an axis
-		function fixOrder(axis) {
-			return [dimensions[axis.name].filter(function (capability) { return axis.values.indexOf(capability) !== -1 })];
-		}
-
-		function filterByDate(applications, date) {
-			return applications.map(y => y.map(x => x.filter(app => app.source.some(use => between(date, use.commissioned, use.decommissioned)))));
-		}
-
-		function between(date, start, end) {
-			return (start === undefined || date >= start) && (end === undefined || date <= end);
+			return { text: app.Name, className: app.Status };
 		}
 
 		// helper function to add days to a date
@@ -311,58 +305,35 @@
 
 			result.setMilliseconds(result.getMilliseconds() + ((offset || 0) * 86400000));
 
-			return result;
+			return result.toISOString().substr(0, 10);
 		}
 
-		// pick the scenario closest to the desired layout
-		function selectScenario(scenarios) {
+		// render the table into the DOM
+		function renderTable2(table, elementId) {
+			const tableElement = document.createElement('table');
+			tableElement.id = elementId;
+			tableElement.classList = 'landscape';
 
-			let bestScore = 1000000;
-			let bestScenario = 0;
-			const xPreferred = dimensions[scenarios[0].x.name].filter(function (v) { return scenarios[0].x.values.indexOf(v) !== -1; });
-			const yPreferred = dimensions[scenarios[0].y.name].filter(function (v) { return scenarios[0].y.values.indexOf(v) !== -1; });
+			table.forEach((row, rowIndex) => {
+				const rowElement = document.createElement('tr');
 
-			scenarios.forEach(function (scenario, scenarioIndex) {
-				const xAxis = scenario.x;
-				const yAxis = scenario.y;
-				let score = 0;
+				for (const cell of row) {
+					const cellElement = document.createElement(cell.className.includes('axis') ? 'th' : 'td');
+					cellElement.colSpan = cell.colSpan;
+					cellElement.rowSpan = cell.rowSpan;
+					cellElement.className = cell.className;
 
-				xAxis.values.forEach(function (value, valueIndex) {
-					score += Math.abs(xPreferred.indexOf(value) - valueIndex);
-				});
+					const divElement = document.createElement('div');
+					divElement.appendChild(document.createTextNode(cell.text));
 
-				yAxis.values.forEach(function (value, valueIndex) {
-					score += Math.abs(yPreferred.indexOf(value) - valueIndex);
-				});
-
-				if (score < bestScore) {
-					bestScenario = scenarioIndex;
-					bestScore = score;
+					cellElement.appendChild(divElement);
+					rowElement.appendChild(cellElement);
 				}
+
+				tableElement.appendChild(rowElement);
 			});
 
-			return scenarios[bestScenario];
-		}
-
-		function renderTable(table) {
-			let html = '<table class="landscape"><thead>';
-
-			table.forEach(function (row, rowIndex) {
-				html += '<tr>';
-				row.forEach(function (cell) {
-					html += '<' + (rowIndex ? 'td' : 'th') + ' class="' + cell.style + ' height' + Math.round(cell.height * 10) + ' width' + Math.round(cell.width * 10) + '" colspan="' + cell.cols + '" rowspan="' + cell.rows + '"><div>' + cell.text + '</div></' + (rowIndex ? 'td' : 'th') + '>';
-				});
-
-				html += '</tr>';
-
-				if (rowIndex === 0) {
-					html += '</thead><tbody>';
-				}
-			});
-
-			html += '</tbody></table>'
-
-			return html;
+			document.getElementById(elementId).replaceWith(tableElement);
 		}
 	</script>
 </body>

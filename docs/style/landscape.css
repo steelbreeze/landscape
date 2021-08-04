@@ -16,34 +16,32 @@ td div, th div {
   text-overflow: ellipsis;
 }
 
-.xAxis {
+.x.axis {
   width: 25%;
 }
 
-.yAxis, .xyAxis {
+.y.axis, .xy.axis {
   width: 10em;
 }
 
-table.landscape th.xAxis {
+table.landscape .x.axis {
   padding: 0;
   border-bottom: none;
   background-color: #4A6572;
 }
 
-table.landscape th.xAxis div {
+table.landscape .x.axis div {
   padding: 0.25em 0em;
-  border-bottom: 0.2em solid #72DEFF;
 }
 
-table.landscape td.yAxis {
+table.landscape .y.axis {
   margin: 0;
   padding: 0;
   background-color: #4A6572;
 }
 
-table.landscape td.yAxis div {
+table.landscape .y.axis div {
   padding: 1em 0.5em 1em 0em;
-  border-right: 0.2em solid #72DEFF;
   text-align: right;
 }
 

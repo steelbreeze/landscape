@@ -1,12 +1,13 @@
 {
   "name": "@steelbreeze/landscape",
-  "version": "2.0.0-rc.3",
+  "version": "3.0.0-rc.1",
   "description": "Landscape map viewpoint visualisation",
   "main": "lib/node/index.js",
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
+    "@steelbreeze/pivot": "^1.0.0-rc.5"
   },
   "devDependencies": {
     "typedoc": "^0.20.36",

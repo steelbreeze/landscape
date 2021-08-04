@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Landscape v2</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			table-layout: fixed;
+		}
+
+		.cell {
+			text-align: center;
+			color: white;
+			border: 1.5pt solid white;
+			padding: 5pt 10pt;
+			text-overflow: ellipsis;
+		}
+
+		.axis {
+			padding: 5pt;
+			background: grey;
+		}
+
+		.x {
+			min-width: 10em;
+		}
+
+		.y {
+			text-align: right;
+		}
+
+		.xy {
+			background: none;
+		}
+
+		.green {
+			background-color: green;
+		}
+
+		.amber {
+			background-color: goldenrod;
+		}
+
+		.red {
+			background-color: red;
+		}
+
+		.empty {
+			background: lightgray;
+		}
+	</style>
+</head>
+
+<body>
+	<table id="child"></table>
+	<script src="./dist/d3-dsv.min.js"></script>
+	<script src="./dist/pivot.min.js"></script>
+	<script src="./dist/landscape.min.js"></script>
+	<script>
+		const dimensions = {
+			Capability: ["Market gateway", "Order execution", "Order management", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
+			Product: ["Rates", "FX", "MM", "Credit", "Equities"],
+			Location: ["United States", "United Kingdom", "Germany", "Italy"],
+			Supplier: ["Finastra", "ION", "Kx Systems", "Microsoft", "Murex", "Thunderhead", "Wall Street Systems"],
+			Status: ["green", "amber", "red"]
+		};
+
+		const dateOfInterest = new Date().toISOString().substr(0, 10);
+
+		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(function (response) { return response.text() }).then(csv => {
+			// convert the CSV data into a JSON array
+			const data = d3.csvParse(csv);
+
+			// create the cube  with the initial axes
+			createCube(data, "Capability", "Product");
+		});
+
+
+		/**
+		 * Called on load or change of axes
+		 */
+		function createCube(data, yName, xName) {
+			// create the axes
+			const yAxis = pivot.joinAxes(pivot.valuesAxis([yName], 'yHeader', () => yName), pivot.columnAxis(data, yName, { sort: listSort(dimensions[yName]) }));
+			const xAxis = pivot.joinAxes(pivot.valuesAxis([xName], 'xHeader', () => xName), pivot.columnAxis(data, xName, { sort: listSort(dimensions[xName]) }));
+
+			// pivot the data
+			const cube = pivot.cube(data, yAxis, xAxis);
+
+			// filter the data based on date
+			const filtered = pivot.filter(cube, dateFilter);
+
+			// split the cells into rows or columns where there are multiple
+			const split = landscape.splitX(filtered, yAxis, xAxis, key);
+
+			landscape.merge(split);
+
+			render('child', split);
+		}
+
+		function key(row) {
+			return { className: row.Status, text: row.Name }
+		}
+
+		/**
+		 * Returns the least common multiple of two integers
+		 * @hidden
+		 */
+		function leastCommonMultiple(a, b) {
+			return (a * b) / greatestCommonFactor(a, b);
+		}
+
+		/**
+		 * Returns the greatest common factor of two numbers
+		 * @hidden
+		 */
+		function greatestCommonFactor(a, b) {
+			return b ? greatestCommonFactor(b, a % b) : a;
+		}
+
+		/**
+		 * Create any array of numbers from 0 to n
+		 * @hidden
+		 */
+		function generate(size, f) {
+			const result = [];
+
+			for (let i = 0; i < size; i++) {
+				result.push(f(i));
+			}
+
+			return result;
+		}
+
+		/**
+		 * Creates a cell within a table
+		 */
+		function cell(key) {
+			return { ...key, rowSpan: 1, colSpan: 1 };
+		}
+
+		/** Generator function used to sort data discovered by a preferred order */
+		function listSort(list) {
+			return (a, b) => list.indexOf(a) - list.indexOf(b);
+		}
+
+		function dateFilter(app) {
+			return (!app.from || app.from < dateOfInterest) && (!app.to || dateOfInterest < app.to);
+		}
+
+		function render(elementId, table) {
+			const tableElement = document.createElement('table');
+			tableElement.id = elementId;
+
+			for (const row of table) {
+				const rowElement = document.createElement('tr');
+				rowElement.className = 'row';
+
+				for (const cell of row) {
+					const cellElement = document.createElement('td');
+
+					cellElement.colSpan = cell.colSpan;
+					cellElement.rowSpan = cell.rowSpan;
+					cellElement.className = `cell ${cell.className}`;
+					cellElement.appendChild(document.createTextNode(cell.text));
+
+					rowElement.appendChild(cellElement);
+				}
+
+				tableElement.appendChild(rowElement);
+			}
+
+			document.getElementById(elementId).replaceWith(tableElement);
+		}
+
+		/**
+ * Returns the least common multiple of two integers
+ * @hidden
+ */
+		function leastCommonMultiple(a, b) {
+			return (a * b) / greatestCommonFactor(a, b);
+		}
+
+		/**
+		 * Returns the greatest common factor of two numbers
+		 * @hidden
+		 */
+		function greatestCommonFactor(a, b) {
+			return b ? greatestCommonFactor(b, a % b) : a;
+		}
+
+		/**
+		 * Create any array of numbers from 0 to n
+		 * @hidden
+		 */
+		function generate(size, f) {
+			const result = [];
+
+			for (let i = 0; i < size; i++) {
+				result.push(f(i));
+			}
+
+			return result;
+		}
+
+	</script>
+</body>
+
+</html>

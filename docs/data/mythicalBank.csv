@@ -1,4 +1,4 @@
-name,supplier,capability,product,location,status,decommissioned,commissioned
+Name,Supplier,Capability,Product,Location,Status,to,from
 Thunderhead ONE,Thunderhead,Confirmations,FX,United Kingdom,green,,
 Thunderhead ONE,Thunderhead,Confirmations,MM,United Kingdom,green,,
 Thunderhead ONE,Thunderhead,Confirmations,Rates,United Kingdom,green,,
