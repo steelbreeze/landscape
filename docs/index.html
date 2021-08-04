@@ -61,7 +61,7 @@
 							</tr>
 							<tr>
 								<td colspan="3">
-									<label for="splitAxis">Split cells by:</label>
+									<label for="splitAxis">Split by axis:</label>
 									<select id="splitAxis" onchange="filterCube()">
 										<option value="x" selected>x</option>
 										<option value="y">y</option>
@@ -70,7 +70,7 @@
 							</tr>
 							<tr>
 								<td colspan="3">
-									<label>Merge by</label>
+									<label>Merge by axis</label>
 									<label for="mergeByY">y:</label>
 									<input type="checkbox" id="mergeByY" onchange="renderCube()" checked />
 									<label for="mergeByX">x:</label>
@@ -109,35 +109,22 @@
 				<article>
 					<h1>Notes</h1>
 					<p>The application landscape map viewpoint above is auto-generated from a <a
-							href="./data/mythicalBank.csv" target="_top">CSV file</a>
-						containing
-						information about applications and the context in which they are used. The landscape maps
-						viewpoint conveys
-						a great deal of information in a compact form, showing the health of a domain clearly and
-						consisely. For
-						more information see the <a
+							href="./data/mythicalBank.csv" target="_top">CSV file</a> containing information about
+						applications and the context in which they are used. The landscape maps viewpoint conveys a
+						great deal of information in a compact form, showing the health of a domain clearly and
+						consisely. For more information see the <a
 							href="https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248"
-							target="_blank">Archimate architecture viewpoints</a> documentation.</p>
-					<p>In this example, we are fixing the y-axis with a pre-defined order of capabilities and
-						determining the
-						optimal
-						sequence of the x-axis. The process from raw data to the table above is as follows:</p>
-					<ol>
-						<li>Extract the unique values for the x and y axis;</li>
-						<li>Determine the optimal sequences of values on the x-axis to position the same applications of
-							the same
-							status
-							together in an order that is closest to the ideal desired order;</li>
-						<li>Produce a table using the optimal x-axis and y-axis where cells containing multiple
-							applications are
-							split
-							and
-							applications of the same status in neighbouring cells merged.</li>
-					</ol>
-					<p>These operations are performed in seperate calls to the library, therefore if you want a preset x
-						and y axis,
-						you
-						can skip the first two steps alltogether, or substitute your own methods.</p>
+							target="_blank">Archimate architecture viewpoints</a> documentation. They resemble a pivot
+						table, but with content from the underlying data displayed rather than aggregates.</p>
+					<p>Two libraries are used: <a href="https://github.com/steelbreeze/pivot">@steelbreeze/pivot</a> and
+						<a href="https://github.com/steelbreeze/landscape">@steelbreeze/landscape</a>.
+					</p>
+					<p>The first is used to pivot the source data into a cube based on the selected x and y axes. The
+						axes and cube is the landscape library, but they could equally be used for numerical reporting.
+					</p>
+					<p>The second is used to render the results. As a cell in a cube may contain multiple values, we
+						first create duplicate rows or columns to provide only single values in any table cell, we then
+						merge adjacent cells with the same value to provide the resultant table.</p>
 				</article>
 			</div>
 		</div>
@@ -145,25 +132,9 @@
 			<div class="fixedWidth">
 				<article>
 					<h1>Browser support</h1>
-					<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES3; it should
-						therefore work in
-						any
-						browser. The json data in this example is loaded with <code>window.fetch</code> therefore a
-						polyfil is
-						required
-						for older browsers.</p>
-				</article>
-			</div>
-		</div>
-		<div class="mainSection">
-			<div class="fixedWidth">
-				<article>
-					<h1>Rendering</h1>
-					<p>Google Chrome, Mozilla Firefox and Opera all render well. Apple Safari and Microsoft Edge and IE
-						all have
-						rowspan
-						table
-						rendering issues where there are complex split cell scenarios.</p>
+					<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES6; it should
+						therefore work in any modern browser. The json data in this example is loaded with
+						<code>window.fetch</code> therefore a polyfil is required for older browsers.</p>
 				</article>
 			</div>
 		</div>
@@ -270,7 +241,7 @@
 			const date = fromToday(slider.value);
 
 			// update the date in the page
-			document.getElementById("todaysDate").textContent = date;
+			dateOfInterest.textContent = date;
 
 			// filter the cube using the date of interest
 			filtered = pivot.filter(cube, app => (!app.from || app.from < date) && (!app.to || date < app.to));
