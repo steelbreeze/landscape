@@ -244,7 +244,7 @@
 			dateOfInterest.textContent = date;
 
 			// filter the cube using the date of interest
-			filtered = pivot.filter(cube, app => (!app.from || app.from < date) && (!app.to || date < app.to));
+			filtered = pivot.filter(cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
 
 			renderCube();
 		}
