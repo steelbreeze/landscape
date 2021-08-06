@@ -34,10 +34,9 @@ export interface Cell extends Key {
 export function splitX<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xAxis: Axis<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
 	const xSplits = generate(xAxis.length, index => cube.map(row => row[index].length || 1).reduce(leastCommonMultiple));
 
-	const header = generate(xAxis[0].pairs.length, row => [...xyHeaderRow(yAxis), ...xAxis.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${c.pairs[row].key}`, text: c.pairs[row].value }))], [])]);
 	const mapped = cube.map((row, ri) => [...yHeaderRow(yAxis, ri), ...row.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], nri => dataCell(c, nri / xSplits[index], getKey))], [])]);
 
-	return [...header, ...mapped];
+	return [...header(yAxis, xAxis, xSplits), ...mapped];
 }
 
 /**
@@ -49,19 +48,15 @@ export function splitX<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xA
  */
 export function splitY<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xAxis: Axis<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
 	const ySplits = cube.map(row => row.map(cell => cell.length || 1).reduce(leastCommonMultiple));
+	const xSplits = xAxis.map(() => 1);
 
-	const header = generate(xAxis[0].pairs.length, row => [...xyHeaderRow(yAxis), ...xAxis.map(s => cell({ className: `axis x ${s.pairs[row].key}`, text: s.pairs[row].value }))]);
 	const mapped = cube.reduce<Cell[][]>((res, row, index) => [...res, ...generate(ySplits[index], nri => [...yHeaderRow(yAxis, index), ...row.map(c => dataCell(c, nri / ySplits[index], getKey))])], []);
 
-	return [...header, ...mapped];
+	return [...header(yAxis, xAxis, xSplits), ...mapped];
 }
 
-/**
- * Creates a single row of the xy header block.
- * @hidden
- */
-function xyHeaderRow<TRow extends Row>(yAxis: Axis<TRow>): Cell[] {
-	return yAxis[0].pairs.map(() => cell({ className: 'axis xy', text: '' }));
+function header<TRow extends Row>(yAxis: Axis<TRow>, xAxis: Axis<TRow>, xSplits: number[]) {
+	return generate(xAxis[0].pairs.length, row => [...yAxis[0].pairs.map(() => cell({ className: 'axis xy', text: '' })), ...xAxis.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${c.pairs[row].key}`, text: c.pairs[row].value }))], [])]);
 }
 
 /**
@@ -84,7 +79,7 @@ function dataCell<TRow extends Row>(table: Table<Row>, factor: number, getKey: F
  * Creates a cell within a table
  * @hidden
  */
- function cell(key: Key): Cell {
+function cell(key: Key): Cell {
 	return { ...key, rowSpan: 1, colSpan: 1 };
 }
 /**
