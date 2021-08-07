@@ -1,6 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019-21 David Mesquita-Morris
-import { Axis, Cube, Func1, Row, Table } from '@steelbreeze/pivot';
+import { Cube, Dimension, Func1, Row, Table } from '@steelbreeze/pivot';
 
 /**
  * The final text and class name to use when rendering cells in a table.
@@ -31,7 +31,7 @@ export interface Cell extends Key {
  * @param xAxis The x axis.
  * @param getKey A callback to extract the Key from the source data.
  */
-export function splitX<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xAxis: Axis<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
+export function splitX<TRow extends Row>(cube: Cube<TRow>, yAxis: Dimension<TRow>, xAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
 	const xSplits = generate(xAxis.length, index => cube.map(row => row[index].length || 1).reduce(leastCommonMultiple));
 
 	const mapped = cube.map((row, ri) => [...yHeaderRow(yAxis, ri), ...row.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], nri => dataCell(c, nri / xSplits[index], getKey))], [])]);
@@ -46,7 +46,7 @@ export function splitX<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xA
  * @param xAxis The x axis.
  * @param getKey A callback to extract the Key from the source data.
  */
-export function splitY<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xAxis: Axis<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
+export function splitY<TRow extends Row>(cube: Cube<TRow>, yAxis: Dimension<TRow>, xAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
 	const ySplits = cube.map(row => row.map(cell => cell.length || 1).reduce(leastCommonMultiple));
 	const xSplits = xAxis.map(() => 1);
 
@@ -55,16 +55,25 @@ export function splitY<TRow extends Row>(cube: Cube<TRow>, yAxis: Axis<TRow>, xA
 	return [...header(yAxis, xAxis, xSplits), ...mapped];
 }
 
-function header<TRow extends Row>(yAxis: Axis<TRow>, xAxis: Axis<TRow>, xSplits: number[]) {
-	return generate(xAxis[0].pairs.length, row => [...yAxis[0].pairs.map(() => cell({ className: 'axis xy', text: '' })), ...xAxis.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${c.pairs[row].key}`, text: c.pairs[row].value }))], [])]);
+/**
+ * Creates the x axis header (including the x/y header block)
+ * @hidden
+ */
+function header<TRow extends Row>(yAxis: Dimension<TRow>, xAxis: Dimension<TRow>, xSplits: number[]): Cell[][] {
+	return generate(xAxis[0].data.length, row => [...yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })), ...xAxis.reduce<Cell[]>((res, measure, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${measure.data[row].key}`, text: measure.data[row].value }))], [])]);
 }
+
+//function row<TRow extends Row>(yAxis: Axis<TRow>, xAxis: Axis<TRow>, ySplits: number[], xSplits: number[]) {
+//
+//}
+
 
 /**
  * Creates the y axis header section of a row
  * @hidden 
  */
-function yHeaderRow<TRow extends Row>(yAxis: Axis<TRow>, row: number): Cell[] {
-	return yAxis[row].pairs.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }));
+function yHeaderRow<TRow extends Row>(yAxis: Dimension<TRow>, row: number): Cell[] {
+	return yAxis[row].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }));
 }
 
 /**
@@ -128,11 +137,11 @@ function greatestCommonFactor(a: number, b: number): number {
  * Create any array of numbers from 0 to n
  * @hidden
  */
-function generate<TResult>(size: number, f: (index: number) => TResult): Array<TResult> {
+function generate<TResult>(length: number, generator: Func1<number, TResult>): Array<TResult> {
 	const result = [];
 
-	for (let i = 0; i < size; i++) {
-		result.push(f(i));
+	for (let i = 0; i < length; i++) {
+		result.push(generator(i));
 	}
 
 	return result;

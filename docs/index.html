@@ -166,7 +166,7 @@
 	<script crossorigin="anonymous"
 		src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch%2Cperformance.now"></script>
 	<script src="./dist/d3-dsv.min.js"></script>
-	<script src="./dist/pivot.min.js"></script>
+	<script src="https://steelbreeze.net/pivot/dist/pivot.min.js"></script>
 	<script src="./dist/landscape.min.js"></script>
 	<script>
 		// get DOM elements that are frequently changed
@@ -226,8 +226,8 @@
 		// create the cube on initial load or when an axis changes
 		function createCube() {
 			// create the axes based on the user selection
-			yAxis = pivot.columnAxis(data, yAxisSelector.value, { sort: listSort(dimensions[yAxisSelector.value]) });
-			xAxis = pivot.columnAxis(data, xAxisSelector.value, { sort: listSort(dimensions[xAxisSelector.value]) });
+			yAxis = pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(dimensions[yAxisSelector.value]) });
+			xAxis = pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(dimensions[xAxisSelector.value]) });
 
 			// create the cube
 			cube = pivot.cube(data, yAxis, xAxis);

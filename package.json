@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@steelbreeze/pivot": "^1.0.0-rc.5"
+    "@steelbreeze/pivot": "^1.0.0-rc.17"
   },
   "devDependencies": {
     "typedoc": "^0.20.36",
