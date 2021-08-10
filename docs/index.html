@@ -61,11 +61,11 @@
 							</tr>
 							<tr>
 								<td colspan="3">
-									<label for="splitAxis">Split by axis:</label>
-									<select id="splitAxis" onchange="filterCube()">
-										<option value="x" selected>x</option>
-										<option value="y">y</option>
-									</select>
+									<label>Split by axis</label>
+									<label for="splitByY">y:</label>
+									<input type="radio" name="splitAxis" id="splitByY" onchange="filterCube()" />
+									<label for="splitByX">x:</label>
+									<input type="radio" name="splitAxis" id="splitByX" onchange="filterCube()" checked />
 								</td>
 							</tr>
 							<tr>
@@ -174,18 +174,12 @@
 		const landscapeTarget = document.getElementById("landscapeTarget");
 		const xAxisSelector = document.getElementById("xAxisSelector");
 		const yAxisSelector = document.getElementById("yAxisSelector");
-		const splitAxis = document.getElementById("splitAxis");
 		const xAxisOptimised = document.getElementById("xAxisOptimised");
 		const yAxisOptimised = document.getElementById("yAxisOptimised");
 		const slider = document.getElementById("slider");
+		const splitByX = document.getElementById("splitByX");
 		const mergeByX = document.getElementById("mergeByX");
 		const mergeByY = document.getElementById("mergeByY");
-
-		// the two methods of splitting prior to merging
-		const splitter = {
-			x: landscape.splitX,
-			y: landscape.splitY
-		};
 
 		// define the preferred sequence of each dimension
 		const dimensions = {
@@ -252,7 +246,7 @@
 		// merge adjacent cells based on user
 		function renderCube() {
 			// split the cube and axes along the desired axis, creating a table
-			const table = splitter[splitAxis.value](filtered, yAxis, xAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = (splitByX.checked ? landscape.splitX : landscape.splitY)(filtered, yAxis, xAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
 
 			// merge the split cube along the desired axes
 			landscape.merge(table, mergeByY.checked, mergeByX.checked);
