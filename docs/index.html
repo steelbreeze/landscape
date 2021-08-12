@@ -251,20 +251,18 @@
 			const xSplits = counts[0].map((_, index) => splitByX.checked ? counts.map(row => row[index]).reduce(leastCommonMultiple) : 1);
 			const ySplits = counts.map(row => splitByX.checked ? 1 : row.reduce(leastCommonMultiple));
 
-			const grid = ySplits.reduce((result, ySplit) => [...result, ...generate(ySplit, (yIndex) => xSplits.reduce((result, xSplit) => [...result, ...generate(xSplit, (xIndex) => {return {yIndex, xIndex}})], []))], []);
-
+			const grid = ySplits.reduce((result, ySplit, yIndex) => [...result, ...generate(ySplit, (nyi) => xSplits.reduce((result, xSplit, xIndex) => [...result, ...generate(xSplit, (nxi) => {return {yIndex, nyi, xIndex, nxi}})], []))], []);
 
 			console.log(counts);
 			console.log(xSplits);
 			console.log(ySplits);
 			console.log(grid);
 */
-
 			// split the cube and axes along the desired axis, creating a table
-			const table = (splitByX.checked ? landscape.splitX : landscape.splitY)(filtered, yAxis, xAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = (splitByX.checked ? landscape.splitX : landscape.splitY)(filtered, xAxis, yAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
 
 			// merge the split cube along the desired axes
-			landscape.merge(table, mergeByY.checked, mergeByX.checked);
+			landscape.merge(table, mergeByX.checked, mergeByY.checked);
 
 			// render the table in the target element
 			renderTable2(table, 'tablan');

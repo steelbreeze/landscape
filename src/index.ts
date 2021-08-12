@@ -27,39 +27,39 @@ export interface Cell extends Key {
 /**
  * Converts a pivoted cube and its axes into a table structure. Where a cell in the cube contains multiple values, multiple columns will be generated.
  * @param cube The source cube.
- * @param yAxis The y axis.
  * @param xAxis The x axis.
+ * @param yAxis The y axis.
  * @param getKey A callback to extract the Key from the source data.
  */
-export function splitX<TRow extends Row>(cube: Cube<TRow>, yAxis: Dimension<TRow>, xAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
+export function splitX<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
 	const xSplits = generate(xAxis.length, index => cube.map(row => row[index].length || 1).reduce(leastCommonMultiple));
 
 	const mapped = cube.map((row, ri) => [...yHeaderRow(yAxis, ri), ...row.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], nri => dataCell(c, nri / xSplits[index], getKey))], [])]);
 
-	return [...header(yAxis, xAxis, xSplits), ...mapped];
+	return [...header(xAxis, yAxis, xSplits), ...mapped];
 }
 
 /**
  * Converts a pivoted cube and its axes into a table structure. Where a cell in the cube contains multiple values, multiple rows will be generated.
  * @param cube The source cube.
- * @param yAxis The y axis.
  * @param xAxis The x axis.
+ * @param yAxis The y axis.
  * @param getKey A callback to extract the Key from the source data.
  */
-export function splitY<TRow extends Row>(cube: Cube<TRow>, yAxis: Dimension<TRow>, xAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
+export function splitY<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
 	const ySplits = cube.map(row => row.map(cell => cell.length || 1).reduce(leastCommonMultiple));
 	const xSplits = xAxis.map(() => 1);
 
 	const mapped = cube.reduce<Cell[][]>((res, row, index) => [...res, ...generate(ySplits[index], nri => [...yHeaderRow(yAxis, index), ...row.map(c => dataCell(c, nri / ySplits[index], getKey))])], []);
 
-	return [...header(yAxis, xAxis, xSplits), ...mapped];
+	return [...header(xAxis, yAxis, xSplits), ...mapped];
 }
 
 /**
  * Creates the x axis header (including the x/y header block)
  * @hidden
  */
-function header<TRow extends Row>(yAxis: Dimension<TRow>, xAxis: Dimension<TRow>, xSplits: number[]): Cell[][] {
+function header<TRow extends Row>(xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, xSplits: number[]): Cell[][] {
 	return generate(xAxis[0].data.length, row => [...yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })), ...xAxis.reduce<Cell[]>((res, measure, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${measure.data[row].key}`, text: measure.data[row].value }))], [])]);
 }
 
@@ -94,10 +94,10 @@ function cell(key: Key): Cell {
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param table A table of Cells created by a previous call to splitX or splitY.
- * @param onY A flag to indicate that cells should be merged on the y axis.
  * @param onX A flag to indicate that cells should be merged on the x axis.
+ * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export function merge(table: Array<Array<Cell>>, onY = true, onX = true): void {
+export function merge(table: Array<Array<Cell>>, onX = true, onY= true): void {
 	let next;
 
 	for (let iY = table.length; iY--;) {
