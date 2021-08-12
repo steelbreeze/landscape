@@ -224,7 +224,7 @@
 			xAxis = pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(dimensions[xAxisSelector.value]) });
 
 			// create the cube
-			cube = pivot.cube(data, yAxis, xAxis);
+			cube = pivot.cube(data, xAxis, yAxis);
 
 			filterCube();
 		}
@@ -239,12 +239,27 @@
 
 			// filter the cube using the date of interest
 			filtered = pivot.filter(cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
-
+						
 			renderCube();
 		}
 
 		// merge adjacent cells based on user
 		function renderCube() {
+/*
+			const counts = pivot.map(filtered, cell => cell.length || 1);
+
+			const xSplits = counts[0].map((_, index) => splitByX.checked ? counts.map(row => row[index]).reduce(leastCommonMultiple) : 1);
+			const ySplits = counts.map(row => splitByX.checked ? 1 : row.reduce(leastCommonMultiple));
+
+			const grid = ySplits.reduce((result, ySplit) => [...result, ...generate(ySplit, (yIndex) => xSplits.reduce((result, xSplit) => [...result, ...generate(xSplit, (xIndex) => {return {yIndex, xIndex}})], []))], []);
+
+
+			console.log(counts);
+			console.log(xSplits);
+			console.log(ySplits);
+			console.log(grid);
+*/
+
 			// split the cube and axes along the desired axis, creating a table
 			const table = (splitByX.checked ? landscape.splitX : landscape.splitY)(filtered, yAxis, xAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
 
@@ -300,6 +315,38 @@
 
 			document.getElementById(elementId).replaceWith(tableElement);
 		}
+
+
+/**
+ * Returns the least common multiple of two integers
+ * @hidden
+ */
+ function leastCommonMultiple(a, b) {
+	return (a * b) / greatestCommonFactor(a, b);
+}
+
+/**
+ * Returns the greatest common factor of two numbers
+ * @hidden
+ */
+function greatestCommonFactor(a, b) {
+	return b ? greatestCommonFactor(b, a % b) : a;
+}
+
+/**
+ * Create any array of numbers from 0 to n
+ * @hidden
+ */
+function generate(length, generator){
+	const result = [];
+
+	for (let i = 0; i < length; i++) {
+		result.push(generator(i));
+	}
+
+	return result;
+}
+
 	</script>
 </body>
 

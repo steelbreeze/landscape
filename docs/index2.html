@@ -86,7 +86,7 @@
 			const xAxis = pivot.joinAxes(pivot.valuesAxis([xName], 'xHeader', () => xName), pivot.columnAxis(data, xName, { sort: listSort(dimensions[xName]) }));
 
 			// pivot the data
-			const cube = pivot.cube(data, yAxis, xAxis);
+			const cube = pivot.cube(data, xAxis, yAxis);
 
 			// filter the data based on date
 			const filtered = pivot.filter(cube, dateFilter);
