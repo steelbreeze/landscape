@@ -65,7 +65,8 @@
 									<label for="splitByY">y:</label>
 									<input type="radio" name="splitAxis" id="splitByY" onchange="filterCube()" />
 									<label for="splitByX">x:</label>
-									<input type="radio" name="splitAxis" id="splitByX" onchange="filterCube()" checked />
+									<input type="radio" name="splitAxis" id="splitByX" onchange="filterCube()"
+										checked />
 								</td>
 							</tr>
 							<tr>
@@ -134,7 +135,8 @@
 					<h1>Browser support</h1>
 					<p>The layout engine is writtin in TypeScript and transpiled into JavaScript ES6; it should
 						therefore work in any modern browser. The json data in this example is loaded with
-						<code>window.fetch</code> therefore a polyfil is required for older browsers.</p>
+						<code>window.fetch</code> therefore a polyfil is required for older browsers.
+					</p>
 				</article>
 			</div>
 		</div>
@@ -239,27 +241,14 @@
 
 			// filter the cube using the date of interest
 			filtered = pivot.filter(cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
-						
+
 			renderCube();
 		}
 
 		// merge adjacent cells based on user
 		function renderCube() {
-/*
-			const counts = pivot.map(filtered, cell => cell.length || 1);
-
-			const xSplits = counts[0].map((_, index) => splitByX.checked ? counts.map(row => row[index]).reduce(leastCommonMultiple) : 1);
-			const ySplits = counts.map(row => splitByX.checked ? 1 : row.reduce(leastCommonMultiple));
-
-			const grid = ySplits.reduce((result, ySplit, yIndex) => [...result, ...generate(ySplit, (nyi) => xSplits.reduce((result, xSplit, xIndex) => [...result, ...generate(xSplit, (nxi) => {return {yIndex, nyi, xIndex, nxi}})], []))], []);
-
-			console.log(counts);
-			console.log(xSplits);
-			console.log(ySplits);
-			console.log(grid);
-*/
 			// split the cube and axes along the desired axis, creating a table
-			const table = (splitByX.checked ? landscape.splitX : landscape.splitY)(filtered, xAxis, yAxis, key); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = landscape.split(filtered, xAxis, yAxis, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
 			// merge the split cube along the desired axes
 			landscape.merge(table, mergeByX.checked, mergeByY.checked);
@@ -313,38 +302,6 @@
 
 			document.getElementById(elementId).replaceWith(tableElement);
 		}
-
-
-/**
- * Returns the least common multiple of two integers
- * @hidden
- */
- function leastCommonMultiple(a, b) {
-	return (a * b) / greatestCommonFactor(a, b);
-}
-
-/**
- * Returns the greatest common factor of two numbers
- * @hidden
- */
-function greatestCommonFactor(a, b) {
-	return b ? greatestCommonFactor(b, a % b) : a;
-}
-
-/**
- * Create any array of numbers from 0 to n
- * @hidden
- */
-function generate(length, generator){
-	const result = [];
-
-	for (let i = 0; i < length; i++) {
-		result.push(generator(i));
-	}
-
-	return result;
-}
-
 	</script>
 </body>
 

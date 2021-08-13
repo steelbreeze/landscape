@@ -1,6 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019-21 David Mesquita-Morris
-import { Cube, Dimension, Func1, Row, Table } from '@steelbreeze/pivot';
+import { Cube, Dimension, Func1, Row } from '@steelbreeze/pivot';
 
 /**
  * The final text and class name to use when rendering cells in a table.
@@ -24,35 +24,16 @@ export interface Cell extends Key {
 	colSpan: number;
 }
 
-/**
- * Converts a pivoted cube and its axes into a table structure. Where a cell in the cube contains multiple values, multiple columns will be generated.
- * @param cube The source cube.
- * @param xAxis The x axis.
- * @param yAxis The y axis.
- * @param getKey A callback to extract the Key from the source data.
- */
-export function splitX<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
-	const xSplits = generate(xAxis.length, index => cube.map(row => row[index].length || 1).reduce(leastCommonMultiple));
+export function split<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Cell[][] {
+	const counts = cube.map(row => row.map(cell => cell.length || 1));
+	const xSplits = counts[0].map((_, index) => onX ? counts.map(row => row[index]).reduce(leastCommonMultiple) : 1);
+	const ySplits = counts.map(row => onX ? 1 : row.reduce(leastCommonMultiple));
 
-	const mapped = cube.map((row, ri) => [...yHeaderRow(yAxis, ri), ...row.reduce<Cell[]>((res, c, index) => [...res, ...generate(xSplits[index], nri => dataCell(c, nri / xSplits[index], getKey))], [])]);
-
-	return [...header(xAxis, yAxis, xSplits), ...mapped];
-}
-
-/**
- * Converts a pivoted cube and its axes into a table structure. Where a cell in the cube contains multiple values, multiple rows will be generated.
- * @param cube The source cube.
- * @param xAxis The x axis.
- * @param yAxis The y axis.
- * @param getKey A callback to extract the Key from the source data.
- */
-export function splitY<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>): Cell[][] {
-	const ySplits = cube.map(row => row.map(cell => cell.length || 1).reduce(leastCommonMultiple));
-	const xSplits = xAxis.map(() => 1);
-
-	const mapped = cube.reduce<Cell[][]>((res, row, index) => [...res, ...generate(ySplits[index], nri => [...yHeaderRow(yAxis, index), ...row.map(c => dataCell(c, nri / ySplits[index], getKey))])], []);
-
-	return [...header(xAxis, yAxis, xSplits), ...mapped];
+	return ySplits.reduce<Cell[][]>((result, ySplit, yIndex) => [...result, ...generate(ySplit, nyi => xSplits.reduce<Cell[]>((result, xSplit, xIndex) => [...result, ...generate(xSplit, nxi => {
+		const table = cube[yIndex][xIndex];
+		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
+		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
+	})], yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }))))], header(xAxis, yAxis, xSplits)); // NOTE: use the last [] as the header rows to avoud the [...[], ...[]] and same for xy headers
 }
 
 /**
@@ -61,27 +42,6 @@ export function splitY<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow
  */
 function header<TRow extends Row>(xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, xSplits: number[]): Cell[][] {
 	return generate(xAxis[0].data.length, row => [...yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })), ...xAxis.reduce<Cell[]>((res, measure, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${measure.data[row].key}`, text: measure.data[row].value }))], [])]);
-}
-
-//function row<TRow extends Row>(yAxis: Axis<TRow>, xAxis: Axis<TRow>, ySplits: number[], xSplits: number[]) {
-//
-//}
-
-
-/**
- * Creates the y axis header section of a row
- * @hidden 
- */
-function yHeaderRow<TRow extends Row>(yAxis: Dimension<TRow>, row: number): Cell[] {
-	return yAxis[row].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }));
-}
-
-/**
- * Creates a data cell.
- * @hidden
- */
-function dataCell<TRow extends Row>(table: Table<Row>, factor: number, getKey: Func1<TRow, Key>): Cell {
-	return cell(table.length ? getKey(table[Math.floor(table.length * factor)]) : { className: 'empty', text: '' });
 }
 
 /**
@@ -97,7 +57,7 @@ function cell(key: Key): Cell {
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export function merge(table: Array<Array<Cell>>, onX = true, onY= true): void {
+export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 	let next;
 
 	for (let iY = table.length; iY--;) {
