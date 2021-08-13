@@ -33,15 +33,7 @@ export function split<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		const table = cube[yIndex][xIndex];
 		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
 		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
-	})], yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }))))], header(xAxis, yAxis, xSplits)); // NOTE: use the last [] as the header rows to avoud the [...[], ...[]] and same for xy headers
-}
-
-/**
- * Creates the x axis header (including the x/y header block)
- * @hidden
- */
-function header<TRow extends Row>(xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, xSplits: number[]): Cell[][] {
-	return generate(xAxis[0].data.length, row => [...yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })), ...xAxis.reduce<Cell[]>((res, measure, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${measure.data[row].key}`, text: measure.data[row].value }))], [])]);
+	})], yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }))))], generate(xAxis[0].data.length, row => xAxis.reduce<Cell[]>((res, measure, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${measure.data[row].key}`, text: measure.data[row].value }))], yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
 }
 
 /**
