@@ -1,29 +1,29 @@
 Name,Supplier,Capability,Product,Location,Status,To,From
+ION Markets,ION,Market gateway,Credit,United Kingdom,red,2021-05-01,
+Azure API GW,Microsoft,Market gateway,Credit,Italy,green,,2021-05-01
 Thunderhead ONE,Thunderhead,Confirmations,FX,United Kingdom,green,,
 Thunderhead ONE,Thunderhead,Confirmations,MM,United Kingdom,green,,
 Thunderhead ONE,Thunderhead,Confirmations,Rates,United Kingdom,green,,
 Thunderhead ONE,Thunderhead,Confirmations,Credit,United Kingdom,green,,
 Thunderhead ONE,Thunderhead,Market gateway,Credit,United Kingdom,red,2021-10-01,
 Thunderhead ONE,Thunderhead,Confirmations,Equities,United Kingdom,green,,2023-06-06
-Azure API GW,Microsoft,Market gateway,MM,Italy,green,,2021-01-01
-Azure API GW,Microsoft,Market gateway,Credit,Italy,green,,2021-05-01
-Azure API GW,Microsoft,Market gateway,Rates,Italy,green,,2022-02-20
 Azure API GW,Microsoft,Market gateway,FX,Italy,green,,2022-02-20
-ION Markets,ION,Market gateway,MM,Italy,red,2021-01-01,
-ION Markets,ION,Market gateway,Credit,United Kingdom,red,2021-05-01,
 Fusion Summit,Finastra,Market gateway,FX,United Kingdom,green,2022-04-15,
 Fusion Summit,Finastra,Order execution,FX,United Kingdom,green,2022-01-15,
 Fusion Summit,Finastra,Market gateway,Rates,United Kingdom,green,2022-04-15,
 Fusion Summit,Finastra,Order management,Rates,United Kingdom,green,,2022-09-15
 Fusion Summit,Finastra,Order execution,Rates,United Kingdom,green,,
+Azure API GW,Microsoft,Market gateway,Rates,Italy,green,,2022-02-20
 Wall St,Wall Street Systems,Market gateway,MM,United Kingdom,green,2021-10-01,
 Wall St,Wall Street Systems,Order management,MM,United Kingdom,green,,
 Wall St,Wall Street Systems,Order execution,FX,United Kingdom,green,,2021-11-15
 Wall St,Wall Street Systems,Order execution,MM,United Kingdom,green,,2021-11-15
 Wall St,Wall Street Systems,Order management,FX,United Kingdom,green,,
+Azure API GW,Microsoft,Market gateway,MM,Italy,green,,2021-01-01
 MX II,Murex,Order execution,Credit,United Kingdom,amber,,
 MX II,Murex,Order execution,MM,United Kingdom,amber,2022-01-15,
 MX II,Murex,Market gateway,MM,United Kingdom,amber,2021-03-01,
+ION Markets,ION,Market gateway,MM,Italy,red,2021-01-01,
 Kdb+,Kx Systems,Order management,Equities,Germany,green,,
 Kdb+,Kx Systems,Market gateway,Equities,Germany,green,,
 Kdb+,Kx Systems,Confirmations,Equities,Germany,red,2023-09-09,
