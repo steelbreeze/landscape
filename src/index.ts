@@ -25,9 +25,8 @@ export interface Cell extends Key {
 }
 
 export function split<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Cell[][] {
-	const counts = cube.map(row => row.map(cell => cell.length || 1));
-	const xSplits = counts[0].map((_, index) => onX ? counts.map(row => row[index]).reduce(leastCommonMultiple) : 1);
-	const ySplits = counts.map(row => onX ? 1 : row.reduce(leastCommonMultiple));
+	const xSplits = generate(xAxis.length, index => onX ? cube.map(row => row[index].length || 1).reduce(leastCommonMultiple) : 1);
+	const ySplits = cube.map(row => row.map(cell => onX ? 1 : cell.length || 1).reduce(leastCommonMultiple));
 
 	return ySplits.reduce<Cell[][]>((result, ySplit, yIndex) => [...result, ...generate(ySplit, nyi => xSplits.reduce<Cell[]>((result, xSplit, xIndex) => [...result, ...generate(xSplit, nxi => {
 		const table = cube[yIndex][xIndex];
