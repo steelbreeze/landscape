@@ -248,7 +248,7 @@
 		// merge adjacent cells based on user
 		function renderCube() {
 			// split the cube and axes along the desired axis, creating a table
-			const table = landscape.split(filtered, xAxis, yAxis, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = landscape.table(filtered, xAxis, yAxis, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
 			// merge the split cube along the desired axes
 			landscape.merge(table, mergeByX.checked, mergeByY.checked);
