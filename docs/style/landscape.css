@@ -49,6 +49,14 @@ table.landscape .green {
   background: #1EB980;
 }
 
+.cell {
+  padding: 1em 0.25em;
+}
+
+.cell div {
+  white-space: nowrap;
+}
+
 table.landscape .amber {
   background: #f4af41;
 }

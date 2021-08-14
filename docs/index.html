@@ -288,7 +288,7 @@
 					const cellElement = document.createElement(cell.className.includes('axis') ? 'th' : 'td');
 					cellElement.colSpan = cell.colSpan;
 					cellElement.rowSpan = cell.rowSpan;
-					cellElement.className = cell.className;
+					cellElement.className = `cell ${cell.className}`;
 
 					const divElement = document.createElement('div');
 					divElement.appendChild(document.createTextNode(cell.text));

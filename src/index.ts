@@ -42,7 +42,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		const table = cube[yIndex][xIndex];
 		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
 		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
-	})], yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }))))], generate(xAxis[0].data.length, row => xAxis.reduce<Cell[]>((res, measure, index) => [...res, ...generate(xSplits[index], () => cell({ className: `axis x ${measure.data[row].key}`, text: measure.data[row].value }))], yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
+	})], yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }))))], generate(xAxis[0].data.length, row => xSplits.reduce<Cell[]>((result, xSplit, xIndex) => [...result, ...generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value }))], yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
 }
 
 /**
@@ -75,7 +75,7 @@ export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
  * Create any array of numbers from 0 to n
  * @hidden
  */
- function generate<TResult>(length: number, generator: Func1<number, TResult>): Array<TResult> {
+function generate<TResult>(length: number, generator: Func1<number, TResult>): Array<TResult> {
 	const result = [];
 
 	for (let i = 0; i < length; i++) {
@@ -105,6 +105,6 @@ function greatestCommonFactor(a: number, b: number): number {
  * Creates a cell within a table, augmenting a key with row and column span detail
  * @hidden
  */
- function cell(key: Key): Cell {
+function cell(key: Key): Cell {
 	return { ...key, rowSpan: 1, colSpan: 1 };
 }
