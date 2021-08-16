@@ -1,6 +1,6 @@
 {
   "name": "@steelbreeze/landscape",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0-rc.2",
   "description": "Landscape map viewpoint visualisation",
   "main": "lib/node/index.js",
   "directories": {
