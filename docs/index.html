@@ -221,12 +221,19 @@
 
 		// create the cube on initial load or when an axis changes
 		function createCube() {
-			// create the axes based on the user selection
+			//console.time('dimensions');
+
+			// create dimensions based on the user selection and underlying data, sorted by a pre-defined list
 			yAxis = pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(dimensions[yAxisSelector.value]) });
 			xAxis = pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(dimensions[xAxisSelector.value]) });
 
+			//console.timeEnd('dimensions');
+			//console.time('cube');
+
 			// create the cube
 			cube = pivot.cube(data, xAxis, yAxis);
+
+			//console.timeEnd('cube');
 
 			filterCube();
 		}
@@ -239,26 +246,30 @@
 			// update the date in the page
 			dateOfInterest.textContent = date;
 
+			//console.time('filter');
+
 			// filter the cube using the date of interest
 			filtered = pivot.filter(cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
+
+			//console.timeEnd('filter');
 
 			renderCube();
 		}
 
 		// merge adjacent cells based on user
 		function renderCube() {
-			console.time('split');
+			//console.time('split');
 			
 			// split the cube and axes along the desired axis, creating a table
 			const table = landscape.table(filtered, xAxis, yAxis, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
-			console.timeEnd('split');
-			console.time('merge');
+			//console.timeEnd('split');
+			//console.time('merge');
 
 			// merge the split cube along the desired axes
 			landscape.merge(table, mergeByX.checked, mergeByY.checked);
 
-			console.timeEnd('merge');
+			//console.timeEnd('merge');
 
 			// render the table in the target element
 			renderTable2(table, 'tablan');
@@ -284,6 +295,8 @@
 
 		// render the table into the DOM
 		function renderTable2(table, elementId) {
+			//console.time('elements');
+
 			const tableElement = document.createElement('table');
 			tableElement.id = elementId;
 			tableElement.classList = 'landscape';
@@ -307,7 +320,12 @@
 				tableElement.appendChild(rowElement);
 			});
 
+			//console.timeEnd('elements');
+			//console.time('render');
+
 			document.getElementById(elementId).replaceWith(tableElement);
+
+			//console.timeEnd('render');
 		}
 	</script>
 </body>

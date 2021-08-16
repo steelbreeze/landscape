@@ -41,6 +41,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	return reduce(ySplits, (ySplit, yIndex) => generate(ySplit, nyi => reduce(xSplits, (xSplit, xIndex) => generate(xSplit, nxi => {
 		const table = cube[yIndex][xIndex];
 		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
+
 		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
 	}), yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value })))), generate(xAxis[0].data.length, row => reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value })), yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
 }
@@ -53,11 +54,13 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
  */
 export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 	let next;
+	let iY = table.length;
 
-	for (let iY = table.length; iY--;) {
+	while (iY--) {
 		const row = table[iY];
+		let iX = row.length;
 
-		for (let iX = row.length; iX--;) {
+		while (iX--) {
 			const cell = row[iX];
 
 			if (onY && iY && (next = table[iY - 1][iX]) && next.text === cell.text && next.className === cell.className && next.colSpan === cell.colSpan) {
