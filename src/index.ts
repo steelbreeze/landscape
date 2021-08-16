@@ -2,9 +2,7 @@
 // Copyright (c) 2019-21 David Mesquita-Morris
 import { Cube, Dimension, Func1, Func2, Row } from '@steelbreeze/pivot';
 
-/**
- * The final text and class name to use when rendering cells in a table.
- */
+/** The final text and class name to use when rendering cells in a table. */
 export interface Key {
 	/** The text to use in the final table rendering. */
 	text: string;
@@ -13,9 +11,7 @@ export interface Key {
 	className: string;
 }
 
-/**
- * An extension of key, adding the number of rows and columns the key will occupy in the final table rendering.
- */
+/** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
 export interface Cell extends Key {
 	/** The number of rows to occupy. */
 	rowSpan: number;
@@ -37,13 +33,13 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	const xSplits = generate(xAxis.length, index => onX ? cube.map(row => row[index].length || 1).reduce(leastCommonMultiple) : 1);
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
-	// expand the cube based on the splits and add in the row and column headings
-	return reduce(ySplits, (ySplit, yIndex) => generate(ySplit, nyi => reduce(xSplits, (xSplit, xIndex) => generate(xSplit, nxi => {
+	// generate the table from the cube, split cell with more than one value by row or column based on the splits calculated
+	return expand(ySplits, (ySplit, yIndex) => generate(ySplit, nyi => expand(xSplits, (xSplit, xIndex) => generate(xSplit, nxi => {
 		const table = cube[yIndex][xIndex];
 		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
 
 		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
-	}), yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value })))), generate(xAxis[0].data.length, row => reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value })), yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
+	}), yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value })))), generate(xAxis[0].data.length, row => expand(xSplits, (xSplit, xIndex) => generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value })), yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
 }
 
 /**
@@ -54,15 +50,9 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
  */
 export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 	let next;
-	let iY = table.length;
 
-	while (iY--) {
-		const row = table[iY];
-		let iX = row.length;
-
-		while (iX--) {
-			const cell = row[iX];
-
+	forReverse(table, (row, iY) => {
+		forReverse(row, (cell, iX) => {
 			if (onY && iY && (next = table[iY - 1][iX]) && next.text === cell.text && next.className === cell.className && next.colSpan === cell.colSpan) {
 				next.rowSpan += cell.rowSpan;
 
@@ -72,15 +62,25 @@ export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 
 				row.splice(iX, 1);
 			}
-		}
+		});
+	});
+}
+
+/**
+ * Reverse for loop.
+ * @hidden 
+ */
+function forReverse<TSource>(source: Array<TSource>, f: Func2<TSource, number, void>): void {
+	for (let index = source.length; index--;) {
+		f(source[index], index);
 	}
 }
 
 /**
- * Custom reduce function to minimise array creation for the use-case in the table function.
+ * Expand one array into another.
  * @hidden 
  */
-function reduce<TSource, TResult>(source: Array<TSource>, f: Func2<TSource, number, Array<TResult>>, result: Array<TResult>): Array<TResult> {
+function expand<TSource, TResult>(source: Array<TSource>, f: Func2<TSource, number, Array<TResult>>, result: Array<TResult>): Array<TResult> {
 	source.forEach((value, index) => result.push(...f(value, index)));
 
 	return result;
