@@ -1,6 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019-21 David Mesquita-Morris
-import { Cube, Dimension, Func1, Row } from '@steelbreeze/pivot';
+import { Cube, Dimension, Func1, Func2, Row } from '@steelbreeze/pivot';
 
 /**
  * The final text and class name to use when rendering cells in a table.
@@ -38,11 +38,11 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
 	// expand the cube based on the splits and add in the row and column headings
-	return ySplits.reduce<Cell[][]>((result, ySplit, yIndex) => [...result, ...generate(ySplit, nyi => xSplits.reduce<Cell[]>((result, xSplit, xIndex) => [...result, ...generate(xSplit, nxi => {
+	return reduce(ySplits, (ySplit, yIndex) => generate(ySplit, nyi => reduce(xSplits, (xSplit, xIndex) => generate(xSplit, nxi => {
 		const table = cube[yIndex][xIndex];
 		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
 		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
-	})], yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value }))))], generate(xAxis[0].data.length, row => xSplits.reduce<Cell[]>((result, xSplit, xIndex) => [...result, ...generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value }))], yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
+	}), yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value })))), generate(xAxis[0].data.length, row => reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value })), yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
 }
 
 /**
@@ -55,20 +55,32 @@ export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 	let next;
 
 	for (let iY = table.length; iY--;) {
-		for (let iX = table[iY].length; iX--;) {
-			const cell = table[iY][iX];
+		const row = table[iY];
+
+		for (let iX = row.length; iX--;) {
+			const cell = row[iX];
 
 			if (onY && iY && (next = table[iY - 1][iX]) && next.text === cell.text && next.className === cell.className && next.colSpan === cell.colSpan) {
 				next.rowSpan += cell.rowSpan;
 
-				table[iY].splice(iX, 1);
-			} else if (onX && iX && (next = table[iY][iX - 1]) && next.text === cell.text && next.className === cell.className && next.rowSpan === cell.rowSpan) {
+				row.splice(iX, 1);
+			} else if (onX && iX && (next = row[iX - 1]) && next.text === cell.text && next.className === cell.className && next.rowSpan === cell.rowSpan) {
 				next.colSpan += cell.colSpan;
 
-				table[iY].splice(iX, 1);
+				row.splice(iX, 1);
 			}
 		}
 	}
+}
+
+/**
+ * Custom reduce function to minimise array creation for the use-case in the table function.
+ * @hidden 
+ */
+function reduce<TSource, TResult>(source: TSource[], f: Func2<TSource, number, TResult[]>, result: TResult[]): TResult[] {
+	source.forEach((value, index) => result.push(...f(value, index)));
+
+	return result;
 }
 
 /**
