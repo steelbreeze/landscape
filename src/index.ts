@@ -34,9 +34,11 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
 	return reduce(ySplits, (ySplit, yIndex) => {
+		const row = cube[yIndex];
+		
 		return generate(ySplit, nyi => {
 			return reduce(xSplits, (xSplit, xIndex) => {
-				const items = cube[yIndex][xIndex];
+				const items = row[xIndex];
 
 				return generate(xSplit, nxi => {
 					return cell(items.length ? getKey(items[Math.floor(items.length * (nyi + nxi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
@@ -49,7 +51,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		return reduce(xSplits, (xSplit, xIndex) => {
 			return generate(xSplit, () => axis(xAxis[xIndex].data[yIndex], 'x'));
 		}, yAxis[0].data.map(() => {
-			return cell({ className: 'axis xy', text: '' });
+			return xy;
 		}));
 	}));
 }
@@ -142,3 +144,9 @@ function cell(key: Key): Cell {
 function axis(pair: { key: string, value: string }, name: string): Cell {
 	return cell({ text: pair.value, className: `axis ${name} ${pair.key}` });
 }
+
+/**
+ * Constant for the x/y header block
+ * @hidden
+ */
+const xy =cell({ className: 'axis xy', text: '' });
