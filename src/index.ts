@@ -70,9 +70,9 @@ export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
  * Reverse for loop.
  * @hidden 
  */
-function forReverse<TSource>(source: Array<TSource>, f: Func2<TSource, number, void>): void {
+function forReverse<TSource>(source: Array<TSource>, callback: Func2<TSource, number, void>): void {
 	for (let index = source.length; index--;) {
-		f(source[index], index);
+		callback(source[index], index);
 	}
 }
 
@@ -80,14 +80,14 @@ function forReverse<TSource>(source: Array<TSource>, f: Func2<TSource, number, v
  * Expand one array into another.
  * @hidden 
  */
-function expand<TSource, TResult>(source: Array<TSource>, f: Func2<TSource, number, Array<TResult>>, result: Array<TResult>): Array<TResult> {
-	source.forEach((value, index) => result.push(...f(value, index)));
+function expand<TSource, TResult>(source: Array<TSource>, expander: Func2<TSource, number, Array<TResult>>, result: Array<TResult>): Array<TResult> {
+	source.forEach((value, index) => result.push(...expander(value, index)));
 
 	return result;
 }
 
 /**
- * Create any array of numbers from 0 to n
+ * Generate n records.
  * @hidden
  */
 function generate<TResult>(length: number, generator: Func1<number, TResult>): Array<TResult> {
