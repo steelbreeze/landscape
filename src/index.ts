@@ -35,11 +35,19 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 
 	// generate the table from the cube, split cell with more than one value by row or column based on the splits calculated
 	return expand(ySplits, (ySplit, yIndex) => generate(ySplit, nyi => expand(xSplits, (xSplit, xIndex) => generate(xSplit, nxi => {
-		const table = cube[yIndex][xIndex];
-		const index = Math.floor(table.length * (nyi + nxi) / (xSplit * ySplit));
+		const items = cube[yIndex][xIndex];
 
-		return cell(table.length ? getKey(table[index]) : { text: '', className: 'empty' });
-	}), yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value })))), generate(xAxis[0].data.length, row => expand(xSplits, (xSplit, xIndex) => generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value })), yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
+		return cell(items.length ? getKey(items[Math.floor(items.length * (nyi + nxi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
+	}),
+
+		// generate the y axis (row) headings
+		yAxis[yIndex].data.map(pair => cell({ className: `axis y ${pair.key}`, text: pair.value })))),
+
+		// generate the x axis (column) headings
+		generate(xAxis[0].data.length, row => expand(xSplits, (xSplit, xIndex) => generate(xSplit, () => cell({ className: `axis x ${xAxis[xIndex].data[row].key}`, text: xAxis[xIndex].data[row].value })),
+
+			// generat the y/x header block
+			yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))));
 }
 
 /**
