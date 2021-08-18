@@ -34,22 +34,21 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
 	// iterate the y axis
-	return reduce(ySplits, (ySplit, yIndex) => {
-		const row = cube[yIndex];
+	return reduce(cube, (row, yIndex) => {
 
 		// expand the y axis segment based on the number of y splits
-		return generate(ySplit, nyi => {
+		return generate(ySplits[yIndex], nyi => {
 
 			// iterate the x axis
-			return reduce(xSplits, (xSplit, xIndex) => {
-				const items = row[xIndex];
+			return reduce(row, (items, xIndex) => {
 
+				// determine if we need content based or blank cells
 				if (items.length) {
 					// generate table cells based on the number of x splits
-					return generate(xSplit, nxi => cell(getKey(items[Math.floor(items.length * (nyi + nxi) / (xSplit * ySplit))])));
+					return generate(xSplits[xIndex], nxi => cell(getKey(items[Math.floor(items.length * (nyi + nxi) / (xSplits[xIndex] * ySplits[yIndex]))])));
 				} else {
 					// generate empty table cells based on the splits
-					return generate(xSplit, () => cell({ text: '', className: 'empty' }));
+					return generate(xSplits[xIndex], () => cell({ text: '', className: 'empty' }));
 				}
 				// generate the y axis header cells
 			}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
