@@ -49,11 +49,13 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		// generate the x axis header rows
 		generate(xAxis[0].data.length, yIndex => {
 			// generate an x header row
-			return reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => {
-				return axis(xAxis[xIndex].data[yIndex], 'x');
-			}),
+			return reduce(xAxis, (xSeg, xIndex) => {
+				return generate(xSplits[xIndex], () => {
+					return axis(xSeg.data[yIndex], 'x');
+				});
+				
 				// create the x/y header block
-				yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
+			}, yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
 		})
 	);
 }
