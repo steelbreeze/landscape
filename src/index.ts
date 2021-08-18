@@ -33,27 +33,37 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	const xSplits = generate(xAxis.length, index => onX ? cube.map(row => row[index].length || 1).reduce(leastCommonMultiple) : 1);
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
+	// iterate the y axis
 	return reduce(ySplits, (ySplit, yIndex) => {
 		const row = cube[yIndex];
-		
+
+		// expand the y axis segment based on the number of y splits
 		return generate(ySplit, nyi => {
+
+			// iterate the x axis
 			return reduce(xSplits, (xSplit, xIndex) => {
 				const items = row[xIndex];
 
-				return generate(xSplit, nxi => {
-					return cell(items.length ? getKey(items[Math.floor(items.length * (nyi + nxi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
-				});
-			}, yAxis[yIndex].data.map(pair => {
-				return axis(pair, 'y');
-			}));
+				if (items.length) {
+					// generate table cells based on the number of x splits
+					return generate(xSplit, nxi => cell(getKey(items[Math.floor(items.length * (nyi + nxi) / (xSplit * ySplit))])));
+				} else {
+					// generate empty table cells based on the splits
+					return generate(xSplit, () => cell({ text: '', className: 'empty' }));
+				}
+				// generate the y axis header cells
+			}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
 		});
-	}, generate(xAxis[0].data.length, yIndex => {
-		return reduce(xSplits, (xSplit, xIndex) => {
-			return generate(xSplit, () => axis(xAxis[xIndex].data[yIndex], 'x'));
-		}, yAxis[0].data.map(() => {
-			return cell({ className: 'axis xy', text: '' });
-		}));
-	}));
+
+		// generate the x axis header rows
+	}, generate(xAxis[0].data.length, yIndex =>
+
+		// generate an x header row
+		reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => axis(xAxis[xIndex].data[yIndex], 'x')),
+
+			// create the x/y header block
+			yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))
+	));
 }
 
 /**
@@ -83,11 +93,6 @@ export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 		}
 	}
 }
-
-//function expand<TSource, TResult>(source: Array<TSource>, f: (value: TSource, a: number, b: number) =)
-//return reduce(ySplits, (ySplit, yIndex) => {
-//	return generate(ySplit, nyi => {
-
 
 /**
  * Custom version of Array.prototype.reduce that adds arrays to the seed result.
