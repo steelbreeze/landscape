@@ -49,15 +49,17 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 			}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
 		});
 
+	},
 		// generate the x axis header rows
-	}, generate(xAxis[0].data.length, yIndex =>
+		generate(xAxis[0].data.length, yIndex =>
 
-		// generate an x header row
-		reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => axis(xAxis[xIndex].data[yIndex], 'x')),
+			// generate an x header row
+			reduce(xSplits, (xSplit, xIndex) => generate(xSplit, () => axis(xAxis[xIndex].data[yIndex], 'x')),
 
-			// create the x/y header block
-			yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))
-	));
+				// create the x/y header block
+				yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })))
+		)
+	);
 }
 
 /**
