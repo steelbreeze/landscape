@@ -51,11 +51,11 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 			// generate an x header row
 			return expand(xAxis, xSplits, xSeg => {
 
-				// generate the x axis cell
+				// generate an x header row cell
 				return axis(xSeg.data[yIndex], 'x');
 
-				// create the x/y header block
-			}, yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
+				// create the x/y header cells
+			}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
 		})
 	);
 }
@@ -97,7 +97,7 @@ function expand<TSource, TResult>(values: TSource[], splits: number[], f: (value
 		const split = splits[valueIndex];
 
 		for (let splitIndex = 0; splitIndex < split; ++splitIndex) {
-			seed.push(f(value, split, splitIndex, valueIndex)); // NOTE: ordering of callback parameters driven by some not being used in some cases
+			seed.push(f(value, split, splitIndex, valueIndex));
 		}
 	});
 
