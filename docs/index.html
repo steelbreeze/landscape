@@ -7,8 +7,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="description" content="Landscape map viewpoint visualisation generation tool for HTML." />
 	<meta name="robots" content="index, follow" />
-	<meta property="og:image" content="http://example.com/lamb-full.jpg">
-<meta property="og:image:type" content="image/jpeg">	
+	<meta property="og:image" content="https://steelbreeze.net/images/landscape-map.png">
+	<meta property="og:image:type" content="image/png">
 	<title>Landscape map viewpoint</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://steelbreeze.net/style/steelbreeze.css">
@@ -261,7 +261,7 @@
 		// merge adjacent cells based on user
 		function renderCube() {
 			console.time('split');
-			
+
 			// split the cube and axes along the desired axis, creating a table
 			const table = landscape.table(filtered, xAxis, yAxis, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
