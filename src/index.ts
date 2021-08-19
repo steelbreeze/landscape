@@ -29,8 +29,7 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	// for each row and column, determine how many sub rows and columns we need to split it into; this is the LCM of the counts of items in that row or column
-	const xSplits = generate(xAxis.length, index => onX ? cube.map(row => row[index].length || 1).reduce(leastCommonMultiple) : 1);
+	const xSplits = xAxis.map((_, xIndex) => onX ? cube.map(row => row[xIndex].length || 1).reduce(leastCommonMultiple) : 1);
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
 	// iterate and expand the y axis
@@ -44,19 +43,20 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 
 			// generate the y axis header cells
 		}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
+	},
 
 		// generate the x axis header rows
-	}, generate(xAxis[0].data.length, yIndex => {
+		xAxis[0].data.map((_, yIndex) => {
 
-		// generate an x header row
-		return expand(xAxis, xSplits, xSeg => {
+			// generate an x header row
+			return expand(xAxis, xSplits, xSeg => {
 
-			// generate the x axis cell
-			return axis(xSeg.data[yIndex], 'x');
+				// generate the x axis cell
+				return axis(xSeg.data[yIndex], 'x');
 
-			// create the x/y header block
-		}, yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
-	})
+				// create the x/y header block
+			}, yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
+		})
 	);
 }
 
@@ -102,20 +102,6 @@ function expand<TSource, TResult>(values: TSource[], splits: number[], f: (value
 	});
 
 	return seed;
-}
-
-/**
- * Generate n records.
- * @hidden
- */
-function generate<TResult>(length: number, generator: Func1<number, TResult>): Array<TResult> {
-	const result = [];
-
-	for (let i = 0; i < length; i++) {
-		result.push(generator(i));
-	}
-
-	return result;
 }
 
 /**
