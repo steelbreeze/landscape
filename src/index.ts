@@ -49,10 +49,10 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		xAxis[0].data.map((_, yIndex) => {
 
 			// generate an x header row
-			return expand(xAxis, xSplits, xSeg => {
+			return expand(xAxis, xSplits, xPoint => {
 
 				// generate an x header row cell
-				return axis(xSeg.data[yIndex], 'x');
+				return axis(xPoint.data[yIndex], 'x');
 
 				// create the x/y header cells
 			}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
