@@ -1,6 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019-21 David Mesquita-Morris
-import { Cube, Dimension, Func1, Func2, Row } from '@steelbreeze/pivot';
+import { Cube, Dimension, Func1, Row } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -49,13 +49,11 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		// generate the x axis header rows
 		generate(xAxis[0].data.length, yIndex => {
 			// generate an x header row
-			return reduce(xAxis, (xSeg, xIndex) => {
-				return generate(xSplits[xIndex], () => {
-					return axis(xSeg.data[yIndex], 'x');
-				});
-				
+			return expand(xAxis, xSplits, xSeg => {
+				return axis(xSeg.data[yIndex], 'x');
+			},
 				// create the x/y header block
-			}, yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
+				yAxis[0].data.map(() => cell({ className: 'axis xy', text: '' })));
 		})
 	);
 }
@@ -98,17 +96,6 @@ function expand<TSource, TResult>(source: TSource[], splits: number[], f: (value
 	});
 
 	return seed;
-}
-
-
-/**
- * Custom version of Array.prototype.reduce that adds arrays to the seed result.
- * @hidden 
- */
-function reduce<TSource, TResult>(source: Array<TSource>, expand: Func2<TSource, number, Array<TResult>>, result: Array<TResult>): Array<TResult> {
-	source.forEach((value, index) => result.push(...expand(value, index)));
-
-	return result;
 }
 
 /**
