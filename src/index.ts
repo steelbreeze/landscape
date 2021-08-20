@@ -1,6 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019-21 David Mesquita-Morris
-import { Cube, Dimension, Func1, Row } from '@steelbreeze/pivot';
+import { Cube, Dimension, Func1, Func2, Row } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -69,39 +69,45 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 	let next;
 
-	for (let iY = table.length; iY--;) {
-		const row = table[iY];
-
-		for (let iX = row.length; iX--;) {
-			const cell = row[iX];
-
-			if (onY && iY && (next = table[iY - 1][iX]) && next.text === cell.text && next.className === cell.className && next.colSpan === cell.colSpan) {
-				next.rowSpan += cell.rowSpan;
+	forEachRev(table, (row, iY) => {
+		forEachRev(row, (value, iX) => {
+			if (onY && iY && (next = table[iY - 1][iX]) && next.text === value.text && next.className === value.className && next.colSpan === value.colSpan) {
+				next.rowSpan += value.rowSpan;
 
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && next.text === cell.text && next.className === cell.className && next.rowSpan === cell.rowSpan) {
-				next.colSpan += cell.colSpan;
+			} else if (onX && iX && (next = row[iX - 1]) && next.text === value.text && next.className === value.className && next.rowSpan === value.rowSpan) {
+				next.colSpan += value.colSpan;
 
 				row.splice(iX, 1);
 			}
-		}
-	}
+		});
+	});
 }
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
-function expand<TSource, TResult>(values: TSource[], splits: number[], f: (value: TSource, split: number, splitIndex: number, valueIndex: number) => TResult, seed: TResult[]): TResult[] {
+function expand<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, splitIndex: number, valueIndex: number) => TResult, seed: TResult[]): TResult[] {
 	values.forEach((value, valueIndex) => {
 		const split = splits[valueIndex];
 
 		for (let splitIndex = 0; splitIndex < split; ++splitIndex) {
-			seed.push(f(value, split, splitIndex, valueIndex));
+			seed.push(callbackfn(value, split, splitIndex, valueIndex));
 		}
 	});
 
 	return seed;
+}
+
+/**
+ * A reverse for loop
+ * @param hidden
+ */
+ function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, number, void>): void {
+	for (let index = values.length; index--;) {
+		callbackfn(values[index], index);
+	}
 }
 
 /**
