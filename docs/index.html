@@ -186,7 +186,7 @@
 		const mergeByY = document.getElementById("mergeByY");
 
 		// define the preferred sequence of each dimension
-		const dimensions = {
+		const sortOrder = {
 			"Capability": ["Market gateway", "Order execution", "Order management", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
 			"Product": ["Rates", "FX", "MM", "Credit", "Equities"],
 			"Status": ["green", "amber", "red"],
@@ -203,7 +203,7 @@
 		let filtered;
 
 		// populate the drop-downs for the axes
-		Object.keys(dimensions).forEach(function (axis, index) {
+		Object.keys(sortOrder).forEach(function (axis, index) {
 			xAxisSelector.innerHTML += `<option value="${axis}"${axis === "Product" ? " selected" : ""}>${axis}</option>`;
 			yAxisSelector.innerHTML += `<option value="${axis}"${axis === "Capability" ? " selected" : ""}>${axis}</option>`;
 		});
@@ -225,15 +225,25 @@
 		function createCube() {
 			//console.time('dimensions');
 
-			// create dimensions based on the user selection and underlying data, sorted by a pre-defined list
-			yAxis = pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(dimensions[yAxisSelector.value]) });
-			xAxis = pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(dimensions[xAxisSelector.value]) });
+			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
+			xAxis = pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(sortOrder[xAxisSelector.value]) });
+			yAxis = pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(sortOrder[yAxisSelector.value]) });
 
+/*			// create a header dimension
+			const xAxisHeader = pivot.dimension([xAxisSelector.value], xAxisSelector.value, () => xAxisSelector.value);
+			const yAxisHeader = pivot.dimension([yAxisSelector.value], yAxisSelector.value, () => yAxisSelector.value);
+
+			// join the dimensions with their header dimensions
+			xAxis = pivot.join(xAxisHeader, xAxis);
+			yAxis = pivot.join(yAxisHeader, yAxis);
+*/
 			//console.timeEnd('dimensions');
 			//console.time('cube');
 
 			// create the cube
 			cube = pivot.cube(data, xAxis, yAxis);
+
+			console.log(cube);
 
 			//console.timeEnd('cube');
 

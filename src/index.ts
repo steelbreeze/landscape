@@ -38,7 +38,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 		// iterate and expand the x axis
 		return expand(row, xSplits, (values, xSplit, xsi) => {
 
-			// generate data cells
+			// generate data cell
 			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
 
 			// generate the y axis header cells
