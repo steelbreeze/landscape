@@ -71,11 +71,11 @@ export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
 
 	forEachRev(table, (row, iY) => {
 		forEachRev(row, (value, iX) => {
-			if (onY && iY && (next = table[iY - 1][iX]) && next.text === value.text && next.className === value.className && next.colSpan === value.colSpan) {
+			if (onY && iY && (next = table[iY - 1][iX]) && keyEquals(next, value) && next.colSpan === value.colSpan) {
 				next.rowSpan += value.rowSpan;
 
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && next.text === value.text && next.className === value.className && next.rowSpan === value.rowSpan) {
+			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, value) && next.rowSpan === value.rowSpan) {
 				next.colSpan += value.colSpan;
 
 				row.splice(iX, 1);
@@ -104,10 +104,18 @@ function expand<TSource, TResult>(values: TSource[], splits: number[], callbackf
  * A reverse for loop
  * @param hidden
  */
- function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, number, void>): void {
+function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, number, void>): void {
 	for (let index = values.length; index--;) {
 		callbackfn(values[index], index);
 	}
+}
+
+/**
+ * Compare two keys for equality
+ * @hidden 
+ */
+function keyEquals(a: Key, b: Key): boolean {
+	return a.text === b.text && a.className === b.className;
 }
 
 /**
