@@ -66,7 +66,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export function merge(table: Array<Array<Cell>>, onX = true, onY = true): void {
+export function merge(table: Array<Array<Cell>>, onX: boolean, onY: boolean): void {
 	let next;
 
 	forEachRev(table, (row, iY) => {
