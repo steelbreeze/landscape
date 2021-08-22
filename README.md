@@ -48,4 +48,4 @@ renderTable(table, 'landscapeTarget');
 ## License
 MIT License
 
-Copyright (c) 2020 David Mesquita-Morris
+Copyright (c) 2020-21 David Mesquita-Morris
