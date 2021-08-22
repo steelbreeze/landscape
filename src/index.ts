@@ -29,8 +29,10 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
+	// TODO: create counts and move splits calculation into expand method
 	const xSplits = xAxis.map((_, xIndex) => onX ? cube.map(row => row[xIndex].length || 1).reduce(leastCommonMultiple) : 1);
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
+
 
 	// iterate and expand the y axis based on the split data
 	return expand(cube, ySplits, (row, ySplit, ysi, yIndex) => {
