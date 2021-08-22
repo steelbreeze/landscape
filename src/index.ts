@@ -32,31 +32,30 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	const xSplits = xAxis.map((_, xIndex) => onX ? cube.map(row => row[xIndex].length || 1).reduce(leastCommonMultiple) : 1);
 	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
 
-	// iterate and expand the y axis
+	// iterate and expand the y axis based on the split data
 	return expand(cube, ySplits, (row, ySplit, ysi, yIndex) => {
 
-		// iterate and expand the x axis
+		// iterate and expand the x axis based on the split data
 		return expand(row, xSplits, (values, xSplit, xsi) => {
 
-			// generate data cell
+			// generate the cube cells
 			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
 
-			// generate the y axis header cells
+			// generate the y axis row header cells
 		}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
-	},
-		// generate the x axis header rows
-		xAxis[0].data.map((_, yIndex) => {
 
-			// generate an x header row
-			return expand(xAxis, xSplits, xPoint => {
+	// generate the x axis column header rows
+	}, xAxis[0].data.map((_, yIndex) => {
 
-				// generate an x header row cell
-				return axis(xPoint.data[yIndex], 'x');
+		// iterate and expand the x axis
+		return expand(xAxis, xSplits, xPoint => {
 
-				// create the x/y header cells
-			}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
-		})
-	);
+			// generate the x axis cells
+			return axis(xPoint.data[yIndex], 'x');
+
+			// generate the x/y header
+		}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
+	}));
 }
 
 /**
