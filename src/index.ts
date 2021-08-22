@@ -30,7 +30,7 @@ export interface Cell extends Key {
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
 	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(cube, row => row[iX].length) : 1);
-	const ySplits = cube.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length ));
+	const ySplits = cube.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
 	return expand(cube, ySplits, (row, ySplit, ysi, iY) => {
@@ -44,7 +44,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y:
 			// generate the y axis row header cells
 		}, y[iY].data.map(pair => axis(pair, 'y')));
 
-	// generate the x axis column header rows
+		// generate the x axis column header rows
 	}, x[0].data.map((_, iY) => {
 
 		// iterate and expand the x axis
@@ -117,11 +117,11 @@ function keyEquals(a: Key, b: Key): boolean {
 }
 
 /**
- * Returns the least common multiple of two integers
+ * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
- function leastCommonMultiple<TSource>(source: Array<TSource>, mapper: Func1<TSource, number>): number {
-	return source.map(value => mapper(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
+function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Func1<TSource, number>): number {
+	return source.map(value => callbackfn(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
 }
 
 /**
