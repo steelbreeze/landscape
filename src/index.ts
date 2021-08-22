@@ -29,11 +29,11 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	const xSplits = x.map((_, xIndex) => onX ? leastCommonMultiple(cube, row => row[xIndex].length) : 1);
+	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(cube, row => row[iX].length) : 1);
 	const ySplits = cube.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length ));
 
 	// iterate and expand the y axis based on the split data
-	return expand(cube, ySplits, (row, ySplit, ysi, yIndex) => {
+	return expand(cube, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
 		return expand(row, xSplits, (values, xSplit, xsi) => {
@@ -42,16 +42,16 @@ export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y:
 			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
 
 			// generate the y axis row header cells
-		}, y[yIndex].data.map(pair => axis(pair, 'y')));
+		}, y[iY].data.map(pair => axis(pair, 'y')));
 
 	// generate the x axis column header rows
-	}, x[0].data.map((_, yIndex) => {
+	}, x[0].data.map((_, iY) => {
 
 		// iterate and expand the x axis
 		return expand(x, xSplits, xPoint => {
 
 			// generate the x axis cells
-			return axis(xPoint.data[yIndex], 'x');
+			return axis(xPoint.data[iY], 'x');
 
 			// generate the x/y header
 		}, y[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
@@ -86,12 +86,12 @@ export function merge(table: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
-function expand<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, splitIndex: number, valueIndex: number) => TResult, seed: TResult[]): TResult[] {
-	values.forEach((value, valueIndex) => {
-		const split = splits[valueIndex];
+function expand<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] {
+	values.forEach((value, iValue) => {
+		const split = splits[iValue];
 
-		for (let splitIndex = 0; splitIndex < split; ++splitIndex) {
-			seed.push(callbackfn(value, split, splitIndex, valueIndex));
+		for (let iSplit = 0; iSplit < split; ++iSplit) {
+			seed.push(callbackfn(value, split, iSplit, iValue));
 		}
 	});
 
