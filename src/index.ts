@@ -29,8 +29,8 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	const xSplits = xAxis.map((_, xIndex) => onX ? cube.map(row => row[xIndex].length || 1).reduce(leastCommonMultiple) : 1);
-	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
+	const xSplits = xAxis.map((_, xIndex) => onX ? leastCommonMultiple(cube, row => row[xIndex].length) : 1);
+	const ySplits = cube.map(row => leastCommonMultiple(row, table => onX ? 1 : table.length ));
 
 	// iterate and expand the y axis based on the split data
 	return expand(cube, ySplits, (row, ySplit, ysi, yIndex) => {
@@ -120,8 +120,8 @@ function keyEquals(a: Key, b: Key): boolean {
  * Returns the least common multiple of two integers
  * @hidden
  */
-function leastCommonMultiple(a: number, b: number): number {
-	return (a * b) / greatestCommonFactor(a, b);
+ function leastCommonMultiple<TSource>(source: Array<TSource>, mapper: Func1<TSource, number>): number {
+	return source.map(value => mapper(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
 }
 
 /**
