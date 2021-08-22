@@ -29,13 +29,14 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	const splits = split(cube, onX);
-	
+	const xSplits = xAxis.map((_, xIndex) => onX ? cube.map(row => row[xIndex].length || 1).reduce(leastCommonMultiple) : 1);
+	const ySplits = cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple));
+
 	// iterate and expand the y axis based on the split data
-	return expand(cube, splits.y, (row, ySplit, ysi, yIndex) => {
+	return expand(cube, ySplits, (row, ySplit, ysi, yIndex) => {
 
 		// iterate and expand the x axis based on the split data
-		return expand(row, splits.x, (values, xSplit, xsi) => {
+		return expand(row, xSplits, (values, xSplit, xsi) => {
 
 			// generate the cube cells
 			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
@@ -47,7 +48,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	}, xAxis[0].data.map((_, yIndex) => {
 
 		// iterate and expand the x axis
-		return expand(xAxis, splits.x, xPoint => {
+		return expand(xAxis, xSplits, xPoint => {
 
 			// generate the x axis cells
 			return axis(xPoint.data[yIndex], 'x');
@@ -57,12 +58,6 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 	}));
 }
 
-function split<TRow extends Row>(cube: Cube<TRow>, onX: boolean) {
-	return {
-		x: cube[0].map((_, xIndex) => onX ? cube.map(row => row[xIndex].length || 1).reduce(leastCommonMultiple) : 1),
-		y: cube.map(row => row.map(table => onX ? 1 : table.length || 1).reduce(leastCommonMultiple))
-	}
-}
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param table A table of Cells created by a previous call to splitX or splitY.
