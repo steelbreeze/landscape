@@ -21,16 +21,16 @@ export interface Cell extends Key {
 }
 
 /**
- * Generates a table from a cube and its axis.
+ * Generates a table from a cube and it's axis.
  * @param cube The source cube.
- * @param xAxis The x axis.
- * @param yAxis The y axis.
+ * @param x The dimension used as the x axis.
+ * @param y The dimension used as the y axis.
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	const xSplits = xAxis.map((_, xIndex) => onX ? leastCommonMultiple(cube, row => row[xIndex].length) : 1);
-	const ySplits = cube.map(row => leastCommonMultiple(row, table => onX ? 1 : table.length ));
+export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
+	const xSplits = x.map((_, xIndex) => onX ? leastCommonMultiple(cube, row => row[xIndex].length) : 1);
+	const ySplits = cube.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length ));
 
 	// iterate and expand the y axis based on the split data
 	return expand(cube, ySplits, (row, ySplit, ysi, yIndex) => {
@@ -42,19 +42,19 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
 
 			// generate the y axis row header cells
-		}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
+		}, y[yIndex].data.map(pair => axis(pair, 'y')));
 
 	// generate the x axis column header rows
-	}, xAxis[0].data.map((_, yIndex) => {
+	}, x[0].data.map((_, yIndex) => {
 
 		// iterate and expand the x axis
-		return expand(xAxis, xSplits, xPoint => {
+		return expand(x, xSplits, xPoint => {
 
 			// generate the x axis cells
 			return axis(xPoint.data[yIndex], 'x');
 
 			// generate the x/y header
-		}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
+		}, y[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
 	}));
 }
 
