@@ -43,21 +43,25 @@ export function table<TRow extends Row>(cube: Cube<TRow>, xAxis: Dimension<TRow>
 
 			// generate the y axis header cells
 		}, yAxis[yIndex].data.map(pair => axis(pair, 'y')));
-	},
+	}, header(xAxis, yAxis, xSplits));
+}
 
-		// generate the x axis header rows
-		xAxis[0].data.map((_, yIndex) => {
+/**
+ * Generate the table header rows.
+ * @hidden
+ */
+function header<TRow extends Row>(xAxis: Dimension<TRow>, yAxis: Dimension<TRow>, xSplits: Array<number>): Array<Array<Cell>> {
+	return xAxis[0].data.map((_, yIndex) => {
 
-			// generate an x header row
-			return expand(xAxis, xSplits, xPoint => {
+		// generate an x header row
+		return expand(xAxis, xSplits, xPoint => {
 
-				// generate an x header row cell
-				return axis(xPoint.data[yIndex], 'x');
+			// generate an x header row cell
+			return axis(xPoint.data[yIndex], 'x');
 
-				// create the x/y header cells
-			}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
-		})
-	);
+			// create the x/y header cells
+		}, yAxis[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
+	})
 }
 
 /**
