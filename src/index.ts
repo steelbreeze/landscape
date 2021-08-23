@@ -8,16 +8,16 @@ export interface Key {
 	text: string;
 
 	/** The class name to use in the final table rendering. */
-	className: string;
+	style: string;
 }
 
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
 export interface Cell extends Key {
 	/** The number of rows to occupy. */
-	rowSpan: number;
+	rows: number;
 
 	/** The number of columns to occupy. */
-	colSpan: number;
+	cols: number;
 }
 
 /**
@@ -39,7 +39,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y:
 		return expand(row, xSplits, (values, xSplit, xsi) => {
 
 			// generate the cube cells
-			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', className: 'empty' });
+			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', style: 'empty' });
 
 			// generate the y axis row header cells
 		}, y[iY].data.map(pair => axis(pair, 'y')));
@@ -69,12 +69,12 @@ export function merge(table: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 
 	forEachRev(table, (row, iY) => {
 		forEachRev(row, (value, iX) => {
-			if (onY && iY && (next = table[iY - 1][iX]) && keyEquals(next, value) && next.colSpan === value.colSpan) {
-				next.rowSpan += value.rowSpan;
+			if (onY && iY && (next = table[iY - 1][iX]) && keyEquals(next, value) && next.cols === value.cols) {
+				next.rows += value.rows;
 
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, value) && next.rowSpan === value.rowSpan) {
-				next.colSpan += value.colSpan;
+			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, value) && next.rows === value.rows) {
+				next.cols += value.cols;
 
 				row.splice(iX, 1);
 			}
@@ -113,7 +113,7 @@ function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, num
  * @hidden 
  */
 function keyEquals(a: Key, b: Key): boolean {
-	return a.text === b.text && a.className === b.className;
+	return a.text === b.text && a.style === b.style;
 }
 
 /**
@@ -137,7 +137,7 @@ function greatestCommonFactor(a: number, b: number): number {
  * @hidden
  */
 function cell(key: Key): Cell {
-	return { ...key, rowSpan: 1, colSpan: 1 };
+	return { ...key, rows: 1, cols: 1 };
 }
 
 /**
@@ -145,5 +145,5 @@ function cell(key: Key): Cell {
  * @hidden 
  */
 function axis(pair: { key: string, value: string }, name: string): Cell {
-	return cell({ text: pair.value, className: `axis ${name} ${pair.key}` });
+	return cell({ text: pair.value, style: `axis ${name} ${pair.key}` });
 }

@@ -90,9 +90,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="cell.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#colspan" class="tsd-kind-icon">col<wbr>Span</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#rowspan" class="tsd-kind-icon">row<wbr>Span</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#cols" class="tsd-kind-icon">cols</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#rows" class="tsd-kind-icon">rows</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="cell.html#style" class="tsd-kind-icon">style</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="cell.html#text" class="tsd-kind-icon">text</a></li>
 							</ul>
 						</section>
@@ -101,29 +101,13 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="classname" class="tsd-anchor"></a>
-					<h3>class<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="key.html">Key</a>.<a href="key.html#classname">className</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/fc3ecd5/src/index.ts#L11">index.ts:11</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The class name to use in the final table rendering.</p>
-						</div>
-					</div>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="colspan" class="tsd-anchor"></a>
-					<h3>col<wbr>Span</h3>
-					<div class="tsd-signature tsd-kind-icon">col<wbr>Span<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="cols" class="tsd-anchor"></a>
+					<h3>cols</h3>
+					<div class="tsd-signature tsd-kind-icon">cols<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/fc3ecd5/src/index.ts#L20">index.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/afcb984/src/index.ts#L20">index.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -133,17 +117,33 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rowspan" class="tsd-anchor"></a>
-					<h3>row<wbr>Span</h3>
-					<div class="tsd-signature tsd-kind-icon">row<wbr>Span<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="rows" class="tsd-anchor"></a>
+					<h3>rows</h3>
+					<div class="tsd-signature tsd-kind-icon">rows<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/fc3ecd5/src/index.ts#L17">index.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/afcb984/src/index.ts#L17">index.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The number of rows to occupy.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="style" class="tsd-anchor"></a>
+					<h3>style</h3>
+					<div class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="key.html">Key</a>.<a href="key.html#style">style</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/afcb984/src/index.ts#L11">index.ts:11</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The class name to use in the final table rendering.</p>
 						</div>
 					</div>
 				</section>
@@ -154,7 +154,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="key.html">Key</a>.<a href="key.html#text">text</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/fc3ecd5/src/index.ts#L8">index.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/afcb984/src/index.ts#L8">index.ts:8</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -180,14 +180,14 @@
 					<li class="current tsd-kind-interface">
 						<a href="cell.html" class="tsd-kind-icon">Cell</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cell.html#cols" class="tsd-kind-icon">cols</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cell.html#rows" class="tsd-kind-icon">rows</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="cell.html#classname" class="tsd-kind-icon">class<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="cell.html#colspan" class="tsd-kind-icon">col<wbr>Span</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="cell.html#rowspan" class="tsd-kind-icon">row<wbr>Span</a>
+								<a href="cell.html#style" class="tsd-kind-icon">style</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="cell.html#text" class="tsd-kind-icon">text</a>

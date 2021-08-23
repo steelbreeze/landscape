@@ -282,7 +282,7 @@
 			console.timeEnd('merge');
 
 			// render the table in the target element
-			document.getElementById('tablan').replaceWith(render.table(table, 'tablan'));
+			document.getElementById('tablan').replaceWith(render.table(table, 'tablan', 'landscape'));
 		}
 
 		/** Generator to create a sort callback that orders by a preferred list */
@@ -291,7 +291,7 @@
 		}
 
 		function key(app) {
-			return { text: app.Name, className: app.Status };
+			return { text: app.Name, style: app.Status };
 		}
 
 		// helper function to add days to a date
