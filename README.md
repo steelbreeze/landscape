@@ -3,7 +3,7 @@
 
 Landscape map visualisation of data.
 
-![landscape map viewpoint](https://steelbreeze.net/images/landscape-map.png)
+![landscape map viewpoint](https://steelbreeze.net/landscape/images/landscape-map.png)
 
 This library produces visualisations of data that conform to the [Archimate Landscape Map Viewpoint](https://pubs.opengroup.org/architecture/archimate2-doc/chap08.html#_Toc371945248).
 
@@ -52,4 +52,4 @@ The full API documentation can be found [here](https://steelbreeze.net/landscape
 ## License
 MIT License
 
-Copyright (c) 2020-21 David Mesquita-Morris
+Copyright (c) 2020-21 David Mesquita-Morris.
