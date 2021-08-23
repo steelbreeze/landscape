@@ -52,4 +52,4 @@ The full API documentation can be found [here](https://steelbreeze.net/landscape
 ## License
 MIT License
 
-Copyright (c) 2020-21 David Mesquita-Morris
+Copyright (c) 2020-21 David Mesquita-Morris.
