@@ -17,7 +17,7 @@ To install from npm:
 npm install @steelbreeze/landscape
 ```
 ### Dependencies
-@steelbreeze/landscape is dependant on @steelbreeze/pivot, also installable via npm:
+@steelbreeze/landscape is dependant on [@steelbreeze/pivot](https://github.com/steelbreeze/pivot), also installable via npm:
 ```
 npm install @steelbreeze/pivot
 ```
