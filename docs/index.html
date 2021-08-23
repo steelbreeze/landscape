@@ -176,7 +176,6 @@
 	<script>
 		// get DOM elements that are frequently changed
 		const dateOfInterest = document.getElementById("dateOfInterest");
-		const landscapeTarget = document.getElementById("landscapeTarget");
 		const xAxisSelector = document.getElementById("xAxisSelector");
 		const yAxisSelector = document.getElementById("yAxisSelector");
 		const xAxisOptimised = document.getElementById("xAxisOptimised");
@@ -283,7 +282,7 @@
 			console.timeEnd('merge');
 
 			// render the table in the target element
-			render.table(table, 'tablan');
+			document.getElementById('tablan').replaceWith(render.table(table, 'tablan'));
 		}
 
 		/** Generator to create a sort callback that orders by a preferred list */

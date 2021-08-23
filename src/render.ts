@@ -5,33 +5,29 @@ import { Cell } from '.';
  * @param table 
  * @param elementId 
  */
-export function table(table: Array<Array<Cell>>, elementId: string): void {
-	const targetElement = document.getElementById(elementId);
+export function table(table: Array<Array<Cell>>, elementId: string): HTMLTableElement {
+	const tableElement = document.createElement('table');
+	tableElement.id = elementId;
+	tableElement.classList.add('landscape');
 
-	if (targetElement) {
-		const tableElement = document.createElement('table');
-		tableElement.id = elementId;
-		tableElement.classList.add('landscape');
+	for (const row of table) {
+		const rowElement = document.createElement('tr');
 
-		for (const row of table) {
-			const rowElement = document.createElement('tr');
+		for (const cell of row) {
+			const cellElement = document.createElement(cell.className.includes('axis') ? 'th' : 'td');
+			cellElement.colSpan = cell.colSpan;
+			cellElement.rowSpan = cell.rowSpan;
+			cellElement.className = `cell ${cell.className}`;
 
-			for (const cell of row) {
-				const cellElement = document.createElement(cell.className.includes('axis') ? 'th' : 'td');
-				cellElement.colSpan = cell.colSpan;
-				cellElement.rowSpan = cell.rowSpan;
-				cellElement.className = `cell ${cell.className}`;
+			const divElement = document.createElement('div');
+			divElement.appendChild(document.createTextNode(cell.text));
 
-				const divElement = document.createElement('div');
-				divElement.appendChild(document.createTextNode(cell.text));
-
-				cellElement.appendChild(divElement);
-				rowElement.appendChild(cellElement);
-			}
-
-			tableElement.appendChild(rowElement);
+			cellElement.appendChild(divElement);
+			rowElement.appendChild(cellElement);
 		}
 
-		targetElement.replaceWith(tableElement);
+		tableElement.appendChild(rowElement);
 	}
+
+	return tableElement;
 }
