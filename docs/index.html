@@ -172,6 +172,7 @@
 	<script src="./dist/d3-dsv.min.js"></script>
 	<script src="https://steelbreeze.net/pivot/dist/pivot.min.js"></script>
 	<script src="./dist/landscape.min.js"></script>
+	<script src="./dist/render.min.js"></script>
 	<script>
 		// get DOM elements that are frequently changed
 		const dateOfInterest = document.getElementById("dateOfInterest");
@@ -282,7 +283,7 @@
 			console.timeEnd('merge');
 
 			// render the table in the target element
-			renderTable2(table, 'tablan');
+			render.table(table, 'tablan');
 		}
 
 		/** Generator to create a sort callback that orders by a preferred list */
@@ -303,40 +304,6 @@
 			return result.toISOString().substr(0, 10);
 		}
 
-		// render the table into the DOM
-		function renderTable2(table, elementId) {
-			//console.time('elements');
-
-			const tableElement = document.createElement('table');
-			tableElement.id = elementId;
-			tableElement.classList = 'landscape';
-
-			table.forEach((row, rowIndex) => {
-				const rowElement = document.createElement('tr');
-
-				for (const cell of row) {
-					const cellElement = document.createElement(cell.className.includes('axis') ? 'th' : 'td');
-					cellElement.colSpan = cell.colSpan;
-					cellElement.rowSpan = cell.rowSpan;
-					cellElement.className = `cell ${cell.className}`;
-
-					const divElement = document.createElement('div');
-					divElement.appendChild(document.createTextNode(cell.text));
-
-					cellElement.appendChild(divElement);
-					rowElement.appendChild(cellElement);
-				}
-
-				tableElement.appendChild(rowElement);
-			});
-
-			//console.timeEnd('elements');
-			//console.time('render');
-
-			document.getElementById(elementId).replaceWith(tableElement);
-
-			//console.timeEnd('render');
-		}
 	</script>
 </body>
 
