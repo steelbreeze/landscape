@@ -44,7 +44,13 @@ landscape.merge(table, true, true);
 
 // render the table in a designated element
 renderTable(table, 'landscapeTarget');
+
+// create text and style to be used when rendering the table
+function key(record) {
+	return { text: record.Name, style: record.Status };
+}
 ```
+Note that while the key function must comply with the `Key` interface, specifing values for `text` and `style`, other properties can be  added and these will be available at the time of rendering. When merging adjacent cells, in the `merge` function, only `text` and `style` are compared.
 
 ## Usage
 The full API documentation can be found [here](https://steelbreeze.net/landscape/api/v3/).

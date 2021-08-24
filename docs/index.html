@@ -285,13 +285,14 @@
 			document.getElementById('tablan').replaceWith(render.table(table, 'tablan', 'landscape'));
 		}
 
+		// create text and style to be used when rendering the table
+		function key(app) {
+			return { text: app.Name, style: app.Status };
+		}
+
 		/** Generator to create a sort callback that orders by a preferred list */
 		function listSort(list) {
 			return (a, b) => list.indexOf(a) - list.indexOf(b);
-		}
-
-		function key(app) {
-			return { text: app.Name, style: app.Status };
 		}
 
 		// helper function to add days to a date
