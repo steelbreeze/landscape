@@ -42,8 +42,8 @@ const table = landscape.table(cube, product, capability, key, true);
 // merge cells on both axes where possible
 landscape.merge(table, true, true);
 
-// render the table in a designated element
-render.table(table, 'landscapeTarget', 'landscape');
+// render the table in the target element
+document.getElementById('tablan').replaceWith(render.table(table, 'tablan', 'landscape'));
 
 ...
 
