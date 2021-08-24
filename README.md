@@ -45,6 +45,8 @@ landscape.merge(table, true, true);
 // render the table in a designated element
 renderTable(table, 'landscapeTarget');
 
+...
+
 // create text and style to be used when rendering the table
 function key(record) {
 	return { text: record.Name, style: record.Status };
