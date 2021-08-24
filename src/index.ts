@@ -137,7 +137,7 @@ function greatestCommonFactor(a: number, b: number): number {
  * @hidden
  */
 function cell(key: Key): Cell {
-	return { text: key.text, style: key.style, rows: 1, cols: 1 };
+	return { ...key, rows: 1, cols: 1 };
 }
 
 /**
