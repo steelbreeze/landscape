@@ -43,7 +43,7 @@ const table = landscape.table(cube, product, capability, key, true);
 landscape.merge(table, true, true);
 
 // render the table in a designated element
-renderTable(table, 'landscapeTarget');
+render.table(table, 'landscapeTarget', 'landscape');
 
 ...
 
