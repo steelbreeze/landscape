@@ -15,9 +15,15 @@ These visualisations are an invaluable communication tool offering insight into 
 
 If you like @steelbreeze/landscape, please star it.
 ## Installation
+### NPM
 To install from npm:
 ```
 npm install @steelbreeze/landscape
+```
+### Web
+For web via a CDN:
+```javascript
+import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/landscape';
 ```
 ### Dependencies
 @steelbreeze/landscape is dependant on [@steelbreeze/pivot](https://github.com/steelbreeze/pivot), also installable via npm:
