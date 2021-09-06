@@ -48,8 +48,10 @@ const table = landscape.table(cube, product, capability, key, true);
 // merge cells on both axes where possible
 landscape.merge(table, true, true);
 
-// render the table in a designated element
-renderTable(table, 'landscapeTarget');
+// render the table in the target element
+document.getElementById('tablan').replaceWith(render.table(table, 'tablan', 'landscape'));
+
+...
 
 // create text and style to be used when rendering the table
 function key(record) {
