@@ -1,13 +1,9 @@
 {
   "name": "@steelbreeze/landscape",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "Landscape map viewpoint visualisation",
   "main": "lib/node/index.js",
-  "type": "module",
-  "module": "lib/node/index.js",
-  "exports": {
-    "import": "./lib/node/index.js"
-  },
+  "typings": "lib/node/index.d.ts",
   "directories": {
     "lib": "lib"
   },
