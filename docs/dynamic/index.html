@@ -218,21 +218,21 @@
 					Settings
 				</h3>
 				<form>
-					<label for="filePicker" style="cursor: pointer;">1. Select data source
+					<label for="filePicker" style="cursor: pointer;">Select data source
 						<p id="fileName">None selected</p>
 					</label>
-					<input id="filePicker" type="file">
+					<input id="filePicker" type="file" accept=".csv">
 
-					<label for="xAxisPicker">2. Select x-axis</label>
+					<label for="xAxisPicker">Select x-axis</label>
 					<select id="xAxisPicker" name="xAxisPicker">
 						<option value=""></option>
 					</select>
 
-					<label for="xAxisPicker">3. Select y-axis</label>
+					<label for="xAxisPicker">Select y-axis</label>
 					<select id="yAxisPicker" name="yAxisPicker">
 						<option value=""></option>
 					</select>
-					<label for="factPicker">4. Select fact</label>
+					<label for="factPicker">Select fact</label>
 					<select id="factPicker" name="factPicker">
 						<option value=""></option>
 					</select>
@@ -346,6 +346,9 @@
 			fileName.innerText = context.file.name;
 
 			fileOpen(context.file);
+
+			// reset the file picker now that we've processed it
+			filePicker.value = null;
 		}
 
 		function fileOpen(file) {
