@@ -181,8 +181,6 @@
 			background-color: rgba(48, 117, 172, 0.125);
 
 			font-size: 0.8em;
-
-			padding: 0.25em;
 		}
 
 		th.xy {
@@ -194,14 +192,14 @@
 
 			font-size: 0.8em;
 
-			padding: 0.25em;
-
 			text-align: center;
 		}
 
 		td,
 		th {
-			border: #F9F9F9 1.5px solid
+			border: #F9F9F9 1.5px solid;
+
+			padding: 0.5em;
 		}
 	</style>
 </head>
@@ -220,24 +218,24 @@
 					Settings
 				</h3>
 				<form>
-					<label for="filePicker">1. Select data source
-						<p id="fileName">No data</p>
+					<label for="filePicker" style="cursor: pointer;">1. Select data source
+						<p id="fileName">None selected</p>
 					</label>
 					<input id="filePicker" type="file">
 
 					<label for="factPicker">2. Select fact</label>
 					<select id="factPicker" name="factPicker">
-						<option value="">none</option>
+						<option value=""></option>
 					</select>
 
 					<label for="xAxisPicker">3. Select x-axis</label>
 					<select id="xAxisPicker" name="xAxisPicker">
-						<option value="">none</option>
+						<option value=""></option>
 					</select>
 
 					<label for="xAxisPicker">4. Select y-axis</label>
 					<select id="yAxisPicker" name="yAxisPicker">
-						<option value="">none</option>
+						<option value=""></option>
 					</select>
 				</form>
 			</article>
@@ -250,11 +248,11 @@
 				<table id="landscapeTable">
 					<tr>
 						<th class="xy axis">&nbsp;</th>
-						<th>No x-axis</th>
+						<th>Select x-axis</th>
 					</tr>
-					<tr>
-						<th>No y-axis</th>
-						<td>No data</td>
+					<tr></tr>
+						<th>Select y-axis</th>
+						<td>Select data source</td>
 					</tr>
 				</table>
 			</article>
@@ -362,7 +360,7 @@
 		function fileRead(event) {
 			context.json = csvParse(event.target.result);
 
-			const optionList = `<option value="">none</option>${Object.getOwnPropertyNames(context.json[0]).map(column => `<option value="${column}">${column}</option>`).join('')}`;
+			const optionList = `<option value="">None selected</option>${Object.getOwnPropertyNames(context.json[0]).map(column => `<option value="${column}">${column}</option>`).join('')}`;
 
 			factPicker.innerHTML = optionList;
 			xAxisPicker.innerHTML = optionList;
@@ -372,14 +370,14 @@
 		}
 
 		function pivot() {
-			context.xAxis = xAxisPicker.selectedIndex ? deriveDimension(context.json, xAxisPicker.value) : dimension(['No x-axis'], 'noX', () => 'No x-axis');
-			context.yAxis = yAxisPicker.selectedIndex ? deriveDimension(context.json, yAxisPicker.value) : dimension(['No y-axis'], 'noX', () => 'No y-axis');
+			context.xAxis = xAxisPicker.selectedIndex ? deriveDimension(context.json, xAxisPicker.value) : dimension(['Select x-axis'], 'noX', () => 'Select x-axis');
+			context.yAxis = yAxisPicker.selectedIndex ? deriveDimension(context.json, yAxisPicker.value) : dimension(['Select y-axis'], 'noX', () => 'Select y-axis');
 
-			context.getKey = factPicker.selectedIndex ? (record) => { return { text: record[factPicker.value], style: 'Status' }; } : () => { return { text: 'No fact', style: 'Status' }; };
+			context.getKey = factPicker.selectedIndex ? (record) => { return { text: record[factPicker.value], style: 'none' }; } : () => { return { text: 'Select fact', style: 'none' }; };
 
 			context.cube = cube(context.json, context.xAxis, context.yAxis);
 
-			const tab = table(context.cube, context.xAxis, context.yAxis, context.getKey, false);
+			const tab = table(context.cube, context.xAxis, context.yAxis, context.getKey, true);
 			merge(tab, true, true);
 
 			renderTable(tab);
