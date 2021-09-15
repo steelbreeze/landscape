@@ -107,7 +107,7 @@
 			font-weight: normal;
 		}
 
-		p+p {
+		p+p, p+h3 {
 			margin-top: 0.75em;
 		}
 
@@ -218,21 +218,21 @@
 					Settings
 				</h3>
 				<form>
-					<label for="filePicker" style="cursor: pointer;">Select data source
+					<label for="filePicker">Data source
 						<p id="fileName">None selected</p>
 					</label>
 					<input id="filePicker" type="file" accept=".csv">
 
-					<label for="xAxisPicker">Select x-axis</label>
+					<label for="xAxisPicker">x-axis</label>
 					<select id="xAxisPicker" name="xAxisPicker">
 						<option value=""></option>
 					</select>
 
-					<label for="xAxisPicker">Select y-axis</label>
+					<label for="xAxisPicker">y-axis</label>
 					<select id="yAxisPicker" name="yAxisPicker">
 						<option value=""></option>
 					</select>
-					<label for="factPicker">Select fact</label>
+					<label for="factPicker">Fact</label>
 					<select id="factPicker" name="factPicker">
 						<option value=""></option>
 					</select>
@@ -258,17 +258,21 @@
 			</article>
 			<article>
 				<h3>
+					Instructions
+				</h3>
+				<p>
+					This landscape map viewpoint will be genenrated from a .csv file of your choosing with axes based on the columns found
+					within the data and an associated fact.
+				</p>
+				<p>Firstly, select a .csv file as a  data source under thet Settings header; once selected, the x-axis, y-axis and Fact will be populates with the column headings from the data source and can be used to control the landscape map.</p>
+				<h3>
 					Background
 				</h3>
 				<p>
-					Landscape maps are a recognised viewpoint in ArchiMate. They represent relationships between
+					Landscape maps are a viewpoint in ArchiMate. They represent relationships between
 					concepts projected on to a two-dimensional grid. They are a little like a pivot table, but in the
 					place of numerical aggregates, other facts can be displayed and adjacent cells with the same value
 					can be merged.
-				</p>
-				<p>
-					This landscape map viewpoint will be genenrated from a .csv file of your choosing with axes found
-					within the data.
 				</p>
 			</article>
 		</section>
