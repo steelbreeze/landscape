@@ -28,21 +28,31 @@ main>section {
 	align-items: baseline;
 }
 
-main>section>article {
+main>section>aside {
+	display: flex;
+}
+
+main>section>aside>article {
+	min-width: 15em
+}
+
+footer>section {
+	display: flex;
+}
+
+footer>section>article {
 	flex-grow: 1;
 }
 
-main>section>aside {
-	min-width: 10em;
+@media only screen and (max-width: 1200px) {
+	main>section>aside {
+		display: block;
+	}
 }
 
 @media only screen and (max-width: 800px) {
 	main>section {
 		flex-direction: column-reverse;
-	}
-
-	main>section>aside {
-		display: flex;
 	}
 }
 
@@ -50,4 +60,8 @@ main>section>aside {
 	main>section>aside {
 		flex-flow: row wrap;
 	}
+
+	footer>section {
+		display: block;
+	}	
 }
