@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+
+	line-height: 1.45; 
+}
+
+main {
+	display: block;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+image {
+	border-style: none;
+}
+
+a {
+	background-color: transparent;
+}
+
+[hidden] {
+	display: none;
+}
