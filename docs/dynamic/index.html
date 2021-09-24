@@ -107,7 +107,8 @@
 			font-weight: normal;
 		}
 
-		p+p, p+h3 {
+		p+p,
+		p+h3 {
 			margin-top: 0.75em;
 		}
 
@@ -251,8 +252,8 @@
 						<th>Select x-axis</th>
 					</tr>
 					<tr></tr>
-						<th>Select y-axis</th>
-						<td>Select fact</td>
+					<th>Select y-axis</th>
+					<td>Select fact</td>
 					</tr>
 				</table>
 			</article>
@@ -261,10 +262,13 @@
 					Instructions
 				</h3>
 				<p>
-					This landscape map viewpoint will be genenrated from a .csv file of your choosing with axes based on the columns found
+					This landscape map viewpoint will be genenrated from a .csv file of your choosing with axes based on
+					the columns found
 					within the data and an associated fact.
 				</p>
-				<p>Firstly, select a .csv file as a  data source under thet Settings header; once selected, the x-axis, y-axis and Fact will be populates with the column headings from the data source and can be used to control the landscape map.</p>
+				<p>Firstly, select a .csv file as a data source under thet Settings header; once selected, the x-axis,
+					y-axis and Fact will be populates with the column headings from the data source and can be used to
+					control the landscape map.</p>
 				<h3>
 					Background
 				</h3>
@@ -319,14 +323,16 @@
 			</article>
 		</section>
 	</footer>
+	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
-		import { csvParse } from 'https://cdn.skypack.dev/d3-dsv';
-		import { cube, deriveDimension, dimension } from 'https://cdn.skypack.dev/@steelbreeze/pivot';
-		import { merge, table } from 'https://cdn.skypack.dev/@steelbreeze/landscape';
+		import * as d3 from 'https://cdn.skypack.dev/d3-dsv';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot';
+//		import * as landscape from 'https://cdn.skypack.dev/@steelbreeze/landscape';
 
 		const context = {
 			file: undefined,
 			json: undefined,
+			dimensions: undefined,
 			xAxis: undefined,
 			yAxis: undefined,
 			cube: undefined,
@@ -340,9 +346,9 @@
 		const yAxisPicker = document.getElementById('yAxisPicker');
 
 		filePicker.addEventListener('change', fileSelected);
-		factPicker.addEventListener('change', pivot);
-		xAxisPicker.addEventListener('change', pivot);
-		yAxisPicker.addEventListener('change', pivot);
+		factPicker.addEventListener('change', pivotAndRender);
+		xAxisPicker.addEventListener('change', pivotAndRender);
+		yAxisPicker.addEventListener('change', pivotAndRender);
 
 		function fileSelected(event) {
 			context.file = event.target.files[0];
@@ -365,27 +371,34 @@
 		}
 
 		function fileRead(event) {
-			context.json = csvParse(event.target.result);
+			context.json = d3.csvParse(event.target.result);
 
-			const optionList = `<option value="">None selected</option>${Object.getOwnPropertyNames(context.json[0]).map(column => `<option value="${column}">${column}</option>`).join('')}`;
+			const columnList = Object.getOwnPropertyNames(context.json[0]);
+			const optionList = `<option value="">None selected</option>${columnList.map(column => `<option value="${column}">${column}</option>`).join('')}`;
+
+			context.dimensions = {};
+
+			for (const column of columnList) {
+				context.dimensions[column] = context.json.map(row => row[column]).filter((value, index, source) => source.indexOf(value) === index);
+			}
 
 			factPicker.innerHTML = optionList;
 			xAxisPicker.innerHTML = optionList;
 			yAxisPicker.innerHTML = optionList;
 
-			pivot();
+			pivotAndRender();
 		}
 
-		function pivot() {
-			context.xAxis = xAxisPicker.selectedIndex ? deriveDimension(context.json, xAxisPicker.value) : dimension(['Select x-axis'], 'noX', () => 'Select x-axis');
-			context.yAxis = yAxisPicker.selectedIndex ? deriveDimension(context.json, yAxisPicker.value) : dimension(['Select y-axis'], 'noX', () => 'Select y-axis');
+		function pivotAndRender() {
+			context.xAxis = xAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, xAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select x-axis'], 'noX', () => 'Select x-axis');
+			context.yAxis = yAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, yAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis');
 
 			context.getKey = factPicker.selectedIndex ? (record) => { return { text: record[factPicker.value], style: 'none' }; } : () => { return { text: 'Select fact', style: 'none' }; };
 
-			context.cube = cube(context.json, context.xAxis, context.yAxis);
+			context.cube = pivot.cube(context.json, context.xAxis, context.yAxis);
 
-			const tab = table(context.cube, context.xAxis, context.yAxis, context.getKey, true);
-			merge(tab, true, true);
+			const tab = landscape.table(context.cube, context.xAxis, context.yAxis, context.getKey, false);
+			landscape.merge(tab, true, true);
 
 			renderTable(tab);
 		}
@@ -420,11 +433,18 @@
 
 			const divElement = document.createElement('div');
 			divElement.appendChild(document.createTextNode(cellData.text));
-			
+
 			cellElement.appendChild(divElement);
 
 			return cellElement;
 		}
+
+		function sortBy(dimension) {
+			const order = context.dimensions[dimension];
+
+			return (a, b) => order.indexOf(a) - order.indexOf(b);
+		}
+
 	</script>
 </body>
 

@@ -29,17 +29,21 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(cube, row => row[iX].length) : 1);
-	const ySplits = cube.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
+	// convert source date to key and de-dup
+	const converted = cube.map(row => row.map(table => table.length ? table.map(cell => getKey(cell)).filter((a, index, source) => source.findIndex(b => keyEquals(a, b)) === index) : [{ text: '', style: 'empty' }]));
+
+	// calcuate the x and y splits required
+	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(converted, row => row[iX].length) : 1);
+	const ySplits = converted.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
-	return expand(cube, ySplits, (row, ySplit, ysi, iY) => {
+	return expand(converted, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
 		return expand(row, xSplits, (values, xSplit, xsi) => {
 
 			// generate the cube cells
-			return cell(values.length ? getKey(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]) : { text: '', style: 'empty' });
+			return cell(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]);
 
 			// generate the y axis row header cells
 		}, y[iY].data.map(pair => axis(pair, 'y')));
