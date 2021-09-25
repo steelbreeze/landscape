@@ -29,15 +29,15 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	// convert source date to key and de-dup
-	const converted = cube.map(row => row.map(table => table.length ? table.map(cell => getKey(cell)).filter((a, index, source) => source.findIndex(b => keyEquals(a, b)) === index) : [{ text: '', style: 'empty' }]));
+	// convert source data to key, create entries for empty cells and and de-dup
+	const keys = cube.map(row => row.map(table => table.length ? table.map(getKey).filter(unique) : [{ text: '', style: 'empty' }]));
 
 	// calcuate the x and y splits required
-	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(converted, row => row[iX].length) : 1);
-	const ySplits = converted.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
+	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
+	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
-	return expand(converted, ySplits, (row, ySplit, ysi, iY) => {
+	return expand(keys, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
 		return expand(row, xSplits, (values, xSplit, xsi) => {
@@ -134,6 +134,14 @@ function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Func1<
  */
 function greatestCommonFactor(a: number, b: number): number {
 	return b ? greatestCommonFactor(b, a % b) : a;
+}
+
+/**
+ * Uniqueness filter for keys
+ * @hidden
+ */
+function unique(a: Key, index: number, source: Array<Key>): boolean {
+	return source.findIndex(b => keyEquals(a, b)) === index;
 }
 
 /**
