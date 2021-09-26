@@ -38,12 +38,9 @@ export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y:
 
 /**
  * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
- * @param cube A cube of [[Keys]].
- * @param x The dimension used as the x axis.
- * @param y The dimension used as the y axis.
- * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
+ * @hidden
  */
-export function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: Dimension<TRow>, onX: boolean): Array<Array<Cell>> {
+function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: Dimension<TRow>, onX: boolean): Array<Array<Cell>> {
 	// calcuate the x and y splits required
 	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
 	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
