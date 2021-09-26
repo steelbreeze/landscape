@@ -1,6 +1,6 @@
 // @steelbreeze/landscape
 // Copyright (c) 2019-21 David Mesquita-Morris
-import { Cube, Dimension, Func1, Func2, Row } from '@steelbreeze/pivot';
+import { Axes, Cube, Func1, Func2, Row } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -23,29 +23,27 @@ export interface Cell extends Key {
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
- * @param x The dimension used as the x axis.
- * @param y The dimension used as the y axis.
+ * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
 	// convert the source data to keys and remove resulting duplicates
 	const keys = cube.map(row => row.map(table => table.length ? table.map(getKey).filter((a, index, source) => source.findIndex(b => keyEquals(a, b)) === index) : [{ text: '', style: 'empty' }]));
 
 	// create the resultant table
-	return split(keys, x, y, onX);
+	return split(keys, axes, onX);
 }
 
 /**
  * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @param cube The source cube.
- * @param x The dimension used as the x axis.
- * @param y The dimension used as the y axis.
+ * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: Dimension<TRow>, onX: boolean): Array<Array<Cell>> {
+export function split<TRow extends Row>(keys: Cube<Key>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell>> {
 	// calcuate the x and y splits required
-	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
+	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
 	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
@@ -58,19 +56,19 @@ export function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: 
 			return cell(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]);
 
 			// generate the y axis row header cells
-		}, y[iY].data.map(pair => axis(pair, 'y')));
+		}, axes.y[iY].data.map(pair => axis(pair, 'y')));
 
 		// generate the x axis column header rows
-	}, x[0].data.map((_, iY) => {
+	}, axes.x[0].data.map((_, iY) => {
 
 		// iterate and expand the x axis
-		return expand(x, xSplits, xPoint => {
+		return expand(axes.x, xSplits, xPoint => {
 
 			// generate the x axis cells
 			return axis(xPoint.data[iY], 'x');
 
 			// generate the x/y header
-		}, y[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
+		}, axes.y[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
 	}));
 }
 

@@ -89,7 +89,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/99d3856/src/index.ts#L84">index.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/902c870/src/index.ts#L82">index.ts:82</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -126,13 +126,13 @@
 					<a name="split" class="tsd-anchor"></a>
 					<h3>split</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">split&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">split&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/99d3856/src/index.ts#L46">index.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/902c870/src/index.ts#L44">index.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -152,15 +152,9 @@
 									<h5>keys: <span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5>x: <span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>axes: <span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The dimension used as the x axis.</p>
-									</div>
-								</li>
-								<li>
-									<h5>y: <span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The dimension used as the y axis.</p>
+										<p>The x and y axes used in the pivot operation to create the cube.</p>
 									</div>
 								</li>
 								<li>
@@ -178,13 +172,13 @@
 					<a name="table" class="tsd-anchor"></a>
 					<h3>table</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">table&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cube<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, getKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Func1</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">table&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cube<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, getKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Func1</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/99d3856/src/index.ts#L31">index.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/902c870/src/index.ts#L30">index.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -207,15 +201,9 @@
 									</div>
 								</li>
 								<li>
-									<h5>x: <span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>axes: <span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The dimension used as the x axis.</p>
-									</div>
-								</li>
-								<li>
-									<h5>y: <span class="tsd-signature-type">Dimension</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The dimension used as the y axis.</p>
+										<p>The x and y axes used in the pivot operation to create the cube.</p>
 									</div>
 								</li>
 								<li>

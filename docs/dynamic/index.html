@@ -335,18 +335,16 @@
 			</article>
 		</section>
 	</footer>
-	<!--script src="../dist/landscape.min.js"></script-->
+	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
 		import * as d3 from 'https://cdn.skypack.dev/d3-dsv?min';
-		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot?min';
-		import * as landscape from 'https://cdn.skypack.dev/@steelbreeze/landscape?min';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot';
 
 		const context = {
 			file: undefined,
 			json: undefined,
 			dimensions: undefined,
-			xAxis: undefined,
-			yAxis: undefined,
+			axes: undefined,
 			cube: undefined,
 			getKey: undefined
 		};
@@ -403,14 +401,16 @@
 		}
 
 		function pivotAndRender() {
-			context.xAxis = xAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, xAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select x-axis'], 'noX', () => 'Select x-axis');
-			context.yAxis = yAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, yAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis');
+			context.axes = {
+				x: xAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, xAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select x-axis'], 'noX', () => 'Select x-axis'),
+				y: yAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, yAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis')
+			}
 
 			context.getKey = factPicker.selectedIndex ? (record) => { return { text: record[factPicker.value], style: 'none' }; } : () => { return { text: 'Select fact', style: 'none' }; };
 
-			context.cube = pivot.cube(context.json, context.xAxis, context.yAxis);
+			context.cube = pivot.cube(context.json, context.axes);
 
-			const tab = landscape.table(context.cube, context.xAxis, context.yAxis, context.getKey, false);
+			const tab = landscape.table(context.cube, context.axes, context.getKey, false);
 			landscape.merge(tab, true, true);
 
 			renderTable(tab);

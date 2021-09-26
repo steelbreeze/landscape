@@ -197,8 +197,7 @@
 
 		// globals that we need to keep track of acros functions
 		let data;
-		let yAxis;
-		let xAxis;
+		let axes;
 		let cube;
 		let filtered;
 
@@ -226,8 +225,11 @@
 			//console.time('dimensions');
 
 			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
-			xAxis = pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(sortOrder[xAxisSelector.value]) });
-			yAxis = pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(sortOrder[yAxisSelector.value]) });
+
+			axes = {
+				x: pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(sortOrder[xAxisSelector.value]) }),
+				y: pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(sortOrder[yAxisSelector.value]) })
+			};
 
 /*			// create a header dimension
 			const xAxisHeader = pivot.dimension([xAxisSelector.value], xAxisSelector.value, () => xAxisSelector.value);
@@ -241,7 +243,7 @@
 			//console.time('cube');
 
 			// create the cube
-			cube = pivot.cube(data, xAxis, yAxis);
+			cube = pivot.cube(data, axes);
 
 			//console.timeEnd('cube');
 
@@ -271,7 +273,7 @@
 			console.time('split');
 
 			// split the cube and axes along the desired axis, creating a table
-			const table = landscape.table(filtered, xAxis, yAxis, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = landscape.table(filtered, axes, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
 			console.timeEnd('split');
 			console.time('merge');

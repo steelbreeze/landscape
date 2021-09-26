@@ -1,4 +1,4 @@
-import { Cube, Dimension, Func1, Row } from '@steelbreeze/pivot';
+import { Axes, Cube, Func1, Row } from '@steelbreeze/pivot';
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
     /** The text to use in the final table rendering. */
@@ -16,20 +16,18 @@ export interface Cell extends Key {
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
- * @param x The dimension used as the x axis.
- * @param y The dimension used as the y axis.
+ * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export declare function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>>;
+export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>>;
 /**
  * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @param cube The source cube.
- * @param x The dimension used as the x axis.
- * @param y The dimension used as the y axis.
+ * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export declare function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: Dimension<TRow>, onX: boolean): Array<Array<Cell>>;
+export declare function split<TRow extends Row>(keys: Cube<Key>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param table A table of Cells created by a previous call to splitX or splitY.
