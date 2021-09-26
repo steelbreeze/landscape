@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Dynamic landscape map</title>
 	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Merienda:wght@700&family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Noto+Sans+Mono:wght@200;300;400;500&family=Noto+Serif+Display:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap');
 
 		/* Reset browser */
 		* {
@@ -28,12 +28,9 @@
 		body {
 			background-color: #F9F9F9;
 
-			max-width: 1000px;
-			margin: 0 auto;
-
 			min-height: 100vh;
 
-			font-family: 'Open Sans', sans-serif;
+			font-family: 'Noto Sans Display', sans-serif;
 			font-weight: 300;
 
 			color: rgba(0, 0, 0, 0.75);
@@ -60,20 +57,26 @@
 
 		header h1 {
 			color: rgb(86, 89, 92);
-			font-family: 'Merienda', cursive;
-			font-weight: 600;
+			font-family: 'Noto Serif Display', serif;
+			font-weight: 500;
 			font-size: 2em;
 		}
 
 		header h2 {
 			color: rgb(48, 117, 172);
-			font-family: 'Merienda', cursive;
-			font-weight: 400;
+			font-family: 'Noto Serif Display', serif;
+			font-weight: 500;
 			font-size: 2em;
 		}
 
+		h3 {
+			color: rgb(48, 117, 172);
+			font-family: 'Noto Serif Display', serif;
+			font-weight: 500;
+		}
+
 		h4 {
-			font-weight: 600;
+			font-weight: 500;
 		}
 
 		main {
@@ -81,6 +84,7 @@
 		}
 
 		footer {
+			font-size: 0.85em;
 			background-color: rgb(86, 89, 92);
 			color: rgba(255, 255, 255, 0.75);
 		}
@@ -100,11 +104,13 @@
 		}
 
 		h1 {
-			font-weight: normal;
+			font-family: 'Noto Serif Display', serif;
+			font-weight: 500;
 		}
 
 		h2 {
-			font-weight: normal;
+			font-family: 'Noto Serif Display', serif;
+			font-weight: 500;
 		}
 
 		p+p,
@@ -180,6 +186,8 @@
 
 		th {
 			background-color: rgba(48, 117, 172, 0.125);
+
+			font-weight: 500;
 
 			font-size: 0.8em;
 		}
@@ -323,11 +331,11 @@
 			</article>
 		</section>
 	</footer>
-	<script src="../dist/landscape.min.js"></script>
+	<!--script src="../dist/landscape.min.js"></script-->
 	<script type="module">
-		import * as d3 from 'https://cdn.skypack.dev/d3-dsv';
-		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot';
-//		import * as landscape from 'https://cdn.skypack.dev/@steelbreeze/landscape';
+		import * as d3 from 'https://cdn.skypack.dev/d3-dsv?min';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot?min';
+		import * as landscape from 'https://cdn.skypack.dev/@steelbreeze/landscape?min';
 
 		const context = {
 			file: undefined,
