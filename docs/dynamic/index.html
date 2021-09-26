@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Dynamic landscape map</title>
 	<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Noto+Sans+Mono:wght@200;300;400;500&family=Noto+Serif+Display:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap');
+		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&family=Noto+Sans+Mono:wght@200;300;400;500&family=Noto+Serif+Display:ital,wght@0,200;0,300;0,400;0,500;1,200;1,300;1,400;1,500&display=swap');
 
 		/* Reset browser */
 		* {
@@ -252,7 +252,7 @@
 		<section>
 			<article>
 				<h3>
-					&nbsp;
+					<span id="title">Select a source file...</span>
 				</h3>
 				<table id="landscapeTable">
 					<tr>
@@ -347,6 +347,7 @@
 			getKey: undefined
 		};
 
+		const title = document.getElementById('title');
 		const filePicker = document.getElementById('filePicker');
 		const fileName = document.getElementById('fileName');
 		const factPicker = document.getElementById('factPicker');
@@ -361,6 +362,7 @@
 		function fileSelected(event) {
 			context.file = event.target.files[0];
 
+			title.innerText = context.file.name.slice(0, -4);
 			fileName.innerText = context.file.name;
 
 			fileOpen(context.file);
@@ -373,7 +375,6 @@
 			const reader = new FileReader();
 
 			reader.onloadend = fileRead;
-			// TODO: add an on-error to clear out the old selectable values
 
 			reader.readAsText(file);
 		}
