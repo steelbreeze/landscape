@@ -29,9 +29,19 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	// convert source data to key, create entries for empty cells and and de-dup
 	const keys = cube.map(row => row.map(table => table.length ? table.map(getKey).filter(unique) : [{ text: '', style: 'empty' }]));
 
+	return split(keys, x, y, onX);
+}
+
+/**
+ * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
+ * @param cube A cube of [[Keys]].
+ * @param x The dimension used as the x axis.
+ * @param y The dimension used as the y axis.
+ * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
+ */
+export function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: Dimension<TRow>, onX: boolean): Array<Array<Cell>> {
 	// calcuate the x and y splits required
 	const xSplits = x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
 	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
@@ -61,6 +71,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y:
 		}, y[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
 	}));
 }
+
 
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
@@ -113,14 +124,6 @@ function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, num
 }
 
 /**
- * Compare two keys for equality
- * @hidden 
- */
-function keyEquals(a: Key, b: Key): boolean {
-	return a.text === b.text && a.style === b.style;
-}
-
-/**
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
@@ -137,11 +140,19 @@ function greatestCommonFactor(a: number, b: number): number {
 }
 
 /**
- * Uniqueness filter for keys
+ * Uniqueness filter for array of keys
  * @hidden
  */
 function unique(a: Key, index: number, source: Array<Key>): boolean {
 	return source.findIndex(b => keyEquals(a, b)) === index;
+}
+
+/**
+ * Compare two keys for equality
+ * @hidden 
+ */
+function keyEquals(a: Key, b: Key): boolean {
+	return a.text === b.text && a.style === b.style;
 }
 
 /**

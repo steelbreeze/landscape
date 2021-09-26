@@ -23,6 +23,14 @@ export interface Cell extends Key {
  */
 export declare function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>>;
 /**
+ * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
+ * @param cube The source cube.
+ * @param x The dimension used as the x axis.
+ * @param y The dimension used as the y axis.
+ * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
+ */
+export declare function split<TRow extends Row>(keys: Cube<Key>, x: Dimension<TRow>, y: Dimension<TRow>, onX: boolean): Array<Array<Cell>>;
+/**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param table A table of Cells created by a previous call to splitX or splitY.
  * @param onX A flag to indicate that cells should be merged on the x axis.
