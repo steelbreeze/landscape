@@ -29,8 +29,10 @@ export interface Cell extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, x: Dimension<TRow>, y: Dimension<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
-	const keys = cube.map(row => row.map(table => table.length ? table.map(getKey).filter(unique) : [{ text: '', style: 'empty' }]));
+	// convert the source data to keys and remove resulting duplicates
+	const keys = cube.map(row => row.map(table => table.length ? table.map(getKey).filter((a, index, source) => source.findIndex(b => keyEquals(a, b)) === index) : [{ text: '', style: 'empty' }]));
 
+	// create the resultant table
 	return split(keys, x, y, onX);
 }
 
@@ -137,14 +139,6 @@ function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Func1<
  */
 function greatestCommonFactor(a: number, b: number): number {
 	return b ? greatestCommonFactor(b, a % b) : a;
-}
-
-/**
- * Uniqueness filter for array of keys
- * @hidden
- */
-function unique(a: Key, index: number, source: Array<Key>): boolean {
-	return source.findIndex(b => keyEquals(a, b)) === index;
 }
 
 /**
