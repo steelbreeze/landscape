@@ -214,6 +214,11 @@
 
 			padding: 0.5em;
 		}
+
+		.axis.y, .axis.x {
+			width: 20%;
+		}
+
 	</style>
 </head>
 
@@ -260,11 +265,11 @@
 				</h3>
 				<table id="landscapeTable">
 					<tr>
-						<th class="xy axis">&nbsp;</th>
-						<th>Select x-axis</th>
+						<th class="axis xy">&nbsp;</th>
+						<th class="axis x">Select x-axis</th>
 					</tr>
 					<tr></tr>
-					<th>Select y-axis</th>
+					<th class="axis y">Select y-axis</th>
 					<td>Select fact</td>
 					</tr>
 				</table>
@@ -338,7 +343,7 @@
 	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
 		import * as d3 from 'https://cdn.skypack.dev/d3-dsv?min';
-		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@1.1?min';
 
 		const context = {
 			file: undefined,
