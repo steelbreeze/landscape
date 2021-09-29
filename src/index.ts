@@ -56,19 +56,19 @@ export function split<TRow extends Row>(keys: Cube<Key>, axes: Axes<TRow>, onX: 
 			return cell(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]);
 
 			// generate the y axis row header cells
-		}, axes.y[iY].data.map(pair => axis(pair, 'y')));
+		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
 
 		// generate the x axis column header rows
-	}, axes.x[0].data.map((_, iY) => {
+	}, axes.x[0].map((_, iY) => {
 
 		// iterate and expand the x axis
 		return expand(axes.x, xSplits, xPoint => {
 
 			// generate the x axis cells
-			return axis(xPoint.data[iY], 'x');
+			return axis(xPoint[iY], 'x');
 
 			// generate the x/y header
-		}, axes.y[0].data.map(() => axis({ key: '', value: '' }, 'xy')));
+		}, axes.y[0].map(() => axis({ key: '', value: '' }, 'xy')));
 	}));
 }
 
@@ -159,6 +159,6 @@ function cell(key: Key): Cell {
  * Creates a cell within a table for a column or row heading.
  * @hidden 
  */
-function axis(pair: { key: string, value: string }, name: string): Cell {
-	return cell({ text: pair.value, style: `axis ${name} ${pair.key}` });
+function axis(criterion: { key: string, value: string }, name: string): Cell {
+	return cell({ text: criterion.value, style: `axis ${name} ${criterion.key}` });
 }

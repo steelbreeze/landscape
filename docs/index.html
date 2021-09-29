@@ -167,8 +167,6 @@
 			</article>
 		</div>
 	</footer>
-	<script crossorigin="anonymous"
-		src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2Cfetch%2Cperformance.now"></script>
 	<script src="./dist/d3-dsv.min.js"></script>
 	<script src="https://steelbreeze.net/pivot/dist/pivot.min.js"></script>
 	<script src="./dist/landscape.min.js"></script>
@@ -230,17 +228,6 @@
 				x: pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(sortOrder[xAxisSelector.value]) }),
 				y: pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(sortOrder[yAxisSelector.value]) })
 			};
-
-/*			// create a header dimension
-			const xAxisHeader = pivot.dimension([xAxisSelector.value], xAxisSelector.value, () => xAxisSelector.value);
-			const yAxisHeader = pivot.dimension([yAxisSelector.value], yAxisSelector.value, () => yAxisSelector.value);
-
-			// join the dimensions with their header dimensions
-			xAxis = pivot.join(xAxisHeader, xAxis);
-			yAxis = pivot.join(yAxisHeader, yAxis);
-*/
-			//console.timeEnd('dimensions');
-			//console.time('cube');
 
 			// create the cube
 			cube = pivot.cube(data, axes);
