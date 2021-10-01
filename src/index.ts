@@ -1,6 +1,4 @@
-// @steelbreeze/landscape
-// Copyright (c) 2019-21 David Mesquita-Morris
-import { Axes, Cube, Func1, Func2, Row } from '@steelbreeze/pivot';
+import { Axes, Cube, Func1, Func2, Pair, Row } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -159,6 +157,6 @@ function cell(key: Key): Cell {
  * Creates a cell within a table for a column or row heading.
  * @hidden 
  */
-function axis(criterion: { key: string, value: string }, name: string): Cell {
-	return cell({ text: criterion.value, style: `axis ${name} ${criterion.key}` });
+function axis(pair: Pair, name: string): Cell {
+	return cell({ text: pair.value, style: `axis ${name} ${pair.key}` });
 }
