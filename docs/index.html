@@ -175,12 +175,13 @@
 		// common controls used
 		const xAxisSelector = document.getElementById("xAxisSelector");
 		const yAxisSelector = document.getElementById("yAxisSelector");
+		const splitByX = document.getElementById("splitByX");
 		const dateOfInterest = document.getElementById("dateOfInterest");
 
 		xAxisSelector.addEventListener('change', createCube);
 		yAxisSelector.addEventListener('change', createCube);
+		splitByX.addEventListener('change', renderCube);
 		document.getElementById("slider").addEventListener('input', filterCube);
-		document.getElementById("splitByX").addEventListener('change', renderCube);
 		document.getElementById("splitByY").addEventListener('change', renderCube);
 		document.getElementById("mergeByX").addEventListener('change', renderCube);
 		document.getElementById("mergeByY").addEventListener('change', renderCube);
