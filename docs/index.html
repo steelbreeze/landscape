@@ -5,7 +5,8 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<meta name="description" content="Landscape map viewpoint visualisation generation tool for JavaScript written in TypeScript." />
+	<meta name="description"
+		content="Landscape map viewpoint visualisation generation tool for JavaScript written in TypeScript." />
 	<meta name="robots" content="index, follow" />
 	<meta property="og:image" content="./images/landscape-map.png">
 	<meta property="og:image:type" content="image/png">
@@ -52,32 +53,31 @@
 							<tr>
 								<td colspan="3">
 									<label for="xAxisSelector">x axis:</label>
-									<select id="xAxisSelector" onchange="createCube()"></select>
+									<select id="xAxisSelector"></select>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3">
 									<label for="yAxisSelector">y axis:</label>
-									<select id="yAxisSelector" onchange="createCube()"></select>
+									<select id="yAxisSelector"></select>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3">
 									<label>Split by axis</label>
 									<label for="splitByY">y:</label>
-									<input type="radio" name="splitAxis" id="splitByY" onchange="filterCube()" />
+									<input type="radio" name="splitAxis" id="splitByY" />
 									<label for="splitByX">x:</label>
-									<input type="radio" name="splitAxis" id="splitByX" onchange="filterCube()"
-										checked />
+									<input type="radio" name="splitAxis" id="splitByX" checked />
 								</td>
 							</tr>
 							<tr>
 								<td colspan="3">
 									<label>Merge by axis</label>
 									<label for="mergeByY">y:</label>
-									<input type="checkbox" id="mergeByY" onchange="renderCube()" checked />
+									<input type="checkbox" id="mergeByY" checked />
 									<label for="mergeByX">x:</label>
-									<input type="checkbox" id="mergeByX" onchange="renderCube()" checked />
+									<input type="checkbox" id="mergeByX" checked />
 								</td>
 							</tr>
 							<tr>
@@ -85,8 +85,7 @@
 							</tr>
 							<tr>
 								<td colspan="3">
-									<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider"
-										oninput="filterCube()" />
+									<input type="range" min="-1095" max="1096" value="0" class="slider" id="slider" />
 								</td>
 							</tr>
 							<tr>
@@ -167,72 +166,75 @@
 			</article>
 		</div>
 	</footer>
-	<script src="./dist/d3-dsv.min.js"></script>
-	<script src="https://steelbreeze.net/pivot/dist/pivot.min.js"></script>
 	<script src="./dist/landscape.min.js"></script>
 	<script src="./dist/render.min.js"></script>
-	<script>
-		// get DOM elements that are frequently changed
-		const dateOfInterest = document.getElementById("dateOfInterest");
+	<script type="module">
+		import * as d3 from 'https://cdn.skypack.dev/d3-dsv@3?min';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@1.2?min';
+
+		// common controls used
 		const xAxisSelector = document.getElementById("xAxisSelector");
 		const yAxisSelector = document.getElementById("yAxisSelector");
-		const xAxisOptimised = document.getElementById("xAxisOptimised");
-		const yAxisOptimised = document.getElementById("yAxisOptimised");
-		const slider = document.getElementById("slider");
-		const splitByX = document.getElementById("splitByX");
-		const mergeByX = document.getElementById("mergeByX");
-		const mergeByY = document.getElementById("mergeByY");
+		const dateOfInterest = document.getElementById("dateOfInterest");
 
-		// define the preferred sequence of each dimension
-		const sortOrder = {
-			"Capability": ["Market gateway", "Order execution", "Order management", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
-			"Product": ["Rates", "FX", "MM", "Credit", "Equities"],
-			"Status": ["green", "amber", "red"],
-			"Location": ["United States", "United Kingdom", "Germany", "Italy"],
-			"Supplier": ["Finastra", "ION", "Kx Systems", "Microsoft", "Murex", "Thunderhead", "Wall Street Systems"],
-			"Status": ["green", "amber", "red"]
+		xAxisSelector.addEventListener('change', createCube);
+		yAxisSelector.addEventListener('change', createCube);
+		document.getElementById("slider").addEventListener('input', filterCube);
+		document.getElementById("splitByX").addEventListener('change', renderCube);
+		document.getElementById("splitByY").addEventListener('change', renderCube);
+		document.getElementById("mergeByX").addEventListener('change', renderCube);
+		document.getElementById("mergeByY").addEventListener('change', renderCube);
+
+		// defaults
+		const defaults = {
+			dimensions: {
+				"Capability": ["Market gateway", "Order execution", "Order management", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
+				"Product": ["Rates", "FX", "MM", "Credit", "Equities"],
+				"Status": ["green", "amber", "red"],
+				"Location": ["United States", "United Kingdom", "Germany", "Italy"],
+				"Supplier": ["Finastra", "ION", "Kx Systems", "Microsoft", "Murex", "Thunderhead", "Wall Street Systems"],
+				"Status": ["green", "amber", "red"]
+			},
+			xAxisColumn: "Product",
+			yAxisColumn: "Capability"
 		};
 
-		// globals that we need to keep track of acros functions
-		let data;
-		let axes;
-		let cube;
-		let filtered;
+		// context used
+		const context = {
+			json: undefined,
+			axes: undefined,
+			cube: undefined,
+			filtered: undefined
+		};
 
-		// populate the drop-downs for the axes
-		Object.keys(sortOrder).forEach(function (axis, index) {
-			xAxisSelector.innerHTML += `<option value="${axis}"${axis === "Product" ? " selected" : ""}>${axis}</option>`;
-			yAxisSelector.innerHTML += `<option value="${axis}"${axis === "Capability" ? " selected" : ""}>${axis}</option>`;
-		});
-
-		// one-off DOM element updates
+		// populate the controle
+		const options = Object.getOwnPropertyNames(defaults.dimensions).map(column => `<option value=${column}>${column}</option>`).join("");
+		xAxisSelector.innerHTML = options;
+		yAxisSelector.innerHTML = options;
+		xAxisSelector.value = defaults.xAxisColumn;
+		yAxisSelector.value = defaults.yAxisColumn;
 		document.getElementById("earliestDate").textContent = fromToday(-1095);
 		document.getElementById("todaysDate").textContent = fromToday();
 		document.getElementById("latestDate").textContent = fromToday(1096);
 
 		// load the applications data
-		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(function (response) { return response.text() }).then(function (csv) {
+		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(response => response.text()).then(csv => {
 			// convert the CSV data into a JSON array and save it
-			data = d3.csvParse(csv);
+			context.json = d3.csvParse(csv);
 
 			createCube();
 		});
 
 		// create the cube on initial load or when an axis changes
 		function createCube() {
-			//console.time('dimensions');
-
 			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
-
-			axes = {
-				x: pivot.deriveDimension(data, xAxisSelector.value, { sort: listSort(sortOrder[xAxisSelector.value]) }),
-				y: pivot.deriveDimension(data, yAxisSelector.value, { sort: listSort(sortOrder[yAxisSelector.value]) })
+			context.axes = {
+				x: pivot.deriveDimension(context.json, xAxisSelector.value, { sort: listSort(defaults.dimensions[xAxisSelector.value]) }),
+				y: pivot.deriveDimension(context.json, yAxisSelector.value, { sort: listSort(defaults.dimensions[yAxisSelector.value]) })
 			};
 
 			// create the cube
-			cube = pivot.cube(data, axes);
-
-			//console.timeEnd('cube');
+			context.cube = pivot.cube(context.json, context.axes);
 
 			filterCube();
 		}
@@ -245,22 +247,18 @@
 			// update the date in the page
 			dateOfInterest.textContent = date;
 
-			//console.time('filter');
-
 			// filter the cube using the date of interest
-			filtered = pivot.filter(cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
-
-			//console.timeEnd('filter');
+			context.filtered = pivot.filter(context.cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
 
 			renderCube();
-		} 
+		}
 
 		// merge adjacent cells based on user
 		function renderCube() {
 			console.time('split');
 
 			// split the cube and axes along the desired axis, creating a table
-			const table = landscape.table(filtered, axes, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = landscape.table(context.filtered, context.axes, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
 			console.timeEnd('split');
 			console.time('merge');
@@ -292,7 +290,6 @@
 
 			return result.toISOString().substr(0, 10);
 		}
-
 	</script>
 </body>
 
