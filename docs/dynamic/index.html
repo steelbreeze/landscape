@@ -354,7 +354,7 @@
 	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
 		import * as d3 from 'https://cdn.skypack.dev/d3-dsv@3?min';
-		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@1.2?min';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@2.0?min';
 
 		const context = {
 			file: undefined,
@@ -418,8 +418,10 @@
 
 		function pivotAndRender() {
 			context.axes = {
-				x: xAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, xAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select x-axis'], 'noX', () => 'Select x-axis'),
-				y: yAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, yAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis')
+//				x: xAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, xAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select x-axis'], 'noX', () => 'Select x-axis'),
+//				y: yAxisPicker.selectedIndex ? pivot.deriveDimension(context.json, yAxisPicker.value, { sort: sortBy(xAxisPicker.value) }) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis')
+				x: xAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, xAxisPicker.value).sort(sortBy(xAxisPicker.value)),xAxisPicker.value)  : pivot.dimension(['Select x-axis'], 'noX', () => 'Select x-axis'),
+				y: yAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, yAxisPicker.value).sort(sortBy(xAxisPicker.value)), yAxisPicker.value) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis')
 			}
 
 			context.getKey = factPicker.selectedIndex ? (record) => { return { text: record[factPicker.value], style: 'none' }; } : () => { return { text: 'Select fact', style: 'none' }; };

@@ -170,7 +170,7 @@
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
 		import * as d3 from 'https://cdn.skypack.dev/d3-dsv@3?min';
-		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@1.2?min';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@2.0?min';
 
 		// common controls used
 		const xAxisSelector = document.getElementById("xAxisSelector");
@@ -230,12 +230,14 @@
 		function createCube() {
 			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
 			context.axes = {
-				x: pivot.deriveDimension(context.json, xAxisSelector.value, { sort: listSort(defaults.dimensions[xAxisSelector.value]) }),
-				y: pivot.deriveDimension(context.json, yAxisSelector.value, { sort: listSort(defaults.dimensions[yAxisSelector.value]) })
+				x: pivot.dimension(pivot.distinct(context.json, xAxisSelector.value).sort(listSort(defaults.dimensions[xAxisSelector.value])), xAxisSelector.value),
+				y: pivot.dimension(pivot.distinct(context.json, yAxisSelector.value).sort(listSort(defaults.dimensions[yAxisSelector.value])), yAxisSelector.value)
 			};
 
 			// create the cube
 			context.cube = pivot.cube(context.json, context.axes);
+
+			console.log(context.cube);
 
 			filterCube();
 		}
