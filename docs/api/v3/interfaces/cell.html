@@ -56,7 +56,7 @@
 					<a href="cell.html">Cell</a>
 				</li>
 			</ul>
-			<h1>Interface Cell</h1>
+			<h1>Interface Cell&lt;TRow&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -69,6 +69,14 @@
 						<p>An extension of key, adding the number of rows and columns the key will occupy in the final table rendering.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>TRow<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Row</span></h4>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
@@ -92,6 +100,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#cols" class="tsd-kind-icon">cols</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#rows" class="tsd-kind-icon">rows</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="cell.html#source" class="tsd-kind-icon">source</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="cell.html#style" class="tsd-kind-icon">style</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="cell.html#text" class="tsd-kind-icon">text</a></li>
 							</ul>
@@ -107,7 +116,7 @@
 					<div class="tsd-signature tsd-kind-icon">cols<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/4da5e2c/src/index.ts#L18">index.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/2c596bb/src/index.ts#L20">index.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -122,12 +131,27 @@
 					<div class="tsd-signature tsd-kind-icon">rows<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/4da5e2c/src/index.ts#L15">index.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/2c596bb/src/index.ts#L17">index.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The number of rows to occupy.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="source" class="tsd-anchor"></a>
+					<h3>source</h3>
+					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/2c596bb/src/index.ts#L14">index.ts:14</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The the rows that this this key came from.</p>
 						</div>
 					</div>
 				</section>
@@ -138,7 +162,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="key.html">Key</a>.<a href="key.html#style">style</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/4da5e2c/src/index.ts#L9">index.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/2c596bb/src/index.ts#L8">index.ts:8</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,7 +178,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="key.html">Key</a>.<a href="key.html#text">text</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/4da5e2c/src/index.ts#L6">index.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/2c596bb/src/index.ts#L5">index.ts:5</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -177,7 +201,7 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
 						<a href="cell.html" class="tsd-kind-icon">Cell</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -185,6 +209,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="cell.html#rows" class="tsd-kind-icon">rows</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="cell.html#source" class="tsd-kind-icon">source</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="cell.html#style" class="tsd-kind-icon">style</a>
@@ -199,7 +226,7 @@
 					<li class=" tsd-kind-interface">
 						<a href="key.html" class="tsd-kind-icon">Key</a>
 					</li>
-					<li class=" tsd-kind-function">
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="../index.html#merge" class="tsd-kind-icon">merge</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">

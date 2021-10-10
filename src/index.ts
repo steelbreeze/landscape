@@ -1,18 +1,18 @@
 import { Axes, Cube, Func1, Func2, Pair, Row, Table } from '@steelbreeze/pivot';
 
-export interface Key<TRow extends Row> {
+export interface Key {
 	/** The text to use in the final table rendering. */
 	text: string;
 
 	/** The class name to use in the final table rendering. */
 	style: string;
-
-	/** The the rows that this this key came from. */
-	source: Array<TRow>
 }
 
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
-export interface Cell<TRow extends Row> extends Key<TRow> {
+export interface Cell<TRow extends Row> extends Key {
+	/** The the rows that this this key came from. */
+	source: Array<TRow>
+
 	/** The number of rows to occupy. */
 	rows: number;
 
@@ -27,9 +27,9 @@ export interface Cell<TRow extends Row> extends Key<TRow> {
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key<TRow>>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// convert the source data to keys and remove resulting duplicates
-	const keys: Cube<Key<TRow>> = cube.map(row => row.map(table => table.length ? tableKeys(table, getKey) : [{ text: '', style: 'empty', source: [] }]));
+	const keys = cube.map(row => row.map(table => table.length ? tableKeys(table, getKey) : [{ text: '', style: 'empty', source: [], rows: 1, cols: 1 }]));
 
 	// create the resultant table
 	return split(keys, axes, onX);
@@ -41,8 +41,8 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
  * @param getKey 
  * @returns 
  */
-function tableKeys<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key<TRow>>): Table<Key<TRow>> {
-	const result: Table<Key<TRow>> = [];
+function tableKeys<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key>): Table<Cell<TRow>> {
+	const result: Table<Cell<TRow>> = [];
 
 	for (const row of table) {
 		const key = getKey(row);
@@ -51,7 +51,7 @@ function tableKeys<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key
 		if (existing) {
 			existing.source.push(row);
 		} else {
-			result.push(key);
+			result.push({ ...key, source: [row], rows: 1, cols: 1 });
 		}
 	}
 
@@ -64,7 +64,7 @@ function tableKeys<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(keys: Cube<Key<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function split<TRow extends Row>(keys: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// calcuate the x and y splits required
 	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
 	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
@@ -76,7 +76,7 @@ export function split<TRow extends Row>(keys: Cube<Key<TRow>>, axes: Axes<TRow>,
 		return expand(row, xSplits, (values, xSplit, xsi) => {
 
 			// generate the cube cells
-			return cell(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))]);
+			return {...(values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))])};
 
 			// generate the y axis row header cells
 		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
@@ -166,16 +166,8 @@ function greatestCommonFactor(a: number, b: number): number {
  * Compare two keys for equality
  * @hidden 
  */
-function keyEquals<TRow extends Row>(a: Key<TRow>, b: Key<TRow>): boolean {
+function keyEquals(a: Key, b: Key): boolean {
 	return a.text === b.text && a.style === b.style;
-}
-
-/**
- * Creates a cell within a table, augmenting a key with row and column span detail
- * @hidden
- */
-function cell<TRow extends Row>(key: Key<TRow>): Cell<TRow> {
-	return { ...key, rows: 1, cols: 1 };
 }
 
 /**
@@ -183,5 +175,5 @@ function cell<TRow extends Row>(key: Key<TRow>): Cell<TRow> {
  * @hidden 
  */
 function axis<TRow extends Row>(pair: Pair, name: string): Cell<TRow> {
-	return cell({ text: pair.value, style: `axis ${name} ${pair.key}`, source: [] });
+	return { text: pair.value, style: `axis ${name} ${pair.key}`, source: [], rows: 1, cols: 1 };
 }
