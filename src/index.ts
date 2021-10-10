@@ -29,7 +29,20 @@ export interface Cell<TRow extends Row> extends Key {
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// convert the source data to keys and remove resulting duplicates
-	const keys = cube.map(row => row.map(table => table.length ? table.reduce((result: Table<Cell<TRow>>, row: TRow) => {
+	const keys = cube.map(row => row.map(table => table.length ? cells(table, getKey) : [{ text: '', style: 'empty', source: [], rows: 1, cols: 1 }]));
+
+	// create the resultant table
+	return split(keys, axes, onX);
+}
+
+/**
+ * Convert a table of rows into a table of cells.
+ * @hidden
+ */
+function cells<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key>): Table<Cell<TRow>> {
+	const result: Table<Cell<TRow>> = [];
+
+	for (const row of table) {
 		const key = getKey(row);
 		const cell = result.find(cell => keyEquals(cell, key));
 
@@ -38,12 +51,9 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
 		} else {
 			result.push({ ...key, source: [row], rows: 1, cols: 1 });
 		}
+	}
 
-		return result;
-	}, []) : [{ text: '', style: 'empty', source: [], rows: 1, cols: 1 }]));
-
-	// create the resultant table
-	return split(keys, axes, onX);
+	return result;
 }
 
 /**
@@ -64,7 +74,7 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 		return expand(row, xSplits, (values, xSplit, xsi) => {
 
 			// generate the cube cells
-			return { ...values[Math.floor(values.length * (ysi + xsi) * ySplit / xSplit)] }; // NOTE: clone cells from the cube so subsiquent merge operation work
+			return { ...(values[Math.floor(values.length * (ysi + xsi) * ySplit / xSplit)]) }; // NOTE: clone cells from the cube so subsiquent merge operation work
 
 			// generate the y axis row header cells
 		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
