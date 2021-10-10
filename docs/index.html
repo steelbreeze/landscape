@@ -271,13 +271,15 @@
 
 			console.timeEnd('merge');
 
+			console.log(table);
+
 			// render the table in the target element
 			document.getElementById('tablan').replaceWith(render.table(table, 'tablan', 'landscape'));
 		}
 
 		// create text and style to be used when rendering the table
 		function key(app) {
-			return { text: app.Name, style: app.Status };
+			return { text: app.Name, style: app.Status, source: [app] };
 		}
 
 		/** Generator to create a sort callback that orders by a preferred list */

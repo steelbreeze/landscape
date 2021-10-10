@@ -1,16 +1,18 @@
-import { Axes, Cube, Func1, Func2, Pair, Row } from '@steelbreeze/pivot';
+import { Axes, Cube, Func1, Func2, Pair, Row, Table } from '@steelbreeze/pivot';
 
-/** The final text and class name to use when rendering cells in a table. */
-export interface Key {
+export interface Key<TRow extends Row> {
 	/** The text to use in the final table rendering. */
 	text: string;
 
 	/** The class name to use in the final table rendering. */
 	style: string;
+
+	/** The the rows that this this key came from. */
+	source: Array<TRow>
 }
 
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
-export interface Cell extends Key {
+export interface Cell<TRow extends Row> extends Key<TRow> {
 	/** The number of rows to occupy. */
 	rows: number;
 
@@ -25,12 +27,35 @@ export interface Cell extends Key {
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key<TRow>>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// convert the source data to keys and remove resulting duplicates
-	const keys = cube.map(row => row.map(table => table.length ? table.map(getKey).filter((a, index, source) => source.findIndex(b => keyEquals(a, b)) === index) : [{ text: '', style: 'empty' }]));
+	const keys: Cube<Key<TRow>> = cube.map(row => row.map(table => table.length ? tableKeys(table, getKey) : [{ text: '', style: 'empty', source: [] }]));
 
 	// create the resultant table
 	return split(keys, axes, onX);
+}
+
+/**
+ * Convert a table of rows into a table of keys.
+ * @param table 
+ * @param getKey 
+ * @returns 
+ */
+function tableKeys<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key<TRow>>): Table<Key<TRow>> {
+	const result: Table<Key<TRow>> = [];
+
+	for (const row of table) {
+		const key = getKey(row);
+		const existing = result.find(k => keyEquals(k, key));
+
+		if (existing) {
+			existing.source.push(row);
+		} else {
+			result.push(key);
+		}
+	}
+
+	return result;
 }
 
 /**
@@ -39,7 +64,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(keys: Cube<Key>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell>> {
+export function split<TRow extends Row>(keys: Cube<Key<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// calcuate the x and y splits required
 	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
 	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
@@ -77,18 +102,18 @@ export function split<TRow extends Row>(keys: Cube<Key>, axes: Axes<TRow>, onX: 
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export function merge(table: Array<Array<Cell>>, onX: boolean, onY: boolean): void {
+export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: boolean, onY: boolean): void {
 	let next;
 
 	forEachRev(table, (row, iY) => {
 		forEachRev(row, (value, iX) => {
 			if (onY && iY && (next = table[iY - 1][iX]) && keyEquals(next, value) && next.cols === value.cols) {
 				next.rows += value.rows;
-
+				next.source.push(...value.source);
 				row.splice(iX, 1);
 			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, value) && next.rows === value.rows) {
 				next.cols += value.cols;
-
+				next.source.push(...value.source);
 				row.splice(iX, 1);
 			}
 		});
@@ -141,7 +166,7 @@ function greatestCommonFactor(a: number, b: number): number {
  * Compare two keys for equality
  * @hidden 
  */
-function keyEquals(a: Key, b: Key): boolean {
+function keyEquals<TRow extends Row>(a: Key<TRow>, b: Key<TRow>): boolean {
 	return a.text === b.text && a.style === b.style;
 }
 
@@ -149,7 +174,7 @@ function keyEquals(a: Key, b: Key): boolean {
  * Creates a cell within a table, augmenting a key with row and column span detail
  * @hidden
  */
-function cell(key: Key): Cell {
+function cell<TRow extends Row>(key: Key<TRow>): Cell<TRow> {
 	return { ...key, rows: 1, cols: 1 };
 }
 
@@ -157,6 +182,6 @@ function cell(key: Key): Cell {
  * Creates a cell within a table for a column or row heading.
  * @hidden 
  */
-function axis(pair: Pair, name: string): Cell {
-	return cell({ text: pair.value, style: `axis ${name} ${pair.key}` });
+function axis<TRow extends Row>(pair: Pair, name: string): Cell<TRow> {
+	return cell({ text: pair.value, style: `axis ${name} ${pair.key}`, source: [] });
 }

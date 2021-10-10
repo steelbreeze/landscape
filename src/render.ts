@@ -1,3 +1,4 @@
+import { Row } from '@steelbreeze/pivot';
 import { Cell } from '.';
 
 /**
@@ -5,7 +6,7 @@ import { Cell } from '.';
  * @param tableData 
  * @param elementId 
  */
-export function table(tableData: Array<Array<Cell>>, elementId: string, className: string): HTMLTableElement {
+export function table<TRow extends Row>(tableData: Array<Array<Cell<TRow>>>, elementId: string, className: string): HTMLTableElement {
 	const tableElement = document.createElement('table');
 	tableElement.id = elementId;
 	tableElement.classList.add(className);
@@ -18,7 +19,7 @@ export function table(tableData: Array<Array<Cell>>, elementId: string, classNam
 }
 
 // render a row in a table
-function row(rowData: Array<Cell>): HTMLTableRowElement {
+function row<TRow extends Row>(rowData: Array<Cell<TRow>>): HTMLTableRowElement {
 	const rowElement = document.createElement('tr');
 
 	for (const cellData of rowData) {
@@ -29,7 +30,7 @@ function row(rowData: Array<Cell>): HTMLTableRowElement {
 }
 
 // render a cell in a table with a child div
-function cell(cellData: Cell): HTMLTableDataCellElement | HTMLTableHeaderCellElement {
+function cell<TRow extends Row>(cellData: Cell<TRow>): HTMLTableCellElement {
 	const cellElement = document.createElement(cellData.style.includes('axis') ? 'th' : 'td');
 	cellElement.colSpan = cellData.cols;
 	cellElement.rowSpan = cellData.rows;
