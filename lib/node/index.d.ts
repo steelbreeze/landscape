@@ -1,4 +1,4 @@
-import { Axes, Cube, Func1, Row } from '@steelbreeze/pivot';
+import { Axes, Cube, Func, Row } from '@steelbreeze/pivot';
 export interface Key {
     /** The text to use in the final table rendering. */
     text: string;
@@ -7,6 +7,8 @@ export interface Key {
 }
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
 export interface Cell<TRow extends Row> extends Key {
+    /** Unique keys for the source context. */
+    index: Array<number>;
     /** The the rows that this this key came from. */
     source: Array<TRow>;
     /** The number of rows to occupy. */
@@ -21,7 +23,7 @@ export interface Cell<TRow extends Row> extends Key {
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>>;
+export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param table A table of Cells created by a previous call to splitX or splitY.

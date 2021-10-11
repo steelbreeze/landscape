@@ -1,4 +1,4 @@
-import { Axes, Cube, Func1, Func2, Pair, Row, Table } from '@steelbreeze/pivot';
+import { Axes, Cube, Func, Pair, Row, Table } from '@steelbreeze/pivot';
 
 export interface Key {
 	/** The text to use in the final table rendering. */
@@ -10,8 +10,11 @@ export interface Key {
 
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
 export interface Cell<TRow extends Row> extends Key {
+	/** Unique keys for the source context. */
+	index: Array<number>;
+
 	/** The the rows that this this key came from. */
-	source: Array<TRow>
+	source: Array<TRow>;
 
 	/** The number of rows to occupy. */
 	rows: number;
@@ -27,9 +30,11 @@ export interface Cell<TRow extends Row> extends Key {
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
+	const identity = { index: 0 };
+
 	// convert the source data to keys and remove resulting duplicates
-	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey) : [{ text: '', style: 'empty', source: [], rows: 1, cols: 1 }]));
+	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : [{ text: '', style: 'empty', index: [], source: [], rows: 1, cols: 1 }]));
 
 	// create the resultant table
 	return split(cells, axes, onX);
@@ -85,11 +90,11 @@ export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: bo
 		forEachRev(row, (value, iX) => {
 			if (onY && iY && (next = table[iY - 1][iX]) && keyEquals(next, value) && next.cols === value.cols) {
 				next.rows += value.rows;
-				next.source.push(...value.source);
+				mergeContext(next, value);
 				row.splice(iX, 1);
 			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, value) && next.rows === value.rows) {
 				next.cols += value.cols;
-				next.source.push(...value.source);
+				mergeContext(next, value);
 				row.splice(iX, 1);
 			}
 		});
@@ -97,10 +102,23 @@ export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: bo
 }
 
 /**
+ * Merges the context of two adjacent cells.
+ * @hidden
+ */
+function mergeContext<TRow extends Row>(next: Cell<TRow>, value: Cell<TRow>): void {
+	value.index.forEach((index, i) => {
+		if (!next.index.includes(index)) {
+			next.index.push(index);
+			next.source.push(value.source[i]);
+		}
+	});
+}
+
+/**
  * Convert a table of rows into a table of cells.
  * @hidden
  */
- function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key>): Table<Cell<TRow>> {
+function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key>, identity: { index: number }): Table<Cell<TRow>> {
 	const result: Table<Cell<TRow>> = [];
 
 	for (const row of table) {
@@ -108,10 +126,13 @@ export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: bo
 		const cell = result.find(cell => keyEquals(cell, key));
 
 		if (cell) {
+			cell.index.push(identity.index);
 			cell.source.push(row);
 		} else {
-			result.push({ ...key, source: [row], rows: 1, cols: 1 });
+			result.push({ ...key, index: [identity.index], source: [row], rows: 1, cols: 1 });
 		}
+
+		identity.index++;
 	}
 
 	return result;
@@ -137,7 +158,7 @@ function expand<TSource, TResult>(values: TSource[], splits: number[], callbackf
  * A reverse for loop
  * @param hidden
  */
-function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, number, void>): void {
+function forEachRev<TValue>(values: Array<TValue>, callbackfn: (value: TValue, index: number) => void): void {
 	for (let index = values.length; index--;) {
 		callbackfn(values[index], index);
 	}
@@ -147,7 +168,7 @@ function forEachRev<TValue>(values: Array<TValue>, callbackfn: Func2<TValue, num
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
-function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Func1<TSource, number>): number {
+function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Func<TSource, number>): number {
 	return source.map(value => callbackfn(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
 }
 
@@ -172,5 +193,5 @@ function keyEquals(a: Key, b: Key): boolean {
  * @hidden 
  */
 function axis<TRow extends Row>(pair: Pair, name: string): Cell<TRow> {
-	return { text: pair.value, style: `axis ${name} ${pair.key}`, source: [], rows: 1, cols: 1 };
+	return { text: pair.value, style: `axis ${name} ${pair.key}`, index: [], source: [], rows: 1, cols: 1 };
 }
