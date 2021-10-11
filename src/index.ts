@@ -29,31 +29,10 @@ export interface Cell<TRow extends Row> extends Key {
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func1<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// convert the source data to keys and remove resulting duplicates
-	const keys = cube.map(row => row.map(table => table.length ? cells(table, getKey) : [{ text: '', style: 'empty', source: [], rows: 1, cols: 1 }]));
+	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey) : [{ text: '', style: 'empty', source: [], rows: 1, cols: 1 }]));
 
 	// create the resultant table
-	return split(keys, axes, onX);
-}
-
-/**
- * Convert a table of rows into a table of cells.
- * @hidden
- */
-function cells<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key>): Table<Cell<TRow>> {
-	const result: Table<Cell<TRow>> = [];
-
-	for (const row of table) {
-		const key = getKey(row);
-		const cell = result.find(cell => keyEquals(cell, key));
-
-		if (cell) {
-			cell.source.push(row);
-		} else {
-			result.push({ ...key, source: [row], rows: 1, cols: 1 });
-		}
-	}
-
-	return result;
+	return split(cells, axes, onX);
 }
 
 /**
@@ -62,7 +41,7 @@ function cells<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key>): 
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
+function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// calcuate the x and y splits required
 	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length) : 1);
 	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
@@ -71,22 +50,22 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 	return expand(cells, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
-		return expand(row, xSplits, (values, xSplit, xsi) => {
+		return expand(row, xSplits, (table, xSplit, xsi) => {
 
 			// generate the cube cells
-			return { ...(values[Math.floor(values.length * (ysi + xsi) * ySplit / xSplit)]) }; // NOTE: clone cells from the cube so subsiquent merge operation work
+			return { ...(table[Math.floor(table.length * (ysi + xsi) * ySplit / xSplit)]) }; // NOTE: clone cells from the cube so subsiquent merge operation work
 
 			// generate the y axis row header cells
 		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
 
 		// generate the x axis column header rows
-	}, axes.x[0].map((_, iY) => {
+	}, axes.x[0].map((_, iX) => {
 
 		// iterate and expand the x axis
-		return expand(axes.x, xSplits, xPoint => {
+		return expand(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return axis(xPoint[iY], 'x');
+			return axis(x[iX], 'x');
 
 			// generate the x/y header
 		}, axes.y[0].map(() => axis({ key: '', value: '' }, 'xy')));
@@ -115,6 +94,27 @@ export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: bo
 			}
 		});
 	});
+}
+
+/**
+ * Convert a table of rows into a table of cells.
+ * @hidden
+ */
+ function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func1<TRow, Key>): Table<Cell<TRow>> {
+	const result: Table<Cell<TRow>> = [];
+
+	for (const row of table) {
+		const key = getKey(row);
+		const cell = result.find(cell => keyEquals(cell, key));
+
+		if (cell) {
+			cell.source.push(row);
+		} else {
+			result.push({ ...key, source: [row], rows: 1, cols: 1 });
+		}
+	}
+
+	return result;
 }
 
 /**
