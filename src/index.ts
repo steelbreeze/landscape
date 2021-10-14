@@ -35,10 +35,10 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates
-	const keys = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : [{ text: '', style: 'empty', index: [], source: [], rows: 1, cols: 1 }]));
+	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : [{ text: '', style: 'empty', index: [], source: [], rows: 1, cols: 1 }]));
 
 	// create the resultant table
-	return split(keys, axes, onX);
+	return split(cells, axes, onX);
 }
 
 /**
@@ -47,31 +47,31 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(keys: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
-	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
+	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length) : 1);
+	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
-	return expand(keys, ySplits, (row, ySplit, ysi, iY) => {
+	return expand(cells, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
-		return expand(row, xSplits, (values, xSplit, xsi) => {
+		return expand(row, xSplits, (cell, xSplit, xsi) => {
 
 			// generate the cube cells
-			return { ...values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))] };
+			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
 
 			// generate the y axis row header cells
 		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
 
 		// generate the x axis column header rows
-	}, axes.x[0].map((_, iY) => {
+	}, axes.x[0].map((_, iC) => {
 
 		// iterate and expand the x axis
 		return expand(axes.x, xSplits, xPoint => {
 
 			// generate the x axis cells
-			return axis(xPoint[iY], 'x');
+			return axis(xPoint[iC], 'x');
 
 			// generate the x/y header
 		}, axes.y[0].map(() => axis({ key: '', value: '' }, 'xy')));
@@ -81,22 +81,22 @@ export function split<TRow extends Row>(keys: Cube<Cell<TRow>>, axes: Axes<TRow>
 
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
- * @param table A table of Cells created by a previous call to splitX or splitY.
+ * @param cells A table of Cells created by a previous call to splitX or splitY.
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: boolean, onY: boolean): void {
+export function merge<TRow extends Row>(cells: Array<Array<Cell<TRow>>>, onX: boolean, onY: boolean): void {
 	let next;
 
-	forEachRev(table, (row, iY) => {
-		forEachRev(row, (value, iX) => {
-			if (onY && iY && (next = table[iY - 1][iX]) && keyEquals(next, value) && next.cols === value.cols) {
-				next.rows += value.rows;
-				mergeContext(next, value);
+	forEachRev(cells, (row, iY) => {
+		forEachRev(row, (cell, iX) => {
+			if (onY && iY && (next = cells[iY - 1][iX]) && keyEquals(next, cell) && next.cols === cell.cols) {
+				next.rows += cell.rows;
+				mergeContext(next, cell);
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, value) && next.rows === value.rows) {
-				next.cols += value.cols;
-				mergeContext(next, value);
+			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, cell) && next.rows === cell.rows) {
+				next.cols += cell.cols;
+				mergeContext(next, cell);
 				row.splice(iX, 1);
 			}
 		});
@@ -107,11 +107,11 @@ export function merge<TRow extends Row>(table: Array<Array<Cell<TRow>>>, onX: bo
  * Merges the context of two adjacent cells.
  * @hidden
  */
-function mergeContext<TRow extends Row>(next: Cell<TRow>, value: Cell<TRow>): void {
-	value.index.forEach((index, i) => {
+function mergeContext<TRow extends Row>(next: Cell<TRow>, cell: Cell<TRow>): void {
+	cell.index.forEach((index, i) => {
 		if (!next.index.includes(index)) {
 			next.index.push(index);
-			next.source.push(value.source[i]);
+			next.source.push(cell.source[i]);
 		}
 	});
 }
