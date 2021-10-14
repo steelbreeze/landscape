@@ -35,10 +35,10 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates
-	const keys = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : [{ text: '', style: 'empty', index: [], source: [], rows: 1, cols: 1 }]));
+	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : [{ text: '', style: 'empty', index: [], source: [], rows: 1, cols: 1 }]));
 
 	// create the resultant table
-	return split(keys, axes, onX);
+	return split(cells, axes, onX);
 }
 
 /**
@@ -47,37 +47,36 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(keys: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
+function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(keys, row => row[iX].length) : 1);
-	const ySplits = keys.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
+	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length) : 1);
+	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
-	return expand(keys, ySplits, (row, ySplit, ysi, iY) => {
+	return expand(cells, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
-		return expand(row, xSplits, (values, xSplit, xsi) => {
+		return expand(row, xSplits, (table, xSplit, xsi) => {
 
 			// generate the cube cells
-			return { ...values[Math.floor(values.length * (ysi + xsi) / (xSplit * ySplit))] };
+			return { ...(table[Math.floor(table.length * (ysi + xsi) * ySplit / xSplit)]) }; // NOTE: clone cells from the cube so subsiquent merge operation work
 
 			// generate the y axis row header cells
 		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
 
 		// generate the x axis column header rows
-	}, axes.x[0].map((_, iY) => {
+	}, axes.x[0].map((_, iX) => {
 
 		// iterate and expand the x axis
-		return expand(axes.x, xSplits, xPoint => {
+		return expand(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return axis(xPoint[iY], 'x');
+			return axis(x[iX], 'x');
 
 			// generate the x/y header
 		}, axes.y[0].map(() => axis({ key: '', value: '' }, 'xy')));
 	}));
 }
-
 
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
@@ -139,7 +138,6 @@ function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key
 
 	return result;
 }
-
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
