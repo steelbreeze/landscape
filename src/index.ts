@@ -1,4 +1,4 @@
-import { Axes, Cube, Func, Pair, Row, Table } from '@steelbreeze/pivot';
+import { Axes, Criterion, Cube, Func, Row, Table } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -68,10 +68,10 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 	}, axes.x[0].map((_, iC) => {
 
 		// iterate and expand the x axis
-		return expand(axes.x, xSplits, xPoint => {
+		return expand(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return axis(xPoint[iC], 'x');
+			return axis(x[iC], 'x');
 
 			// generate the x/y header
 		}, axes.y[0].map(() => axis({ key: '', value: '' }, 'xy')));
@@ -195,6 +195,6 @@ function keyEquals(a: Key, b: Key): boolean {
  * Creates a cell within a table for a column or row heading.
  * @hidden 
  */
-function axis<TRow extends Row>(pair: Pair, name: string): Cell<TRow> {
-	return { text: pair.value, style: `axis ${name} ${pair.key}`, index: [], source: [], rows: 1, cols: 1 };
+function axis<TRow extends Row>(criterion: Omit<Criterion<TRow>, "predicate">, name: string): Cell<TRow> {
+	return { text: criterion.value, style: `axis ${name} ${criterion.key}`, index: [], source: [], rows: 1, cols: 1 };
 }
