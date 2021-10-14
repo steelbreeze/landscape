@@ -1,4 +1,4 @@
-import { Axes, Criterion, Cube, Func, Row, Table } from '@steelbreeze/pivot';
+import { Axes, Cube, Func, Row, Table } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -62,7 +62,7 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
 
 			// generate the y axis row header cells
-		}, axes.y[iY].map(criterion => axis(criterion, 'y')));
+		}, axes.y[iY].map(criterion => axis(criterion.value, `axis y ${criterion.key}`)));
 
 		// generate the x axis column header rows
 	}, axes.x[0].map((_, iC) => {
@@ -71,10 +71,10 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 		return expand(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return axis(x[iC], 'x');
+			return axis(x[iC].value, `axis x ${x[iC].key}`);
 
 			// generate the x/y header
-		}, axes.y[0].map(() => axis({ key: '', value: '' }, 'xy')));
+		}, axes.y[0].map(() => axis('', 'axis xy')));
 	}));
 }
 
@@ -195,6 +195,6 @@ function keyEquals(a: Key, b: Key): boolean {
  * Creates a cell within a table for a column or row heading.
  * @hidden 
  */
-function axis<TRow extends Row>(criterion: Omit<Criterion<TRow>, "predicate">, name: string): Cell<TRow> {
-	return { text: criterion.value, style: `axis ${name} ${criterion.key}`, index: [], source: [], rows: 1, cols: 1 };
+function axis<TRow extends Row>(text: string, style: string): Cell<TRow> {
+	return { text, style, index: [], source: [], rows: 1, cols: 1 };
 }
