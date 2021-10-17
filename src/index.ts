@@ -35,7 +35,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates
-	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : [{ text: '', style: 'empty', index: [], source: [], rows: 1, cols: 1 }]));
+	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : <Cell<TRow>[]>[newCell('', 'empty')]));
 
 	// create the resultant table
 	return split(cells, axes, onX);
@@ -62,7 +62,7 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
 
 			// generate the y axis row header cells
-		}, axes.y[iY].map(criterion => axis(criterion.value, `axis y ${criterion.key}`)));
+		}, axes.y[iY].map(criterion => newCell(criterion.value, `axis y ${criterion.key}`)));
 
 		// generate the x axis column header rows
 	}, axes.x[0].map((_, iC) => {
@@ -71,10 +71,10 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 		return expand(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return axis(x[iC].value, `axis x ${x[iC].key}`);
+			return newCell(x[iC].value, `axis x ${x[iC].key}`);
 
 			// generate the x/y header
-		}, axes.y[0].map(() => axis('', 'axis xy')));
+		}, axes.y[0].map(() => newCell('', 'axis xy')));
 	}));
 }
 
@@ -125,14 +125,14 @@ function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key
 
 	for (const row of table) {
 		const key = getKey(row);
-		const cell = result.find(cell => keyEquals(cell, key));
+		let cell = result.find(cell => keyEquals(cell, key));
 
-		if (cell) {
-			cell.index.push(identity.index++);
-			cell.source.push(row);
-		} else {
-			result.push({ ...key, index: [identity.index++], source: [row], rows: 1, cols: 1 });
+		if (!cell) {
+			result.push(cell = newCell(key.text, key.style));
 		}
+
+		cell.index.push(identity.index++);
+		cell.source.push(row);
 	}
 
 	return result;
@@ -190,9 +190,9 @@ function keyEquals(a: Key, b: Key): boolean {
 }
 
 /**
- * Creates a cell within a table for a column or row heading.
+ * Creates a cell within a table.
  * @hidden 
  */
-function axis<TRow extends Row>(text: string, style: string): Cell<TRow> {
+function newCell<TRow extends Row>(text: string, style: string): Cell<TRow> {
 	return { text, style, index: [], source: [], rows: 1, cols: 1 };
 }
