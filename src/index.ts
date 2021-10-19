@@ -35,7 +35,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates
-	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : <Cell<TRow>[]>[newCell('', 'empty')]));
+	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : <Cell<TRow>[]>[newCell('empty')]));
 
 	// create the resultant table
 	return split(cells, axes, onX);
@@ -62,7 +62,7 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
 
 			// generate the y axis row header cells
-		}, axes.y[iY].map(criterion => newCell(criterion.value, `axis y ${criterion.key}`)));
+		}, axes.y[iY].map(criterion => newCell(`axis y ${criterion.key}`, criterion.value)));
 
 		// generate the x axis column header rows
 	}, axes.x[0].map((_, iC) => {
@@ -71,10 +71,10 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 		return expand(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return newCell(x[iC].value, `axis x ${x[iC].key}`);
+			return newCell(`axis x ${x[iC].key}`, x[iC].value);
 
 			// generate the x/y header
-		}, axes.y[0].map(() => newCell('', 'axis xy')));
+		}, axes.y[0].map(() => newCell('axis xy')));
 	}));
 }
 
@@ -128,7 +128,7 @@ function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key
 		let cell = result.find(cell => keyEquals(cell, key));
 
 		if (!cell) {
-			result.push(cell = newCell(key.text, key.style));
+			result.push(cell = newCell(key.style, key.text));
 		}
 
 		cell.index.push(identity.index++);
@@ -193,6 +193,6 @@ function keyEquals(a: Key, b: Key): boolean {
  * Creates a cell within a table.
  * @hidden 
  */
-function newCell<TRow extends Row>(text: string, style: string): Cell<TRow> {
+function newCell<TRow extends Row>(style: string, text: string = ''): Cell<TRow> {
 	return { text, style, index: [], source: [], rows: 1, cols: 1 };
 }
