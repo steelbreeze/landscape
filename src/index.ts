@@ -34,11 +34,8 @@ export interface Cell<TRow extends Row> extends Key {
 export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
 	const identity = { index: 0 };
 
-	// convert the source data to keys and remove resulting duplicates
-	const cells = cube.map(row => row.map(table => table.length ? tableCells(table, getKey, identity) : <Cell<TRow>[]>[newCell('empty')]));
-
-	// create the resultant table
-	return split(cells, axes, onX);
+	// convert the source data to keys and remove resulting duplicates; create the resultant table
+	return split(cube.map(row => row.map(table => table.length ? cells(table, getKey, identity) : <Cell<TRow>[]>[cell('empty')])), axes, onX);
 }
 
 /**
@@ -53,28 +50,28 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
 	// iterate and expand the y axis based on the split data
-	return expand(cells, ySplits, (row, ySplit, ysi, iY) => {
+	return reduce(cells, ySplits, (row, ySplit, ysi, iY) => {
 
 		// iterate and expand the x axis based on the split data
-		return expand(row, xSplits, (cell, xSplit, xsi) => {
+		return reduce(row, xSplits, (cell, xSplit, xsi) => {
 
 			// generate the cube cells
 			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
 
 			// generate the y axis row header cells
-		}, axes.y[iY].map(criterion => newCell(`axis y ${criterion.key}`, criterion.value)));
+		}, axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value)));
 
 		// generate the x axis column header rows
 	}, axes.x[0].map((_, iC) => {
 
 		// iterate and expand the x axis
-		return expand(axes.x, xSplits, x => {
+		return reduce(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return newCell(`axis x ${x[iC].key}`, x[iC].value);
+			return cell(`axis x ${x[iC].key}`, x[iC].value);
 
 			// generate the x/y header
-		}, axes.y[0].map(() => newCell('axis xy')));
+		}, axes.y[0].map(() => cell('axis xy')));
 	}));
 }
 
@@ -120,19 +117,19 @@ function mergeContext<TRow extends Row>(next: Cell<TRow>, cell: Cell<TRow>): voi
  * Convert a table of rows into a table of cells.
  * @hidden
  */
-function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key>, identity: { index: number }): Table<Cell<TRow>> {
+function cells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key>, identity: { index: number }): Table<Cell<TRow>> {
 	const result: Table<Cell<TRow>> = [];
 
 	for (const row of table) {
 		const key = getKey(row);
-		let cell = result.find(cell => keyEquals(cell, key));
+		let existing = result.find(cell => keyEquals(cell, key));
 
-		if (!cell) {
-			result.push(cell = newCell(key.style, key.text));
+		if (!existing) {
+			result.push( existing = cell(key.style, key.text));
 		}
 
-		cell.index.push(identity.index++);
-		cell.source.push(row);
+		existing.index.push(identity.index++);
+		existing.source.push(row);
 	}
 
 	return result;
@@ -143,7 +140,7 @@ function tableCells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
-function expand<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] {
+function reduce<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] {
 	values.forEach((value, iValue) => {
 		const split = splits[iValue];
 
@@ -193,6 +190,6 @@ function keyEquals(a: Key, b: Key): boolean {
  * Creates a cell within a table.
  * @hidden 
  */
-function newCell<TRow extends Row>(style: string, text: string = ''): Cell<TRow> {
+function cell<TRow extends Row>(style: string, text: string = ''): Cell<TRow> {
 	return { text, style, index: [], source: [], rows: 1, cols: 1 };
 }
