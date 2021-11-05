@@ -75,7 +75,6 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 	}));
 }
 
-
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.
@@ -125,7 +124,7 @@ function cells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key>, id
 		let existing = result.find(cell => keyEquals(cell, key));
 
 		if (!existing) {
-			result.push( existing = cell(key.style, key.text));
+			result.push(existing = cell(key.style, key.text));
 		}
 
 		existing.index.push(identity.index++);
@@ -134,7 +133,6 @@ function cells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key>, id
 
 	return result;
 }
-
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
@@ -156,7 +154,7 @@ function reduce<TSource, TResult>(values: TSource[], splits: number[], callbackf
  * A reverse for loop
  * @param hidden
  */
-function forEachRev<TValue>(values: Array<TValue>, callbackfn: (value: TValue, index: number) => void): void {
+const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, index: number) => void): void => {
 	for (let index = values.length; index--;) {
 		callbackfn(values[index], index);
 	}
@@ -166,30 +164,26 @@ function forEachRev<TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
-function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Func<TSource, number>): number {
-	return source.map(value => callbackfn(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
-}
+const leastCommonMultiple = <TSource>(source: Array<TSource>, callbackfn: Func<TSource, number>): number =>
+	source.map(value => callbackfn(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
 
 /**
  * Returns the greatest common factor of two numbers
  * @hidden
  */
-function greatestCommonFactor(a: number, b: number): number {
-	return b ? greatestCommonFactor(b, a % b) : a;
-}
+const greatestCommonFactor = (a: number, b: number): number =>
+	b ? greatestCommonFactor(b, a % b) : a;
 
 /**
  * Compare two keys for equality
  * @hidden 
  */
-function keyEquals(a: Key, b: Key): boolean {
-	return a.text === b.text && a.style === b.style;
-}
+const keyEquals = (a: Key, b: Key): boolean =>
+	a.text === b.text && a.style === b.style;
 
 /**
  * Creates a cell within a table.
  * @hidden 
  */
-function cell<TRow extends Row>(style: string, text: string = ''): Cell<TRow> {
-	return { text, style, index: [], source: [], rows: 1, cols: 1 };
-}
+const cell = <TRow extends Row>(style: string, text: string = ''): Cell<TRow> =>
+	({ text, style, index: [], source: [], rows: 1, cols: 1 });
