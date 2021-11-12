@@ -170,7 +170,7 @@
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
 		import * as d3 from 'https://cdn.skypack.dev/d3-dsv@3?min';
-		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@2.4?min';
+		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@2.5?min';
 
 		// common controls used
 		const xAxisSelector = document.getElementById("xAxisSelector");
@@ -249,7 +249,7 @@
 			dateOfInterest.textContent = date;
 
 			// filter the cube using the date of interest
-			context.filtered = pivot.filter(context.cube, app => (!app.From || app.From < date) && (!app.To || date < app.To));
+			context.filtered = pivot.map(context.cube, pivot.filter(app => (!app.From || app.From < date) && (!app.To || date < app.To)));
 
 			renderCube();
 		}

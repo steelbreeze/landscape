@@ -1,4 +1,4 @@
-import { Axes, Cube, Func, Row, Table } from '@steelbreeze/pivot';
+import { Axes, Cube, Function, Row, Table } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
@@ -31,7 +31,7 @@ export interface Cell<TRow extends Row> extends Key {
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates; create the resultant table
@@ -116,7 +116,7 @@ function mergeContext<TRow extends Row>(next: Cell<TRow>, cell: Cell<TRow>): voi
  * Convert a table of rows into a table of cells.
  * @hidden
  */
-function cells<TRow extends Row>(table: Table<TRow>, getKey: Func<TRow, Key>, identity: { index: number }): Table<Cell<TRow>> {
+function cells<TRow extends Row>(table: Table<TRow>, getKey: Function<TRow, Key>, identity: { index: number }): Table<Cell<TRow>> {
 	const result: Table<Cell<TRow>> = [];
 
 	for (const row of table) {
@@ -164,7 +164,7 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
-const leastCommonMultiple = <TSource>(source: Array<TSource>, callbackfn: Func<TSource, number>): number =>
+const leastCommonMultiple = <TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>): number =>
 	source.map(value => callbackfn(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
 
 /**

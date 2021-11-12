@@ -1,4 +1,4 @@
-import { Axes, Cube, Func, Row } from '@steelbreeze/pivot';
+import { Axes, Cube, Function, Row } from '@steelbreeze/pivot';
 /** The final text and class name to use when rendering cells in a table. */
 export interface Key {
     /** The text to use in the final table rendering. */
@@ -24,7 +24,7 @@ export interface Cell<TRow extends Row> extends Key {
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Func<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>>;
+export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>>;
 /**
  * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @param cube The source cube.
