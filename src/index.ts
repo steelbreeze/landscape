@@ -35,7 +35,7 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates; create the resultant table
-	return split(cube.map(row => row.map(table => table.length ? cells(table, getKey, identity) : <Cell<TRow>[]>[cell('empty')])), axes, onX);
+	return split(cube.map(row => row.map(table => table.length ? cells(table, getKey, identity) : <Cell<TRow>[]>[cell(makeKey('empty'))])), axes, onX);
 }
 
 /**
@@ -59,7 +59,7 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
 
 			// generate the y axis row header cells
-		}, axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value)));
+		}, axes.y[iY].map(criterion => cell(makeKey(`axis y ${criterion.key}`, criterion.value))));
 
 		// generate the x axis column header rows
 	}, axes.x[0].map((_, iC) => {
@@ -68,10 +68,10 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 		return reduce(axes.x, xSplits, x => {
 
 			// generate the x axis cells
-			return cell(`axis x ${x[iC].key}`, x[iC].value);
+			return cell(makeKey(`axis x ${x[iC].key}`, x[iC].value));
 
 			// generate the x/y header
-		}, axes.y[0].map(() => cell('axis xy')));
+		}, axes.y[0].map(() => cell(makeKey('axis xy'))));
 	}));
 }
 
@@ -124,7 +124,7 @@ function cells<TRow extends Row>(table: Table<TRow>, getKey: Function<TRow, Key>
 		let existing = result.find(cell => keyEquals(cell, key));
 
 		if (!existing) {
-			result.push(existing = cell(key.style, key.text));
+			result.push(existing = cell(key));
 		}
 
 		existing.index.push(identity.index++);
@@ -182,8 +182,15 @@ const keyEquals = (a: Key, b: Key): boolean =>
 	a.text === b.text && a.style === b.style;
 
 /**
+ * Creates a key within a table.
+ * @hidden 
+ */
+const makeKey = (style: string, text: string = ''): Key =>
+	({ text, style });
+
+/**
  * Creates a cell within a table.
  * @hidden 
  */
-const cell = <TRow extends Row>(style: string, text: string = ''): Cell<TRow> =>
-	({ text, style, index: [], source: [], rows: 1, cols: 1 });
+const cell = <TRow extends Row>(key: Key): Cell<TRow> =>
+	({ ...key, index: [], source: [], rows: 1, cols: 1 });

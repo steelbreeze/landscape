@@ -30,14 +30,14 @@ function row<TRow extends Row>(rowData: Array<Cell<TRow>>): HTMLTableRowElement 
 }
 
 // render a cell in a table with a child div
-function cell<TRow extends Row>(cellData: Cell<TRow>): HTMLTableCellElement {
+function cell(cellData: any): HTMLTableCellElement {
 	const cellElement = document.createElement(cellData.style.includes('axis') ? 'th' : 'td');
 	cellElement.colSpan = cellData.cols;
 	cellElement.rowSpan = cellData.rows;
 	cellElement.className = `cell ${cellData.style}`;
 
 	const divElement = document.createElement('div');
-	divElement.appendChild(document.createTextNode(cellData.text));
+	divElement.appendChild(document.createTextNode(cellData.altText || cellData.text));
 
 	cellElement.appendChild(divElement);
 
