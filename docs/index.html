@@ -169,7 +169,7 @@
 	<script src="./dist/landscape.min.js"></script>
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
-		import * as d3 from 'https://cdn.skypack.dev/d3-dsv@3?min';
+		import * as csv from 'https://cdn.skypack.dev/@steelbreeze/csv';
 		import * as pivot from 'https://cdn.skypack.dev/@steelbreeze/pivot@2.5?min';
 
 		// common controls used
@@ -219,9 +219,9 @@
 		document.getElementById("latestDate").textContent = fromToday(1096);
 
 		// load the applications data
-		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(response => response.text()).then(csv => {
+		window.fetch("./data/mythicalBank.csv", { cache: "no-cache" }).then(response => response.text()).then(text => {
 			// convert the CSV data into a JSON array and save it
-			context.json = d3.csvParse(csv);
+			context.json = csv.parse(text);
 
 			createCube();
 		});
