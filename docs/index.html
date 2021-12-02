@@ -256,6 +256,8 @@
 
 		// merge adjacent cells based on user
 		function renderCube() {
+//			landscape.maxSplits = 1;
+
 			console.time('split');
 
 			// split the cube and axes along the desired axis, creating a table
@@ -268,8 +270,6 @@
 			landscape.merge(table, mergeByX.checked, mergeByY.checked);
 
 			console.timeEnd('merge');
-
-			console.log(table);
 
 			// render the table in the target element
 			document.getElementById('tablan').replaceWith(render.table(table, 'tablan', 'landscape'));

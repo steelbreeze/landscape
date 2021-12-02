@@ -39,3 +39,7 @@ export declare function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: A
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export declare function merge<TRow extends Row>(cells: Array<Array<Cell<TRow>>>, onX: boolean, onY: boolean): void;
+/**
+ * Limit the number of splits per row or column
+ */
+export declare let maxSplits: number;

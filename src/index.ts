@@ -49,6 +49,9 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length) : 1);
 	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
 
+//	console.log(`xSplits: ${xSplits}`);
+//	console.log(`ySplits: ${ySplits}`);
+
 	// iterate and expand the y axis based on the split data
 	return reduce(cells, ySplits, (row, ySplit, ysi, iY) => {
 
@@ -161,11 +164,19 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
 }
 
 /**
+ * Limit the number of splits per row or column
+ */
+export let maxSplits: number = Number.MAX_SAFE_INTEGER;
+
+/**
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
-const leastCommonMultiple = <TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>): number =>
-	source.map(value => callbackfn(value) || 1).reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
+function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>): number {
+	const counts = source.map(value => callbackfn(value) || 1);
+	
+	return Math.min(counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b)), Math.max(maxSplits, ...counts));
+}
 
 /**
  * Returns the greatest common factor of two numbers
