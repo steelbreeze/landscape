@@ -30,12 +30,13 @@ export interface Cell<TRow extends Row> extends Key {
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
+ * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean, precise: boolean = false): Array<Array<Cell<TRow>>> {
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates; create the resultant table
-	return split(cube.map(row => row.map(table => table.length ? cells(table, getKey, identity) : <Cell<TRow>[]>[cell(makeKey('empty'))])), axes, onX);
+	return split(cube.map(row => row.map(table => table.length ? cells(table, getKey, identity) : <Cell<TRow>[]>[cell(makeKey('empty'))])), axes, onX, precise);
 }
 
 /**
@@ -44,13 +45,13 @@ export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getK
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>> {
+export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell<TRow>>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length) : 1);
-	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length));
+	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length, precise) : 1);
+	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length, precise));
 
-//	console.log(`xSplits: ${xSplits}`);
-//	console.log(`ySplits: ${ySplits}`);
+	//	console.log(`xSplits: ${xSplits}`);
+	//	console.log(`ySplits: ${ySplits}`);
 
 	// iterate and expand the y axis based on the split data
 	return reduce(cells, ySplits, (row, ySplit, ysi, iY) => {
@@ -164,18 +165,13 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
 }
 
 /**
- * Limit the number of splits per row or column
- */
-export let maxSplits: number = Number.MAX_SAFE_INTEGER;
-
-/**
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
-function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>): number {
+function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>, precise: boolean): number {
 	const counts = source.map(value => callbackfn(value) || 1);
-	
-	return Math.min(counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b)), Math.max(maxSplits, ...counts));
+
+	return precise ? counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b)) : Math.max(...counts);
 }
 
 /**

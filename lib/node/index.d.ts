@@ -23,15 +23,16 @@ export interface Cell<TRow extends Row> extends Key {
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
+ * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean): Array<Array<Cell<TRow>>>;
+export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean, precise?: boolean): Array<Array<Cell<TRow>>>;
 /**
  * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @param cube The source cube.
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  */
-export declare function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell<TRow>>>;
+export declare function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell<TRow>>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.
@@ -39,7 +40,3 @@ export declare function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: A
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export declare function merge<TRow extends Row>(cells: Array<Array<Cell<TRow>>>, onX: boolean, onY: boolean): void;
-/**
- * Limit the number of splits per row or column
- */
-export declare let maxSplits: number;
