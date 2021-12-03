@@ -3,7 +3,7 @@ import { Axes, Cube, Function, Pair, Row } from '@steelbreeze/pivot';
 export interface StyledPair extends Pair {
     /** The class name to use in the final table rendering. */
     style: string;
-    /** Optional text to display in place of Pair.value */
+    /** Optional text to display in place of Pair.value (which is used to de-dup) */
     text?: string;
 }
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
