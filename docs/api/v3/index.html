@@ -62,14 +62,14 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/cell.html" class="tsd-kind-icon">Cell</a></li>
-								<li class="tsd-kind-interface"><a href="interfaces/key.html" class="tsd-kind-icon">Key</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/cell.html" class="tsd-kind-icon">Cell</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/element.html" class="tsd-kind-icon">Element</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-has-type-parameter"><a href="index.html#merge" class="tsd-kind-icon">merge</a></li>
+								<li class="tsd-kind-function"><a href="index.html#merge" class="tsd-kind-icon">merge</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="index.html#table" class="tsd-kind-icon">table</a></li>
 							</ul>
 						</section>
@@ -78,17 +78,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="merge" class="tsd-anchor"></a>
 					<h3>merge</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">merge&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cells<span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, onY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">merge<span class="tsd-signature-symbol">(</span>cells<span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, onY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/be3cc1e/src/index.ts#L86">index.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/8a9355f/src/index.ts#L75">index.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -96,16 +96,10 @@
 									<p>Merge adjacent cells in a split table on the y and/or x axes.</p>
 								</div>
 							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>TRow<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Row</span></h4>
-								</li>
-							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>cells: <a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>cells: <a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A table of Cells created by a previous call to splitX or splitY.</p>
 									</div>
@@ -131,13 +125,13 @@
 					<a name="table" class="tsd-anchor"></a>
 					<h3>table</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">table&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cube<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, getKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, precise<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">table&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cube<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, getElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, precise<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/be3cc1e/src/index.ts#L35">index.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/8a9355f/src/index.ts#L29">index.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -166,9 +160,9 @@
 									</div>
 								</li>
 								<li>
-									<h5>getKey: <span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/key.html" class="tsd-signature-type" data-tsd-kind="Interface">Key</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>getElement: <span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A callback to generate a key containing the text and className used in the table from the source records,</p>
+										<p>A callback to generate an element containing the details used in table rendering,</p>
 									</div>
 								</li>
 								<li>
@@ -184,7 +178,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -200,13 +194,13 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/cell.html" class="tsd-kind-icon">Cell</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/key.html" class="tsd-kind-icon">Key</a>
+						<a href="interfaces/element.html" class="tsd-kind-icon">Element</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
+					<li class=" tsd-kind-function">
 						<a href="index.html#merge" class="tsd-kind-icon">merge</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">

@@ -1,7 +1,7 @@
 import { Axes, Cube, Function, Pair, Row, Table } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
-export interface StyledPair extends Pair {
+export interface Element extends Pair {
 	/** The class name to use in the final table rendering. */
 	style: string;
 
@@ -9,8 +9,8 @@ export interface StyledPair extends Pair {
 	text?: string;
 }
 
-/** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
-export interface Cell extends StyledPair {
+/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
+export interface Cell extends Element {
 	/** The number of rows to occupy. */
 	rows: number;
 
@@ -22,17 +22,17 @@ export interface Cell extends StyledPair {
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
  * @param axes The x and y axes used in the pivot operation to create the cube.
- * @param getKey A callback to generate a key containing the text and className used in the table from the source records,
+ * @param getElement A callback to generate an element containing the details used in table rendering,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, StyledPair>, onX: boolean, precise: boolean = false): Array<Array<Cell>> {
-	// convert the source data to keys and remove resulting duplicates; create the resultant table
-	return split(cube.map(row => row.map(table => table.length ? cells(table, getKey) : <Cell[]>[cell(makeKey('empty'))])), axes, onX, precise);
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise: boolean = false): Array<Array<Cell>> {
+	// convert the source data to cells and remove resulting duplicates; create the resultant table
+	return split(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, precise);
 }
 
 /**
- * Splits a cube of keys into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
+ * Splits a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @hidden
  */
 export function split<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell>> {
@@ -50,7 +50,7 @@ export function split<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX
 			({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] }),
 
 			// generate the y axis row header cells
-			axes.y[iY].map(criterion => cell(makeKey(`axis y ${criterion.key}`, criterion.value)))),
+			axes.y[iY].map(criterion => cell(element(`axis y ${criterion.key}`, criterion.value)))),
 
 		// generate the x axis column header rows
 		axes.x[0].map((_, iC) =>
@@ -59,10 +59,10 @@ export function split<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX
 			reduce(axes.x, xSplits, x =>
 
 				// generate the x axis cells
-				cell(makeKey(`axis x ${x[iC].key}`, x[iC].value)),
+				cell(element(`axis x ${x[iC].key}`, x[iC].value)),
 
 				// generate the x/y header
-				axes.y[0].map(() => cell(makeKey('axis xy'))))
+				axes.y[0].map(() => cell(element('axis xy'))))
 		));
 }
 
@@ -77,10 +77,10 @@ export function merge(cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 
 	forEachRev(cells, (row, iY) => {
 		forEachRev(row, (cell, iX) => {
-			if (onY && iY && (next = cells[iY - 1][iX]) && keyEquals(next, cell) && next.cols === cell.cols) {
+			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell) && next.cols === cell.cols) {
 				next.rows += cell.rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && keyEquals(next, cell) && next.rows === cell.rows) {
+			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell) && next.rows === cell.rows) {
 				next.cols += cell.cols;
 				row.splice(iX, 1);
 			}
@@ -92,15 +92,15 @@ export function merge(cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Convert a table of rows into a table of cells.
  * @hidden
  */
-function cells<TRow extends Row>(table: Table<TRow>, getKey: Function<TRow, StyledPair>): Table<Cell> {
+function cells<TRow extends Row>(table: Table<TRow>, getElement: Function<TRow, Element>): Table<Cell> {
 	const result: Table<Cell> = [];
 
 	for (const row of table) {
-		const key = getKey(row);
-		let existing = result.find(cell => keyEquals(cell, key));
+		const element = getElement(row);
+		let existing = result.find(cell => equals(cell, element));
 
 		if (!existing) {
-			result.push(existing = cell(key));
+			result.push(existing = cell(element));
 		}
 	}
 
@@ -140,33 +140,29 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
 function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>, precise: boolean): number {
 	const counts = source.map(value => callbackfn(value) || 1);
 
-	return precise ? counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b)) : Math.max(...counts);
+	return precise ? counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b)) : Math.max(...counts); // TODO: restore this method to be just LCM
 }
 
 /**
  * Returns the greatest common factor of two numbers
  * @hidden
  */
-const greatestCommonFactor = (a: number, b: number): number =>
-	b ? greatestCommonFactor(b, a % b) : a;
+const greatestCommonFactor = (a: number, b: number): number => b ? greatestCommonFactor(b, a % b) : a;
 
 /**
- * Compare two keys for equality
+ * Compare two Elements for equality
  * @hidden 
  */
-const keyEquals = (a: StyledPair, b: StyledPair): boolean =>
-	a.key === b.key && a.value === b.value && a.style === b.style;
+const equals = (a: Element, b: Element): boolean => a.key === b.key && a.value === b.value && a.style === b.style;
 
 /**
- * Creates a key within a table.
+ * Creates a Element.
  * @hidden 
  */
-const makeKey = (style: string, value: string = ''): StyledPair =>
-	({ key: '', value, style });
+const element = (style: string, value: string = '', key = ''): Element => ({ key, value, style });
 
 /**
  * Creates a cell within a table.
  * @hidden 
  */
-const cell = (key: StyledPair): Cell =>
-	({ ...key, rows: 1, cols: 1 });
+const cell = (key: Element): Cell => ({ ...key, rows: 1, cols: 1 });
