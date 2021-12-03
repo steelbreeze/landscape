@@ -48,33 +48,30 @@ export function split<TRow extends Row>(cells: Cube<Cell<TRow>>, axes: Axes<TRow
 	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length, precise) : 1);
 	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length, precise));
 
-	//	console.log(`xSplits: ${xSplits}`);
-	//	console.log(`ySplits: ${ySplits}`);
-
 	// iterate and expand the y axis based on the split data
-	return reduce(cells, ySplits, (row, ySplit, ysi, iY) => {
+	return reduce(cells, ySplits, (row, ySplit, ysi, iY) =>
 
 		// iterate and expand the x axis based on the split data
-		return reduce(row, xSplits, (cell, xSplit, xsi) => {
+		reduce(row, xSplits, (cell, xSplit, xsi) =>
 
 			// generate the cube cells
-			return { ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] };
+			({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] }),
 
 			// generate the y axis row header cells
-		}, axes.y[iY].map(criterion => cell(makeKey(`axis y ${criterion.key}`, criterion.value))));
+			axes.y[iY].map(criterion => cell(makeKey(`axis y ${criterion.key}`, criterion.value)))),
 
 		// generate the x axis column header rows
-	}, axes.x[0].map((_, iC) => {
+		axes.x[0].map((_, iC) =>
 
-		// iterate and expand the x axis
-		return reduce(axes.x, xSplits, x => {
+			// iterate and expand the x axis
+			reduce(axes.x, xSplits, x =>
 
-			// generate the x axis cells
-			return cell(makeKey(`axis x ${x[iC].key}`, x[iC].value));
+				// generate the x axis cells
+				cell(makeKey(`axis x ${x[iC].key}`, x[iC].value)),
 
-			// generate the x/y header
-		}, axes.y[0].map(() => cell(makeKey('axis xy'))));
-	}));
+				// generate the x/y header
+				axes.y[0].map(() => cell(makeKey('axis xy'))))
+		));
 }
 
 /**
