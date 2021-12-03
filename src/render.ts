@@ -37,7 +37,7 @@ function cell(cellData: any): HTMLTableCellElement {
 	cellElement.className = `cell ${cellData.style}`;
 
 	const divElement = document.createElement('div');
-	divElement.appendChild(document.createTextNode(cellData.altText || cellData.text));
+	divElement.appendChild(document.createTextNode(cellData.text || cellData.value));
 
 	cellElement.appendChild(divElement);
 

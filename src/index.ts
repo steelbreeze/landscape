@@ -1,16 +1,13 @@
-import { Axes, Cube, Function, Row, Table } from '@steelbreeze/pivot';
+import { Axes, Cube, Function, Pair, Row, Table } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
-export interface Key {
-	/** The text to use in the final table rendering. */
-	text: string;
-
+export interface StyledPair extends Pair {
 	/** The class name to use in the final table rendering. */
 	style: string;
 }
 
 /** An extension of key, adding the number of rows and columns the key will occupy in the final table rendering. */
-export interface Cell<TRow extends Row> extends Key {
+export interface Cell<TRow extends Row> extends StyledPair {
 	/** Unique keys for the source context. */
 	index: Array<number>;
 
@@ -32,7 +29,7 @@ export interface Cell<TRow extends Row> extends Key {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, Key>, onX: boolean, precise: boolean = false): Array<Array<Cell<TRow>>> {
+export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getKey: Function<TRow, StyledPair>, onX: boolean, precise: boolean = false): Array<Array<Cell<TRow>>> {
 	const identity = { index: 0 };
 
 	// convert the source data to keys and remove resulting duplicates; create the resultant table
@@ -115,7 +112,7 @@ function mergeContext<TRow extends Row>(next: Cell<TRow>, cell: Cell<TRow>): voi
  * Convert a table of rows into a table of cells.
  * @hidden
  */
-function cells<TRow extends Row>(table: Table<TRow>, getKey: Function<TRow, Key>, identity: { index: number }): Table<Cell<TRow>> {
+function cells<TRow extends Row>(table: Table<TRow>, getKey: Function<TRow, StyledPair>, identity: { index: number }): Table<Cell<TRow>> {
 	const result: Table<Cell<TRow>> = [];
 
 	for (const row of table) {
@@ -180,19 +177,19 @@ const greatestCommonFactor = (a: number, b: number): number =>
  * Compare two keys for equality
  * @hidden 
  */
-const keyEquals = (a: Key, b: Key): boolean =>
-	a.text === b.text && a.style === b.style;
+const keyEquals = (a: StyledPair, b: StyledPair): boolean =>
+	a.value === b.value && a.style === b.style;
 
 /**
  * Creates a key within a table.
  * @hidden 
  */
-const makeKey = (style: string, text: string = ''): Key =>
-	({ text, style });
+const makeKey = (style: string, value: string = ''): StyledPair =>
+	({ key: '', value, style });
 
 /**
  * Creates a cell within a table.
  * @hidden 
  */
-const cell = <TRow extends Row>(key: Key): Cell<TRow> =>
+const cell = <TRow extends Row>(key: StyledPair): Cell<TRow> =>
 	({ ...key, index: [], source: [], rows: 1, cols: 1 });

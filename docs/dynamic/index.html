@@ -422,7 +422,7 @@
 				y: yAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, yAxisPicker.value).sort(), yAxisPicker.value) : pivot.dimension(['Select y-axis'], 'noX', () => 'Select y-axis')
 			}
 
-			context.getKey = factPicker.selectedIndex ? (record) => { return { text: record[factPicker.value], style: 'none' }; } : () => { return { text: 'Select fact', style: 'none' }; };
+			context.getKey = factPicker.selectedIndex ? (record) => { return { key: factPicker.value, value: record[factPicker.value], style: 'none' }; } : () => { return { key: '', value: 'Select fact', style: 'none' }; };
 
 			context.cube = pivot.cube(context.json, context.axes);
 
@@ -460,7 +460,7 @@
 			cellElement.className = `cell ${cellData.style}`;
 
 			const divElement = document.createElement('div');
-			divElement.appendChild(document.createTextNode(cellData.text));
+			divElement.appendChild(document.createTextNode(cellData.value));
 
 			cellElement.appendChild(divElement);
 
