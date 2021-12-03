@@ -178,7 +178,7 @@ const greatestCommonFactor = (a: number, b: number): number =>
  * @hidden 
  */
 const keyEquals = (a: StyledPair, b: StyledPair): boolean =>
-	a.value === b.value && a.style === b.style;
+	a.key === b.key && a.value === b.value && a.style === b.style;
 
 /**
  * Creates a key within a table.
