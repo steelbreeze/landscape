@@ -23,11 +23,6 @@ export interface Cell extends Element {
  */
 export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise?: boolean): Array<Array<Cell>>;
 /**
- * Splits a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
- * @hidden
- */
-export declare function split<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell>>;
-/**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.
  * @param onX A flag to indicate that cells should be merged on the x axis.

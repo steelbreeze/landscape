@@ -28,17 +28,17 @@ export interface Cell extends Element {
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise: boolean = false): Array<Array<Cell>> {
 	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	return split(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, precise);
+	return expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, precise);
 }
 
 /**
- * Splits a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
+ * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @hidden
  */
-export function split<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell>> {
+function expand<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? leastCommonMultiple(cells, row => row[iX].length, precise) : 1);
-	const ySplits = cells.map(row => onX ? 1 : leastCommonMultiple(row, table => table.length, precise));
+	const xSplits = axes.x.map((_, iX) => onX ? (precise ? leastCommonMultiple : Math.max)(...cells.map(row => row[iX].length || 1)) : 1);
+	const ySplits = cells.map(row => onX ? 1 : (precise ? leastCommonMultiple : Math.max)(...row.map(table => table.length || 1)));
 
 	// iterate and expand the y axis based on the split data
 	return reduce(cells, ySplits, (row, ySplit, ysi, iY) =>
@@ -137,11 +137,7 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
  * Returns the least common multiple of a set of integers generated from an object. 
  * @hidden
  */
-function leastCommonMultiple<TSource>(source: Array<TSource>, callbackfn: Function<TSource, number>, precise: boolean): number {
-	const counts = source.map(value => callbackfn(value) || 1);
-
-	return precise ? counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b)) : Math.max(...counts); // TODO: restore this method to be just LCM
-}
+const leastCommonMultiple = (...counts: Array<number>): number => counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
 
 /**
  * Returns the greatest common factor of two numbers
