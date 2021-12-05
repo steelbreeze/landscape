@@ -26,10 +26,9 @@ export interface Cell extends Element {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise: boolean = false): Array<Array<Cell>> {
+export const table = <TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise: boolean = false): Array<Array<Cell>> =>
 	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	return expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, precise);
-}
+	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, precise);
 
 /**
  * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
@@ -72,11 +71,11 @@ function expand<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: bool
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export function merge(cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void {
-	let next;
-
+export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void =>
 	forEachRev(cells, (row, iY) => {
 		forEachRev(row, (cell, iX) => {
+			let next;
+
 			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell) && next.cols === cell.cols) {
 				next.rows += cell.rows;
 				row.splice(iX, 1);
@@ -86,7 +85,6 @@ export function merge(cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 			}
 		});
 	});
-}
 
 /**
  * Convert a table of rows into a table of cells.
@@ -97,10 +95,9 @@ function cells<TRow extends Row>(table: Table<TRow>, getElement: Function<TRow, 
 
 	for (const row of table) {
 		const element = getElement(row);
-		let existing = result.find(cell => equals(cell, element));
 
-		if (!existing) {
-			result.push(existing = cell(element));
+		if (!result.some(cell => equals(cell, element))) {
+			result.push(cell(element));
 		}
 	}
 

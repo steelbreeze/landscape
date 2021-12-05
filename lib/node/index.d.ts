@@ -21,11 +21,11 @@ export interface Cell extends Element {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export declare function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise?: boolean): Array<Array<Cell>>;
+export declare const table: <TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise?: boolean) => Array<Array<Cell>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export declare function merge(cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void;
+export declare const merge: (cells: Array<Array<Cell>>, onX: boolean, onY: boolean) => void;
