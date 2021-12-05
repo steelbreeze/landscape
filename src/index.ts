@@ -28,17 +28,17 @@ export interface Cell extends Element {
  */
 export function table<TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise: boolean = false): Array<Array<Cell>> {
 	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	return expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, splitter(precise));
+	return expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, precise);
 }
 
 /**
  * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @hidden
  */
-function expand<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, splitter: (...counts: Array<number>) => number): Array<Array<Cell>> {
+function expand<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, precise: boolean): Array<Array<Cell>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? splitter(...cells.map(row => row[iX].length || 1)) : 1);
-	const ySplits = cells.map(row => onX ? 1 : splitter(...row.map(table => table.length || 1)));
+	const xSplits = axes.x.map((_, iX) => onX ? split(cells, row => row[iX].length, precise) : 1);
+	const ySplits = cells.map(row => onX ? 1 : split(row, table => table.length, precise));
 
 	// iterate and expand the y axis based on the split data
 	return reduce(cells, ySplits, (row, ySplit, ysi, iY) =>
@@ -108,6 +108,12 @@ function cells<TRow extends Row>(table: Table<TRow>, getElement: Function<TRow, 
 }
 
 /**
+ * Calculate the number of splits required for a given cell
+ * @hidden 
+ */
+const split = <T>(source: Array<T>, callbackfn: Function<T, number>, precise: boolean) => (precise ? leastCommonMultiple : Math.max)(...source.map(item => callbackfn(item) || 1))
+
+/**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
@@ -137,7 +143,7 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
  * Determines which method to use to calculate the number table cells to split a cube table cell into.
  * @hidden
  */
-const splitter = (precise: boolean): (...counts: Array<number>) => number => precise ? leastCommonMultiple : Math.max;
+//const splitter = (precise: boolean): (...counts: Array<number>) => number => precise ? leastCommonMultiple : Math.max;
 
 /**
  * Returns the least common multiple of a set of integers generated from an object. 
