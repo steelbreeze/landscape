@@ -71,10 +71,11 @@ function expand<TRow extends Row>(cells: Cube<Cell>, axes: Axes<TRow>, onX: bool
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void =>
+export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
+	let next;
+
 	forEachRev(cells, (row, iY) => {
 		forEachRev(row, (cell, iX) => {
-			let next;
 
 			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell) && next.cols === cell.cols) {
 				next.rows += cell.rows;
@@ -85,6 +86,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 			}
 		});
 	});
+}
 
 /**
  * Convert a table of rows into a table of cells.
