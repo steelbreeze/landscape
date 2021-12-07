@@ -1,4 +1,5 @@
-import { Axes, Cube, Function, Pair, Row } from '@steelbreeze/pivot';
+import { Function, Pair } from '@steelbreeze/types';
+import { Axes, Cube } from '@steelbreeze/pivot';
 /** The final text and class name to use when rendering cells in a table. */
 export interface Element extends Pair {
     /** The class name to use in the final table rendering. */
@@ -13,6 +14,7 @@ export interface Cell extends Element {
     /** The number of columns to occupy. */
     cols: number;
 }
+export declare function setMode(value: (...values: Array<number>) => number): void;
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
@@ -21,7 +23,7 @@ export interface Cell extends Element {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
  */
-export declare const table: <TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, precise?: boolean) => Array<Array<Cell>>;
+export declare function table<TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean): Array<Array<Cell>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.
@@ -29,3 +31,8 @@ export declare const table: <TRow extends Row>(cube: Cube<TRow>, axes: Axes<TRow
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export declare const merge: (cells: Array<Array<Cell>>, onX: boolean, onY: boolean) => void;
+/**
+ * Returns the least common multiple of a set of integers generated from an object.
+ * @hidden
+ */
+export declare const leastCommonMultiple: (...counts: Array<number>) => number;
