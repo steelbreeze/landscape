@@ -25,6 +25,11 @@ export interface Cell extends Element {
  */
 let mode: (...values: Array<number>) => number = Math.max;
 
+/**
+ * Defines the method used to calculate the number of rows or columns to expand a cube's row or column into when rendering a table.
+ * By default, the library uses Math.max, however for more precise rendering, landscape.leastCommonMultiple can be used, but beware of the performance overhead this may have as depending on the inputs, least commpn multiple can yield some large results.
+ * @param value A function that takes an arbitory number of integers and returns an integer.
+ */
 export function setMode(value: (...values: Array<number>) => number): void {
 	mode = value;
 }
