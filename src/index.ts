@@ -1,4 +1,4 @@
-import { Function, Pair } from '@steelbreeze/types';
+import { Function, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
@@ -20,41 +20,25 @@ export interface Cell extends Element {
 }
 
 /**
- * The formula used to calculate the number of cells to split a row or column into.
- * @hidden
- */
-let mode: (...values: Array<number>) => number = Math.max;
-
-/**
- * Defines the method used to calculate the number of rows or columns to expand a cube's row or column into when rendering a table.
- * By default, the library uses Math.max, however for more precise rendering, landscape.leastCommonMultiple can be used, but beware of the performance overhead this may have as depending on the inputs, least commpn multiple can yield some large results.
- * @param value A function that takes an arbitory number of integers and returns an integer.
- */
-export function setMode(value: (...values: Array<number>) => number): void {
-	mode = value;
-}
-
-/**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
  * @param axes The x and y axes used in the pivot operation to create the cube.
  * @param getElement A callback to generate an element containing the details used in table rendering,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
- * @param precise A flag to control the method that cells are split; set to true to yeild an even number of splits for rows/columns.
+ * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export function table<TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean): Array<Array<Cell>> {
+export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> =>
 	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	return expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX);
-}
+	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell(element('empty'))])), axes, onX, method);
 
 /**
  * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @hidden
  */
-function expand<TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean): Array<Array<Cell>> {
+function expand<TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method: FunctionVA<number, number>): Array<Array<Cell>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? split(cells, row => row[iX].length) : 1);
-	const ySplits = cells.map(row => onX ? 1 : split(row, table => table.length));
+	const xSplits = axes.x.map((_, iX) => onX ? split(cells, row => row[iX].length, method) : 1);
+	const ySplits = cells.map(row => onX ? 1 : split(row, table => table.length, method));
 
 	// iterate and expand the y axis based on the split data
 	return reduce(cells, ySplits, (row, ySplit, ysi, iY) =>
@@ -127,7 +111,7 @@ function cells<TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
  * Calculate the number of splits required for a given cell
  * @hidden 
  */
-const split = <T>(source: Array<T>, callbackfn: Function<T, number>) => mode(...source.map(item => callbackfn(item) || 1))
+const split = <T>(source: Array<T>, callbackfn: Function<T, number>, method: FunctionVA<number, number>) => method(...source.map(item => callbackfn(item) || 1))
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
@@ -154,18 +138,6 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
 		callbackfn(values[index], index);
 	}
 }
-
-/**
- * Returns the least common multiple of a set of integers generated from an object. 
- * @hidden
- */
-export const leastCommonMultiple = (...counts: Array<number>): number => counts.reduce((a, b) => (a * b) / greatestCommonFactor(a, b));
-
-/**
- * Returns the greatest common factor of two numbers
- * @hidden
- */
-const greatestCommonFactor = (a: number, b: number): number => b ? greatestCommonFactor(b, a % b) : a;
 
 /**
  * Compare two Elements for equality

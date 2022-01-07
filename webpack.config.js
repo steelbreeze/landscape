@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
   entry: {
 	  landscape: [ './lib/node/index.js' ],
-    render: ['./lib/node/render.js']
+    render: ['./lib/node/render.js'],
+    math: ['./lib/node/math.js']
   },
   mode: 'production',
   output: {

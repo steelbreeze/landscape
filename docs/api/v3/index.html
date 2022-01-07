@@ -70,7 +70,6 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="index.html#merge" class="tsd-kind-icon">merge</a></li>
-								<li class="tsd-kind-function"><a href="index.html#setmode" class="tsd-kind-icon">set<wbr>Mode</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="index.html#table" class="tsd-kind-icon">table</a></li>
 							</ul>
 						</section>
@@ -89,7 +88,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/1ab0514/src/index.ts#L91">index.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/272602a/src/index.ts#L75">index.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -122,67 +121,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="setmode" class="tsd-anchor"></a>
-					<h3>set<wbr>Mode</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Mode<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/1ab0514/src/index.ts#L33">index.ts:33</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Defines the method used to calculate the number of rows or columns to expand a cube&#39;s row or column into when rendering a table.
-									By default, the library uses Math.max, however for more precise rendering, landscape.leastCommonMultiple can be used, but beware of the performance overhead this may have as depending on the inputs, least commpn multiple can yield some large results.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>A function that takes an arbitory number of integers and returns an integer.</p>
-									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-signature">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>values: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
 					<a name="table" class="tsd-anchor"></a>
-					<h3>table</h3>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> table</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">table&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cube<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, getElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">table&lt;TRow&gt;<span class="tsd-signature-symbol">(</span>cube<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Cube</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, axes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Axes</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">&gt;</span>, getElement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Function</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TRow</span><span class="tsd-signature-symbol">, </span><a href="interfaces/element.html" class="tsd-signature-type" data-tsd-kind="Interface">Element</a><span class="tsd-signature-symbol">&gt;</span>, onX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, method<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">FunctionVA</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/1ab0514/src/index.ts#L45">index.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/landscape/blob/272602a/src/index.ts#L30">index.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -222,6 +171,12 @@
 										<p>A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).</p>
 									</div>
 								</li>
+								<li>
+									<h5>method: <span class="tsd-signature-type">FunctionVA</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = ...</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.</p>
+									</div>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="interfaces/cell.html" class="tsd-signature-type" data-tsd-kind="Interface">Cell</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
@@ -247,9 +202,6 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="index.html#merge" class="tsd-kind-icon">merge</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="index.html#setmode" class="tsd-kind-icon">set<wbr>Mode</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="index.html#table" class="tsd-kind-icon">table</a>
