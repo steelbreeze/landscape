@@ -77,7 +77,6 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 
 	forEachRev(cells, (row, iY) => {
 		forEachRev(row, (cell, iX) => {
-
 			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell) && next.cols === cell.cols) {
 				next.rows += cell.rows;
 				row.splice(iX, 1);
