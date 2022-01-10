@@ -29,7 +29,7 @@ export interface Cell extends Element {
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> =>
 	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell('empty')])), axes, onX, method);
+	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')])), axes, onX, method);
 
 /**
  * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
@@ -37,8 +37,8 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Func
  */
 function expand<TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method: FunctionVA<number, number>): Array<Array<Cell>> {
 	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? split(cells, row => row[iX].length, method) : 1);
-	const ySplits = cells.map(row => onX ? 1 : split(row, table => table.length, method));
+	const xSplits = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
+	const ySplits = cells.map(row => onX ? 1 : method(...row.map(table => table.length)));
 
 	// iterate and expand the y axis based on the split data
 	return reduce(cells, ySplits, (row, ySplit, ysi, iY) =>
@@ -88,6 +88,13 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 	});
 }
 
+
+/**
+ * Creates a cell within a table.
+ * @hidden
+ */
+ const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
+
 /**
  * Convert a table of rows into a table of cells.
  * @hidden
@@ -105,12 +112,6 @@ function cells<TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
 
 	return result;
 }
-
-/**
- * Calculate the number of splits required for a given cell
- * @hidden 
- */
-const split = <T>(source: Array<T>, callbackfn: Function<T, number>, method: FunctionVA<number, number>) => method(...source.map(item => callbackfn(item) || 1))
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
@@ -143,8 +144,3 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
  * @hidden 
  */
 const equals = (a: Element, b: Element): boolean => a.value === b.value && a.style === b.style;
-
-/**
- * Creates a cell within a table from scratch.
- */
-const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
