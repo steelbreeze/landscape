@@ -4,7 +4,7 @@ import { Axes, Cube } from '@steelbreeze/pivot';
 export interface Element extends Pair {
     /** The class name to use in the final table rendering. */
     style: string;
-    /** Optional text to display in place of Pair.value (which is used to de-dup) */
+    /** Optional text to display in place of Pair.value (which is used to de-dup); this should have a single value for any given Pair.value. */
     text?: string;
 }
 /** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
