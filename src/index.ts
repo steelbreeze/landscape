@@ -29,7 +29,7 @@ export interface Cell extends Element {
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> =>
 	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[newCell('empty')])), axes, onX, method);
+	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : <Cell[]>[cell('empty')])), axes, onX, method);
 
 /**
  * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
@@ -50,7 +50,7 @@ function expand<TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method:
 			({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] }),
 
 			// generate the y axis row header cells
-			axes.y[iY].map(criterion => newCell(`axis y ${criterion.key}`, criterion.value))),
+			axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value))),
 
 		// generate the x axis column header rows
 		axes.x[0].map((_, iC) =>
@@ -59,10 +59,10 @@ function expand<TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method:
 			reduce(axes.x, xSplits, x =>
 
 				// generate the x axis cells
-				newCell(`axis x ${x[iC].key}`, x[iC].value),
+				cell(`axis x ${x[iC].key}`, x[iC].value),
 
 				// generate the x/y header
-				axes.y[0].map(() => newCell('axis xy')))
+				axes.y[0].map(() => cell('axis xy')))
 		));
 }
 
@@ -99,7 +99,7 @@ function cells<TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
 		const element = getElement(row);
 
 		if (!result.some(cell => equals(cell, element))) {
-			result.push(cell(element));
+			result.push({...element, rows: 1, cols: 1});
 		}
 	}
 
@@ -145,12 +145,6 @@ const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, i
 const equals = (a: Element, b: Element): boolean => a.value === b.value && a.style === b.style;
 
 /**
- * Creates a cell within a table from an element.
- * @hidden 
- */
-const cell = (element: Element): Cell => ({ ...element, rows: 1, cols: 1 });
-
-/**
  * Creates a cell within a table from scratch.
  */
-const newCell = (style: string, value: string = '', key = ''): Cell => cell({ key, value, style });
+const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
