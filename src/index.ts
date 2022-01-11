@@ -119,9 +119,7 @@ function cells<TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
  */
 function reduce<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] {
 	values.forEach((value, iValue) => {
-		const split = splits[iValue];
-
-		for (let iSplit = 0; iSplit < split; ++iSplit) {
+		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
 			seed.push(callbackfn(value, split, iSplit, iValue));
 		}
 	});
