@@ -35,7 +35,7 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Func
  * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
  * @hidden
  */
-function expand<TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method: FunctionVA<number, number>): Array<Array<Cell>> {
+const expand = <TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method: FunctionVA<number, number>): Array<Array<Cell>> => {
 	// calcuate the x and y splits required
 	const xSplits = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
 	const ySplits = cells.map(row => onX ? 1 : method(...row.map(table => table.length)));
@@ -99,7 +99,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Convert a table of rows into a table of cells.
  * @hidden
  */
-function cells<TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): Array<Cell> {
+const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): Array<Cell> => {
 	const result: Array<Cell> = [];
 
 	for (const row of table) {
@@ -117,7 +117,7 @@ function cells<TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
-function reduce<TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] {
+const reduce = <TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] => { 
 	values.forEach((value, iValue) => {
 		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
 			seed.push(callbackfn(value, split, iSplit, iValue));
