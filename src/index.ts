@@ -40,30 +40,25 @@ const expand = <TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method:
 	const xSplits = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
 	const ySplits = cells.map(row => onX ? 1 : method(...row.map(table => table.length)));
 
-	// iterate and expand the y axis based on the split data
-	return reduce(cells, ySplits, (row, ySplit, ysi, iY) =>
+	// generate the whole table
+	return reduce(cells, ySplits,
+		// generate x axis header rows
+		axes.x[0].map((_, iC) => reduce(axes.x, xSplits,
+			// generate the x/y header
+			axes.y[0].map(() => cell('axis xy')),
 
+			// generate the x axis cells
+			(x) => cell(`axis x ${x[iC].key}`, x[iC].value)
+		)),
 		// iterate and expand the x axis based on the split data
-		reduce(row, xSplits, (cell, xSplit, xsi) =>
+		(row, ySplit, ysi, iY) => reduce(row, xSplits,
+			// generate the y axis row header cells
+			axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value)),
 
 			// generate the cube cells
-			({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] }),
-
-			// generate the y axis row header cells
-			axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value))),
-
-		// generate the x axis column header rows
-		axes.x[0].map((_, iC) =>
-
-			// iterate and expand the x axis
-			reduce(axes.x, xSplits, x =>
-
-				// generate the x axis cells
-				cell(`axis x ${x[iC].key}`, x[iC].value),
-
-				// generate the x/y header
-				axes.y[0].map(() => cell('axis xy')))
-		));
+			(cell, xSplit, xsi) => ({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] })
+		)
+	);
 }
 
 /**
@@ -93,7 +88,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Creates a cell within a table.
  * @hidden
  */
- const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
+const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
 /**
  * Convert a table of rows into a table of cells.
@@ -106,7 +101,7 @@ const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
 		const element = getElement(row);
 
 		if (!result.some(cell => equals(cell, element))) {
-			result.push({...element, rows: 1, cols: 1});
+			result.push({ ...element, rows: 1, cols: 1 });
 		}
 	}
 
@@ -117,7 +112,7 @@ const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
-const reduce = <TSource, TResult>(values: TSource[], splits: number[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult, seed: TResult[]): TResult[] => { 
+const reduce = <TSource, TResult>(values: TSource[], splits: number[], seed: TResult[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult): TResult[] => {
 	values.forEach((value, iValue) => {
 		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
 			seed.push(callbackfn(value, split, iSplit, iValue));

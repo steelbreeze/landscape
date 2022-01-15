@@ -21,7 +21,6 @@
   },
   "scripts": {
     "build": "tsc -p . && webpack && cp ./lib/web/*.js ./docs/dist/",
-    "document": "typedoc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
