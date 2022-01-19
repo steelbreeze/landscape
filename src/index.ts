@@ -27,23 +27,17 @@ export interface Cell extends Element {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> =>
-	// convert the source data to cells and remove resulting duplicates; create the resultant table
-	expand(cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')])), axes, onX, method);
+export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
+	// convert the cube into a cells
+	const matrix: Cube<Cell> = cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
 
-/**
- * Expands a cube of cells into a table, creating mutiple rows or columns where a cell in a cube has multiple values.
- * @hidden
- */
-const expand = <TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method: FunctionVA<number, number>): Array<Array<Cell>> => {
-	// calcuate the x and y splits required
-	const xSplits = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
-	const ySplits = cells.map(row => onX ? 1 : method(...row.map(table => table.length)));
+	// calcuate the x splits required (y splits inlined below)
+	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...matrix.map(row => row[iX].length)) : 1);
 
 	// generate the whole table
-	return reduce(cells, ySplits,
+	return expand(matrix, matrix.map(row => onX ? 1 : method(...row.map(table => table.length))),
 		// generate x axis header rows
-		axes.x[0].map((_, iC) => reduce(axes.x, xSplits,
+		axes.x[0].map((_, iC) => expand(axes.x, xSplits,
 			// generate the x/y header
 			axes.y[0].map(() => cell('axis xy')),
 
@@ -51,7 +45,7 @@ const expand = <TRow>(cells: Cube<Cell>, axes: Axes<TRow>, onX: boolean, method:
 			(x) => cell(`axis x ${x[iC].key}`, x[iC].value)
 		)),
 		// iterate and expand the x axis based on the split data
-		(row, ySplit, ysi, iY) => reduce(row, xSplits,
+		(row, ySplit, ysi, iY) => expand(row, xSplits,
 			// generate the y axis row header cells
 			axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value)),
 
@@ -112,7 +106,7 @@ const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
-const reduce = <TSource, TResult>(values: TSource[], splits: number[], seed: TResult[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult): TResult[] => {
+const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TResult[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult): TResult[] => {
 	values.forEach((value, iValue) => {
 		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
 			seed.push(callbackfn(value, split, iSplit, iValue));
