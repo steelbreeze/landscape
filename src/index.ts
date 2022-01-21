@@ -28,14 +28,14 @@ export interface Cell extends Element {
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
-	// convert the cube into a cells
-	const matrix: Cube<Cell> = cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
+	// transform the cube of rows into a cube of cells
+	const cells = transform(cube, getElement);
 
 	// calcuate the x splits required (y splits inlined below)
-	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...matrix.map(row => row[iX].length)) : 1);
+	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
 
 	// generate the whole table
-	return expand(matrix, matrix.map(row => onX ? 1 : method(...row.map(table => table.length))),
+	return expand(cells, cells.map(row => onX ? 1 : method(...row.map(table => table.length))),
 		// generate x axis header rows
 		axes.x[0].map((_, iC) => expand(axes.x, xSplits,
 			// generate the x/y header
@@ -77,30 +77,22 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 	});
 }
 
-
 /**
  * Creates a cell within a table.
  * @hidden
  */
 const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
-/**
- * Convert a table of rows into a table of cells.
- * @hidden
- */
-const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): Array<Cell> => {
-	const result: Array<Cell> = [];
-
-	for (const row of table) {
+const transform = <TRow>(cube: Cube<TRow>, getElement: Function<TRow, Element>): Cube<Cell> =>
+	cube.map(row => row.map(table => table.length ? table.reduce((result: Array<Cell>, row) => {
 		const element = getElement(row);
 
 		if (!result.some(cell => equals(cell, element))) {
 			result.push({ ...element, rows: 1, cols: 1 });
 		}
-	}
 
-	return result;
-}
+		return result;
+	}, []) : [cell('empty')]));
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
