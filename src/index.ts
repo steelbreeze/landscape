@@ -70,10 +70,10 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 		for (let iX = row.length; iX--;) {
 			const cell = row[iX];
 
-			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell) && next.cols === cell.cols) {
+			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell, 'cols')) {
 				next.rows += cell.rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell) && next.rows === cell.rows) {
+			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell, 'rows')) {
 				next.cols += cell.cols;
 				row.splice(iX, 1);
 			}
@@ -91,7 +91,7 @@ const transform = <TRow>(cube: Cube<TRow>, getElement: Function<TRow, Element>):
 	cube.map(row => row.map(table => table.length ? table.reduce((result: Array<Cell>, row) => {
 		const element = getElement(row);
 
-		if (!result.some(cell => equals(cell, element))) {
+		if (!result.some(cell => equals(cell, element, 'text'))) {
 			result.push({ ...element, rows: 1, cols: 1 });
 		}
 
@@ -116,4 +116,4 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
  * Compare two Elements for equality
  * @hidden 
  */
-const equals = (a: Element, b: Element): boolean => a.value === b.value && a.style === b.style;
+const equals = <TElement extends Element>(a: TElement, b: TElement, other: keyof TElement): boolean => a.value === b.value && a.style === b.style && a[other] === b[other];
