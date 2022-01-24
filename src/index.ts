@@ -64,8 +64,12 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Func
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
 	let next;
 
-	forEachRev(cells, (row, iY) => {
-		forEachRev(row, (cell, iX) => {
+	for (let iY = cells.length; iY--;) {
+		const row = cells[iY];
+
+		for (let iX = row.length; iX--;) {
+			const cell = row[iX];
+
 			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell) && next.cols === cell.cols) {
 				next.rows += cell.rows;
 				row.splice(iX, 1);
@@ -73,8 +77,8 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 				next.cols += cell.cols;
 				row.splice(iX, 1);
 			}
-		});
-	});
+		}
+	}
 }
 
 /**
@@ -106,16 +110,6 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
 	});
 
 	return seed;
-}
-
-/**
- * A reverse for loop
- * @param hidden
- */
-const forEachRev = <TValue>(values: Array<TValue>, callbackfn: (value: TValue, index: number) => void): void => {
-	for (let index = values.length; index--;) {
-		callbackfn(values[index], index);
-	}
 }
 
 /**
