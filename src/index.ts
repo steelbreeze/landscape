@@ -87,27 +87,41 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  */
 const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
+/**
+ * Transform a cube of rows into a cube of cells.
+ * @hidden
+ */
 const transform = <TRow>(cube: Cube<TRow>, getElement: Function<TRow, Element>): Cube<Cell> =>
-	cube.map(row => row.map(table => table.length ? table.reduce((result: Array<Cell>, row) => {
+	cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
+
+/**
+ * Transform an array of rows into an array of cells.
+ * @hidden
+ */
+const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): Array<Cell> => {
+	const result: Array<Cell> = [];
+
+	for(const row of table) {
 		const element = getElement(row);
 
 		if (!result.some(cell => equals(cell, element))) {
 			result.push({ ...element, rows: 1, cols: 1 });
 		}
+	}
 
-		return result;
-	}, []) : [cell('empty')]));
+	return result;
+}
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
  * @hidden 
  */
 const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TResult[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult): TResult[] => {
-	values.forEach((value, iValue) => {
+	for (let length = values.length, iValue = 0; iValue < length; ++iValue) {
 		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
-			seed.push(callbackfn(value, split, iSplit, iValue));
+			seed.push(callbackfn(values[iValue], split, iSplit, iValue));
 		}
-	});
+	}
 
 	return seed;
 }
