@@ -16,12 +16,13 @@
   },
   "devDependencies": {
     "@steelbreeze/types": "^1.0.0-rc.5",
+    "typedoc": "^0.22.11",
     "typescript": "^4.2.4",
     "webpack-cli": "^4.7.0"
   },
   "scripts": {
     "build": "tsc -p . && webpack && cp ./lib/web/*.js ./docs/dist/",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "document": "typedoc"
   },
   "repository": {
     "type": "git",

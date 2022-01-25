@@ -113,7 +113,7 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
 }
 
 /**
- * Compare two Elements for equality
+ * Compare two Elements for equality, using value, style and optionally, one other property.
  * @hidden 
  */
 const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
