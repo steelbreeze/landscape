@@ -82,12 +82,6 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 }
 
 /**
- * Creates a cell within a table.
- * @hidden
- */
-const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
-
-/**
  * Transform a cube of rows into a cube of cells.
  * @hidden
  */
@@ -111,6 +105,12 @@ const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
 
 	return result;
 }
+
+/**
+ * Creates a cell within a table.
+ * @hidden
+ */
+ const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
