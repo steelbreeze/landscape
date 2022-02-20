@@ -62,19 +62,17 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Func
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next;
+	let next, iY = cells.length;
 
-	for (let iY = cells.length; iY--;) {
-		const row = cells[iY];
+	while (iY--) {
+		let row = cells[iY], iX = row.length;
 
-		for (let iX = row.length; iX--;) {
-			const cell = row[iX];
-
-			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell, 'cols')) {
-				next.rows += cell.rows;
+		while (iX--) {
+			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, row[iX], 'cols')) {
+				next.rows += row[iX].rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell, 'rows')) {
-				next.cols += cell.cols;
+			} else if (onX && iX && (next = row[iX - 1]) && equals(next, row[iX], 'rows')) {
+				next.cols += row[iX].cols;
 				row.splice(iX, 1);
 			}
 		}
@@ -95,7 +93,7 @@ const transform = <TRow>(cube: Cube<TRow>, getElement: Function<TRow, Element>):
 const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): Array<Cell> => {
 	const result: Array<Cell> = [];
 
-	for(const row of table) {
+	for (const row of table) {
 		const element = getElement(row);
 
 		if (!result.some(cell => equals(cell, element))) {
@@ -110,7 +108,7 @@ const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): A
  * Creates a cell within a table.
  * @hidden
  */
- const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
+const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
