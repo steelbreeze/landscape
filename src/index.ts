@@ -1,4 +1,4 @@
-import { Function, FunctionVA, Pair } from '@steelbreeze/types';
+import { CallbackFunction, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
@@ -27,7 +27,7 @@ export interface Cell extends Element {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
+export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: CallbackFunction<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
 	const cells = transform(cube, getElement);
 
@@ -83,23 +83,23 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Transform a cube of rows into a cube of cells.
  * @hidden
  */
-const transform = <TRow>(cube: Cube<TRow>, getElement: Function<TRow, Element>): Cube<Cell> =>
+const transform = <TRow>(cube: Cube<TRow>, getElement: CallbackFunction<TRow, Element>): Cube<Cell> =>
 	cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
 
 /**
  * Transform an array of rows into an array of cells.
  * @hidden
  */
-const cells = <TRow>(table: Array<TRow>, getElement: Function<TRow, Element>): Array<Cell> => {
+const cells = <TRow>(table: Array<TRow>, getElement: CallbackFunction<TRow, Element>): Array<Cell> => {
 	const result: Array<Cell> = [];
 
-	for (const row of table) {
-		const element = getElement(row);
+	table.forEach((row, index) => {
+		const element = getElement(row, index, table);
 
 		if (!result.some(cell => equals(cell, element))) {
 			result.push({ ...element, rows: 1, cols: 1 });
 		}
-	}
+	});
 
 	return result;
 }

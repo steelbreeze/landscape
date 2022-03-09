@@ -1,4 +1,4 @@
-import { Function, FunctionVA, Pair } from '@steelbreeze/types';
+import { CallbackFunction, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 /** The final text and class name to use when rendering cells in a table. */
 export interface Element extends Pair {
@@ -22,7 +22,7 @@ export interface Cell extends Element {
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export declare const table: <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Function<TRow, Element>, onX: boolean, method?: FunctionVA<number, number>) => Array<Array<Cell>>;
+export declare const table: <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: CallbackFunction<TRow, Element>, onX: boolean, method?: FunctionVA<number, number>) => Array<Array<Cell>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.
