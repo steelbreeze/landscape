@@ -84,25 +84,22 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * @hidden
  */
 const transform = <TRow>(cube: Cube<TRow>, getElement: Callback<TRow, Element>): Cube<Cell> =>
-	cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
+	cube.map(slice => slice.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
 
 /**
  * Transform an array of rows into an array of cells.
  * @hidden
  */
-const cells = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> => {
-	const result: Array<Cell> = [];
-
-	table.forEach((row, index) => {
+const cells = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> =>
+	table.reduce<Array<Cell>>((result, row, index) => {
 		const element = getElement(row, index, table);
 
 		if (!result.some(cell => equals(cell, element))) {
 			result.push({ ...element, rows: 1, cols: 1 });
 		}
-	});
 
-	return result;
-}
+		return result;
+	}, []);
 
 /**
  * Creates a cell within a table.
