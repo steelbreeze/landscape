@@ -29,7 +29,7 @@ export interface Cell extends Element {
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
-	const cells = transform(cube, getElement);
+	const cells = cube.map(slice => slice.map(table => table.length ? table.map(getElement).map(element => ({ ...element, rows: 1, cols: 1 })) : [cell('empty')]));
 
 	// calcuate the x splits required (y splits inlined below)
 	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
@@ -81,13 +81,6 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 		}
 	}
 }
-
-/**
- * Transform a cube of rows into a cube of cells.
- * @hidden
- */
-const transform = <TRow>(cube: Cube<TRow>, getElement: Callback<TRow, Element>): Cube<Cell> =>
-	cube.map(slice => slice.map(table => table.length ? table.map(getElement).map(element => ({ ...element, rows: 1, cols: 1 })) : [cell('empty')]));
 
 /**
  * Creates a cell within a table.
