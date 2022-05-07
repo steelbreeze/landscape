@@ -87,15 +87,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * @hidden
  */
 const transform = <TRow>(cube: Cube<TRow>, getElement: Callback<TRow, Element>): Cube<Cell> =>
-	cube.map(slice => slice.map(table => table.length ? table.reduce<Array<Cell>>((result, row, index) => {
-		const element = getElement(row, index, table);
-
-		if (!result.some(cell => equals(cell, element))) {
-			result.push({ ...element, rows: 1, cols: 1 });
-		}
-
-		return result;
-	}, []) : [cell('empty')]));
+	cube.map(slice => slice.map(table => table.length ? table.map(getElement).map(element => ({ ...element, rows: 1, cols: 1 })) : [cell('empty')]));
 
 /**
  * Creates a cell within a table.
