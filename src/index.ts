@@ -113,5 +113,5 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
  * Compare two Elements for equality, using value, style and optionally, one other property.
  * @hidden 
  */
-const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
-	a.value === b.value && a.style === b.style && (!key || a[key] === b[key]);
+const equals = (a: Cell, b: Cell, key: keyof Cell): boolean =>
+	a.value === b.value && a.style === b.style && a[key] === b[key];
