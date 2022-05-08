@@ -62,14 +62,14 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next, iY = cells.length;
+	let iY = cells.length, row, iX, cell, next;
 
 	while (iY--) {
-		const row = cells[iY];
-		let iX = row.length;
+		row = cells[iY];
+		iX = row.length;
 
 		while (iX--) {
-			const cell = row[iX];
+			cell = row[iX];
 
 			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell, 'cols')) {
 				next.rows += cell.rows;
