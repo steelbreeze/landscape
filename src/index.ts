@@ -10,14 +10,17 @@ export interface Element extends Pair {
 	text?: string;
 }
 
-/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
-export interface Cell extends Element {
+/** Layout information catering for merged adjacent cells. */
+export interface Layout {
 	/** The number of rows to occupy. */
 	rows: number;
 
 	/** The number of columns to occupy. */
 	cols: number;
 }
+
+/** An extension of Element, adding the layout information the Cell will occupy in the final table rendering. */
+export type Cell = Element & Layout;
 
 /**
  * Generates a table from a cube and it's axis.

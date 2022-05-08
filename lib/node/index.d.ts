@@ -7,13 +7,15 @@ export interface Element extends Pair {
     /** Optional text to display in place of Pair.value (which is used to de-dup); this should have a single value for any given Pair.value. */
     text?: string;
 }
-/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
-export interface Cell extends Element {
+/** Layout information catering for merged adjacent cells. */
+export interface Layout {
     /** The number of rows to occupy. */
     rows: number;
     /** The number of columns to occupy. */
     cols: number;
 }
+/** An extension of Element, adding the layout information the Cell will occupy in the final table rendering. */
+export declare type Cell = Element & Layout;
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
