@@ -1,8 +1,8 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
-/** The final text and class name to use when rendering cells in a table. */
-export interface Element extends Pair {
+/** Information required for styling an element when rendering. */
+export interface Style {
 	/** The class name to use in the final table rendering. */
 	style: string;
 
@@ -18,6 +18,9 @@ export interface Layout {
 	/** The number of columns to occupy. */
 	cols: number;
 }
+
+/** The final text and class name to use when rendering cells in a table. */
+export type Element = Pair & Style;
 
 /** An extension of Element, adding the layout information the Cell will occupy in the final table rendering. */
 export type Cell = Element & Layout;
