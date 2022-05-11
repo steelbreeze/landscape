@@ -77,15 +77,28 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 		while (iX--) {
 			cell = row[iX];
 
-			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell, 'cols')) {
-				next.rows += cell.rows;
-				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell, 'rows')) {
-				next.cols += cell.cols;
-				row.splice(iX, 1);
+			if (!(onY && iY && (next = cells[iY - 1][iX]) && mergeCells(cell, next, 'cols', 'rows', row, iX))) {
+				if (onX && iX && (next = row[iX - 1])) {
+					mergeCells(cell, next, 'rows', 'cols', row, iX);
+				}
 			}
 		}
 	}
+}
+
+/**
+ * Merge two adjacent cells
+ * @hidden 
+ */
+const mergeCells = (cell: Cell, next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Cell[], iX: number): boolean => {
+	if (next.value === cell.value && next.style === cell.style && next[compareKey] === cell[compareKey]) {
+		next[mergeKey] += cell[mergeKey];
+		row.splice(iX, 1);
+
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -107,10 +120,3 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
 
 	return seed;
 }
-
-/**
- * Compare two Elements for equality, using value, style and optionally, one other property.
- * @hidden 
- */
-const equals = (a: Cell, b: Cell, key: keyof Cell): boolean =>
-	a.value === b.value && a.style === b.style && a[key] === b[key];
