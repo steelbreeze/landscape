@@ -68,15 +68,15 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let iY = cells.length, row, iX, next;
+	let iY = cells.length, row, iX;
 
 	while (iY--) {
 		row = cells[iY];
 		iX = row.length;
 
 		while (iX--) {
-			(onY && iY && (next = cells[iY - 1][iX]) && mergeCells(row[iX], next, 'cols', 'rows', row, iX)) ||
-				onX && iX && (next = row[iX - 1]) && mergeCells(row[iX], next, 'rows', 'cols', row, iX);
+			(onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX)) ||
+				onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX);
 		}
 	}
 }
@@ -85,7 +85,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Merge two adjacent cells
  * @hidden 
  */
-const mergeCells = (cell: Cell, next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Cell[], iX: number): boolean => {
+const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Cell[], iX: number, cell: Cell = row[iX]): boolean => {
 	if (next.value === cell.value && next.style === cell.style && next[compareKey] === cell[compareKey]) {
 		next[mergeKey] += cell[mergeKey];
 		row.splice(iX, 1);
