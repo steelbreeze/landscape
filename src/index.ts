@@ -67,19 +67,12 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let iY = cells.length, row, iX;
-
-	while (iY--) {
-		row = cells[iY];
-		iX = row.length;
-
-		while (iX--) {
-			onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX) ||
-				onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX);
-		}
-	}
-}
+export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void =>
+	reverse(cells, (iY, row) =>
+		reverse(row, (iX, cell) =>
+			onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX, cell) || onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX, cell)
+		)
+	);
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
@@ -102,10 +95,20 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
 const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
 /**
+ * Reverse iterate an array.
+ * @hidden
+ */
+const reverse = <T>(source: Array<T>, callback: (i: number, value: T) => void): void => {
+	for (let i = source.length; i--;) {
+		callback(i, source[i]);
+	}
+}
+
+/**
  * Merge two adjacent cells
  * @hidden 
  */
-const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Cell[], iX: number, cell: Cell = row[iX]): boolean => {
+const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Cell[], iX: number, cell: Cell): boolean => {
 	if (next.value === cell.value && next.style === cell.style && next[compareKey] === cell[compareKey]) {
 		next[mergeKey] += cell[mergeKey];
 		row.splice(iX, 1);
