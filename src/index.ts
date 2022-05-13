@@ -75,7 +75,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 		iX = row.length;
 
 		while (iX--) {
-			(onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX)) ||
+			onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX) ||
 				onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX);
 		}
 	}
