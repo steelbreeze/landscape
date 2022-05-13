@@ -82,6 +82,26 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 }
 
 /**
+ * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
+ * @hidden 
+ */
+const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TResult[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult): TResult[] => {
+	for (let length = values.length, iValue = 0; iValue < length; ++iValue) {
+		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
+			seed.push(callbackfn(values[iValue], split, iSplit, iValue));
+		}
+	}
+
+	return seed;
+}
+
+/**
+ * Creates a cell within a table.
+ * @hidden
+ */
+const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
+
+/**
  * Merge two adjacent cells
  * @hidden 
  */
@@ -94,24 +114,4 @@ const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout
 	}
 
 	return false;
-}
-
-/**
- * Creates a cell within a table.
- * @hidden
- */
-const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
-
-/**
- * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
- * @hidden 
- */
-const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TResult[], callbackfn: (value: TSource, split: number, iSplit: number, iValue: number) => TResult): TResult[] => {
-	for (let length = values.length, iValue = 0; iValue < length; ++iValue) {
-		for (let split = splits[iValue], iSplit = 0; iSplit < split; ++iSplit) {
-			seed.push(callbackfn(values[iValue], split, iSplit, iValue));
-		}
-	}
-
-	return seed;
 }
