@@ -1,8 +1,8 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
-/** Information required for styling an element when rendering. */
-export interface Style {
+/** The final text and class name to use when rendering cells in a table. */
+export interface Element extends Pair {
 	/** The class name to use in the final table rendering. */
 	style: string;
 
@@ -10,20 +10,14 @@ export interface Style {
 	text?: string;
 }
 
-/** Layout information catering for merged adjacent cells. */
-export interface Layout {
+/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
+export interface Cell extends Element {
 	/** The number of rows to occupy. */
 	rows: number;
 
 	/** The number of columns to occupy. */
 	cols: number;
 }
-
-/** The final text and class name to use when rendering cells in a table. */
-export type Element = Pair & Style;
-
-/** An extension of Element, adding the layout information the Cell will occupy in the final table rendering. */
-export type Cell = Element & Layout;
 
 /**
  * Generates a table from a cube and it's axis.
@@ -35,7 +29,7 @@ export type Cell = Element & Layout;
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
-	const cells = cube.map(slice => slice.map(table => table.length ? table.map((row, index) => ({ ...getElement(row, index, table), rows: 1, cols: 1 })) : [cell('empty')]));
+	const cells = transform(cube, getElement);
 
 	// calcuate the x splits required (y splits inlined below)
 	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
@@ -67,12 +61,54 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void =>
-	reverse(cells, (iY, row) =>
-		reverse(row, (iX, cell) =>
-			onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX, cell) || onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX, cell)
-		)
-	);
+export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
+	let next, iY = cells.length;
+
+	while (iY--) {
+		let row = cells[iY], iX = row.length;
+
+		while (iX--) {
+			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, row[iX], 'cols')) {
+				next.rows += row[iX].rows;
+				row.splice(iX, 1);
+			} else if (onX && iX && (next = row[iX - 1]) && equals(next, row[iX], 'rows')) {
+				next.cols += row[iX].cols;
+				row.splice(iX, 1);
+			}
+		}
+	}
+}
+
+/**
+ * Transform a cube of rows into a cube of cells.
+ * @hidden
+ */
+const transform = <TRow>(cube: Cube<TRow>, getElement: Callback<TRow, Element>): Cube<Cell> =>
+	cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
+
+/**
+ * Transform an array of rows into an array of cells.
+ * @hidden
+ */
+const cells = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> => {
+	const result: Array<Cell> = [];
+
+	table.forEach((row, index) => {
+		const element = getElement(row, index, table);
+
+		if (!result.some(cell => equals(cell, element))) {
+			result.push({ ...element, rows: 1, cols: 1 });
+		}
+	});
+
+	return result;
+}
+
+/**
+ * Creates a cell within a table.
+ * @hidden
+ */
+const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
@@ -89,32 +125,8 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
 }
 
 /**
- * Creates a cell within a table.
- * @hidden
- */
-const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
-
-/**
- * Reverse iterate an array.
- * @hidden
- */
-const reverse = <T>(source: Array<T>, callback: (i: number, value: T) => void): void => {
-	for (let i = source.length; i--;) {
-		callback(i, source[i]);
-	}
-}
-
-/**
- * Merge two adjacent cells
+ * Compare two Elements for equality, using value, style and optionally, one other property.
  * @hidden 
  */
-const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Cell[], iX: number, cell: Cell): boolean => {
-	if (next.value === cell.value && next.style === cell.style && next[compareKey] === cell[compareKey]) {
-		next[mergeKey] += cell[mergeKey];
-		row.splice(iX, 1);
-
-		return true;
-	}
-
-	return false;
-}
+const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
+	a.value === b.value && a.style === b.style && (!key || a[key] === b[key]);

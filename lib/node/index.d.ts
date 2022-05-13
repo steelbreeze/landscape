@@ -1,23 +1,19 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
-/** Information required for styling an element when rendering. */
-export interface Style {
+/** The final text and class name to use when rendering cells in a table. */
+export interface Element extends Pair {
     /** The class name to use in the final table rendering. */
     style: string;
     /** Optional text to display in place of Pair.value (which is used to de-dup); this should have a single value for any given Pair.value. */
     text?: string;
 }
-/** Layout information catering for merged adjacent cells. */
-export interface Layout {
+/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
+export interface Cell extends Element {
     /** The number of rows to occupy. */
     rows: number;
     /** The number of columns to occupy. */
     cols: number;
 }
-/** The final text and class name to use when rendering cells in a table. */
-export declare type Element = Pair & Style;
-/** An extension of Element, adding the layout information the Cell will occupy in the final table rendering. */
-export declare type Cell = Element & Layout;
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
