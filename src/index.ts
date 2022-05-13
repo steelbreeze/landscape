@@ -62,12 +62,10 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next, iY = cells.length;
+	let next;
 
-	while (iY--) {
-		let row = cells[iY], iX = row.length;
-
-		while (iX--) {
+	reverse(cells, (iY, row) => {
+		reverse(row, (iX) => {
 			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, row[iX], 'cols')) {
 				next.rows += row[iX].rows;
 				row.splice(iX, 1);
@@ -75,8 +73,8 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 				next.cols += row[iX].cols;
 				row.splice(iX, 1);
 			}
-		}
-	}
+		});
+	});
 }
 
 /**
@@ -130,3 +128,13 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
  */
 const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
 	a.value === b.value && a.style === b.style && (!key || a[key] === b[key]);
+
+/**
+ * Reverse iterate an array
+ * @hidden
+ */
+const reverse = <TValue>(source: Array<TValue>, callback: (index: number, value: TValue) => void): void => {
+	for (let index = source.length; index--;) {
+		callback(index, source[index]);
+	}
+}
