@@ -14,7 +14,9 @@ export interface Layout {
     /** The number of columns to occupy. */
     cols: number;
 }
+/** An element derived from a row of data. */
 export declare type Element = Pair & Style;
+/** An element ready for rendering as a table cell. */
 export declare type Cell = Element & Layout;
 /**
  * Generates a table from a cube and it's axis.

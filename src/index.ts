@@ -68,15 +68,15 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next;
+	let next: Cell;
 
 	reverse(cells, (iY, row) => {
-		reverse(row, (iX) => {
-			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, row[iX], 'cols')) {
-				next.rows += row[iX].rows;
+		reverse(row, (iX, cell) => {
+			if (onY && iY && equals(next = cells[iY - 1][iX], cell, 'cols')) {
+				next.rows += cell.rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && equals(next, row[iX], 'rows')) {
-				next.cols += row[iX].cols;
+			} else if (onX && iX && equals(next = row[iX - 1], cell, 'rows')) {
+				next.cols += cell.cols;
 				row.splice(iX, 1);
 			}
 		});
@@ -88,7 +88,7 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * @hidden 
  */
 const equals = (a: Cell, b: Cell, compareKey: keyof Layout): boolean =>
-	a.value === b.value && a.style === b.style && a[compareKey] === b[compareKey];
+	a?.value === b?.value && a.style === b.style && a[compareKey] === b[compareKey];
 
 /**
  * Creates a cell within a table.
