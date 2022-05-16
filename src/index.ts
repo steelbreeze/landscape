@@ -62,21 +62,19 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next, iY = cells.length;
+	let next: Cell;
 
-	while (iY--) {
-		let row = cells[iY], iX = row.length;
-
-		while (iX--) {
-			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, row[iX], 'cols')) {
-				next.rows += row[iX].rows;
+	reverse(cells, (row, iY) => {
+		reverse(row, (cell, iX) => {
+			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell, 'cols')) {
+				next.rows += cell.rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && equals(next, row[iX], 'rows')) {
-				next.cols += row[iX].cols;
+			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell, 'rows')) {
+				next.cols += cell.cols;
 				row.splice(iX, 1);
 			}
-		}
-	}
+		});
+	});
 }
 
 /**
@@ -130,3 +128,9 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
  */
 const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
 	a.value === b.value && a.style === b.style && (!key || a[key] === b[key]);
+
+const reverse = <TValue>(values: Array<TValue>, callback: (value: TValue, index: number ) => void) : void => {
+	for(let index = values.length; index--;) {
+		callback(values[index], index);
+	}
+}
