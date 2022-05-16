@@ -1,29 +1,23 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
-/** The styling to add to a key value pair when rendering. */
-export interface Style {
+/** The final text and class name to use when rendering cells in a table. */
+export interface Element extends Pair {
 	/** The class name to use in the final table rendering. */
 	style: string;
 
-	/** Optional alternative text to display in place of Pair.value (which is used to de-dup); this should have a single value for any given Pair.value. */
+	/** Optional text to display in place of Pair.value (which is used to de-dup); this should have a single value for any given Pair.value. */
 	text?: string;
 }
 
-/** The layout information used to determine how many rows and columns a cell needs to occupy. */
-export interface Layout {
+/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
+export interface Cell extends Element {
 	/** The number of rows to occupy. */
 	rows: number;
 
 	/** The number of columns to occupy. */
 	cols: number;
 }
-
-/** An element derived from a row of data. */
-export type Element = Pair & Style;
-
-/** An element ready for rendering as a table cell. */
-export type Cell = Element & Layout
 
 /**
  * Generates a table from a cube and it's axis.
@@ -35,7 +29,7 @@ export type Cell = Element & Layout
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
-	const cells = cube.map(slice => slice.map(table => table.length ? table.map(row => ({ ...getElement(row), rows: 1, cols: 1 })) : [cell('empty')]));
+	const cells = transform(cube, getElement);
 
 	// calcuate the x splits required (y splits inlined below)
 	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
@@ -68,27 +62,47 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next: Cell;
+	let next, iY = cells.length;
 
-	reverse(cells, (iY, row) => {
-		reverse(row, (iX, cell) => {
-			if (onY && iY && equals(next = cells[iY - 1][iX], cell, 'cols')) {
-				next.rows += cell.rows;
+	while (iY--) {
+		let row = cells[iY], iX = row.length;
+
+		while (iX--) {
+			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, row[iX], 'cols')) {
+				next.rows += row[iX].rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && equals(next = row[iX - 1], cell, 'rows')) {
-				next.cols += cell.cols;
+			} else if (onX && iX && (next = row[iX - 1]) && equals(next, row[iX], 'rows')) {
+				next.cols += row[iX].cols;
 				row.splice(iX, 1);
 			}
-		});
-	});
+		}
+	}
 }
 
 /**
- * Compare two Elements for equality, using value, style and optionally, one other property.
- * @hidden 
+ * Transform a cube of rows into a cube of cells.
+ * @hidden
  */
-const equals = (a: Cell, b: Cell, compareKey: keyof Layout): boolean =>
-	a?.value === b?.value && a.style === b.style && a[compareKey] === b[compareKey];
+const transform = <TRow>(cube: Cube<TRow>, getElement: Callback<TRow, Element>): Cube<Cell> =>
+	cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
+
+/**
+ * Transform an array of rows into an array of cells.
+ * @hidden
+ */
+const cells = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> => {
+	const result: Array<Cell> = [];
+
+	table.forEach((row, index) => {
+		const element = getElement(row, index, table);
+
+		if (!result.some(cell => equals(cell, element))) {
+			result.push({ ...element, rows: 1, cols: 1 });
+		}
+	});
+
+	return result;
+}
 
 /**
  * Creates a cell within a table.
@@ -111,11 +125,8 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
 }
 
 /**
- * Reverse iterate an array
- * @hidden
+ * Compare two Elements for equality, using value, style and optionally, one other property.
+ * @hidden 
  */
-const reverse = <TValue>(source: Array<TValue>, callback: (index: number, value: TValue) => void): void => {
-	for (let index = source.length; index--;) {
-		callback(index, source[index]);
-	}
-}
+const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
+	a.value === b.value && a.style === b.style && (!key || a[key] === b[key]);
