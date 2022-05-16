@@ -2,7 +2,7 @@ import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
 /** The final text and class name to use when rendering cells in a table. */
-export interface Element extends Pair {
+export interface Style {
 	/** The class name to use in the final table rendering. */
 	style: string;
 
@@ -11,13 +11,17 @@ export interface Element extends Pair {
 }
 
 /** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
-export interface Cell extends Element {
+export interface Layout {
 	/** The number of rows to occupy. */
 	rows: number;
 
 	/** The number of columns to occupy. */
 	cols: number;
 }
+
+export type Element = Pair & Style;
+
+export type Cell = Element & Layout;
 
 /**
  * Generates a table from a cube and it's axis.
