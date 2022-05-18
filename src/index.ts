@@ -1,7 +1,6 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
-/** The final text and class name to use when rendering cells in a table. */
 export interface Style {
 	/** The class name to use in the final table rendering. */
 	style: string;
@@ -10,7 +9,6 @@ export interface Style {
 	text?: string;
 }
 
-/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
 export interface Layout {
 	/** The number of rows to occupy. */
 	rows: number;
@@ -19,8 +17,10 @@ export interface Layout {
 	cols: number;
 }
 
+/** The final text and class name to use when rendering cells in a table. */
 export type Element = Pair & Style;
 
+/** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
 export type Cell = Element & Layout;
 
 /**
@@ -70,10 +70,10 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 
 	reverse(cells, (row, iY) => {
 		reverse(row, (cell, iX) => {
-			if (onY && iY && (next = cells[iY - 1][iX]) && equals(next, cell, 'cols')) {
+			if (onY && iY && equals(next = cells[iY - 1][iX], cell, 'cols')) {
 				next.rows += cell.rows;
 				row.splice(iX, 1);
-			} else if (onX && iX && (next = row[iX - 1]) && equals(next, cell, 'rows')) {
+			} else if (onX && iX && equals(next = row[iX - 1], cell, 'rows')) {
 				next.cols += cell.cols;
 				row.splice(iX, 1);
 			}
@@ -131,8 +131,12 @@ const expand = <TSource, TResult>(values: TSource[], splits: number[], seed: TRe
  * @hidden 
  */
 const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof TElement): boolean =>
-	a.value === b.value && a.style === b.style && (!key || a[key] === b[key]);
+	a?.value === b.value && a.style === b.style && (!key || a[key] === b[key]);
 
+/**
+ * Reverse iterate an array.
+ * @param hidden
+ */
 const reverse = <TValue>(values: Array<TValue>, callback: (value: TValue, index: number ) => void) : void => {
 	for(let index = values.length; index--;) {
 		callback(values[index], index);
