@@ -1,11 +1,13 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
+/** Styling information for rendering purposes. */
 export interface Style {
     /** The class name to use in the final table rendering. */
     style: string;
     /** Optional text to display in place of Pair.value (which is used to de-dup); this should have a single value for any given Pair.value. */
     text?: string;
 }
+/** Table layout for rendering purposes. */
 export interface Layout {
     /** The number of rows to occupy. */
     rows: number;

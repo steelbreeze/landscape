@@ -1,6 +1,7 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
 import { Axes, Cube } from '@steelbreeze/pivot';
 
+/** Styling information for rendering purposes. */
 export interface Style {
 	/** The class name to use in the final table rendering. */
 	style: string;
@@ -9,6 +10,7 @@ export interface Style {
 	text?: string;
 }
 
+/** Table layout for rendering purposes. */
 export interface Layout {
 	/** The number of rows to occupy. */
 	rows: number;
@@ -33,7 +35,7 @@ export type Cell = Element & Layout;
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
-	const cells = transform(cube, getElement);
+	const cells = cube.map(slice => slice.map(table => table.length ? transform(table, getElement) : [cell('empty')]));
 
 	// calcuate the x splits required (y splits inlined below)
 	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
@@ -82,17 +84,10 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
 }
 
 /**
- * Transform a cube of rows into a cube of cells.
- * @hidden
- */
-const transform = <TRow>(cube: Cube<TRow>, getElement: Callback<TRow, Element>): Cube<Cell> =>
-	cube.map(row => row.map(table => table.length ? cells(table, getElement) : [cell('empty')]));
-
-/**
  * Transform an array of rows into an array of cells.
  * @hidden
  */
-const cells = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> => {
+const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> => {
 	const result: Array<Cell> = [];
 
 	table.forEach((row, index) => {
