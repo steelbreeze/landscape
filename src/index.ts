@@ -68,19 +68,26 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
-	let next: Cell;
+	reverse(cells, (iY, row) =>
+		reverse(row, iX =>
+			onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX) || onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX)
+		)
+	);
+}
 
-	reverse(cells, (row, iY) => {
-		reverse(row, (cell, iX) => {
-			if (onY && iY && equals(next = cells[iY - 1][iX], cell, 'cols')) {
-				next.rows += cell.rows;
-				row.splice(iX, 1);
-			} else if (onX && iX && equals(next = row[iX - 1], cell, 'rows')) {
-				next.cols += cell.cols;
-				row.splice(iX, 1);
-			}
-		});
-	});
+/**
+ * Merge two adjacent cells if they are equivalent
+ * @hidden
+ */
+const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Array<Cell>, iX: number): boolean => {
+	if (equals(next, row[iX], compareKey)) {
+		next[mergeKey] += row[iX][mergeKey];
+		row.splice(iX, 1);
+
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -132,8 +139,8 @@ const equals = <TElement extends Element>(a: TElement, b: TElement, key?: keyof 
  * Reverse iterate an array.
  * @param hidden
  */
-const reverse = <TValue>(values: Array<TValue>, callback: (value: TValue, index: number ) => void) : void => {
-	for(let index = values.length; index--;) {
-		callback(values[index], index);
+const reverse = <TValue>(values: Array<TValue>, callback: (index: number, value: TValue) => void): void => {
+	for (let index = values.length; index--;) {
+		callback(index, values[index]);
 	}
 }
