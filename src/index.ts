@@ -69,8 +69,8 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  */
 export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
 	reverse(cells, (iY, row) =>
-		reverse(row, iX =>
-			onY && iY && mergeCells(cells[iY - 1][iX], 'cols', 'rows', row, iX) || onX && iX && mergeCells(row[iX - 1], 'rows', 'cols', row, iX)
+		reverse(row, (iX, cell) =>
+			onY && iY && mergeCells(cells[iY - 1][iX], cell, 'cols', 'rows', row, iX) || onX && iX && mergeCells(row[iX - 1], cell, 'rows', 'cols', row, iX)
 		)
 	);
 }
@@ -79,9 +79,9 @@ export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): vo
  * Merge two adjacent cells if they are equivalent
  * @hidden
  */
-const mergeCells = (next: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Array<Cell>, iX: number): boolean => {
-	if (equals(next, row[iX], compareKey)) {
-		next[mergeKey] += row[iX][mergeKey];
+const mergeCells = (next: Cell, cell: Cell, compareKey: keyof Layout, mergeKey: keyof Layout, row: Array<Cell>, iX: number): boolean => {
+	if (equals(next, cell, compareKey)) {
+		next[mergeKey] += cell[mergeKey];
 		row.splice(iX, 1);
 
 		return true;
