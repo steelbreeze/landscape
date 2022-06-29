@@ -93,19 +93,16 @@ const mergeCells = (next: Cell, cell: Cell, compareKey: keyof Layout, mergeKey: 
  * Transform an array of rows into an array of cells.
  * @hidden
  */
-const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> => {
-	const result: Array<Cell> = [];
-
-	table.forEach((row, index) => {
+const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> =>
+	table.reduce<Array<Cell>>((result, row, index) => {
 		const element = getElement(row, index, table);
 
 		if (!result.some(cell => equals(cell, element))) {
 			result.push({ ...element, rows: 1, cols: 1 });
 		}
-	});
 
-	return result;
-}
+		return result;
+	}, []);
 
 /**
  * Creates a cell within a table.
