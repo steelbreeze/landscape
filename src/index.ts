@@ -67,13 +67,12 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
  * @param onX A flag to indicate that cells should be merged on the x axis.
  * @param onY A flag to indicate that cells should be merged on the y axis.
  */
-export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void => {
+export const merge = (cells: Array<Array<Cell>>, onX: boolean, onY: boolean): void =>
 	reverse(cells, (iY, row) =>
 		reverse(row, (iX, cell) =>
 			onY && iY && mergeCells(cells[iY - 1][iX], cell, 'cols', 'rows', row, iX) || onX && iX && mergeCells(row[iX - 1], cell, 'rows', 'cols', row, iX)
 		)
 	);
-}
 
 /**
  * Merge two adjacent cells if they are equivalent
