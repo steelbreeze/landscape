@@ -35,7 +35,7 @@ export type Cell = Element & Layout;
  */
 export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
-	const cells = cube.map(slice => slice.map(table => table.length ? transform(table, getElement) : [cell('empty')]));
+	const cells = cube.map(slice => slice.map(table => transform(table, getElement)));
 
 	// calcuate the x splits required (y splits inlined below)
 	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
@@ -102,7 +102,7 @@ const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>
 		}
 
 		return result;
-	}, []);
+	}, table.length ? [] : [cell('empty')]);
 
 /**
  * Creates a cell within a table.
