@@ -45,15 +45,15 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
 		// generate x axis header rows
 		axes.x[0].map((_, iC) => expand(axes.x, xSplits,
 			// generate the x/y header
-			axes.y[0].map(() => cell('axis xy')),
+			axes.y[0].map(() => newCell('axis xy')),
 
 			// generate the x axis cells
-			(x) => cell(`axis x ${x[iC].key}`, x[iC].value)
+			(x) => newCell(`axis x ${x[iC].key}`, x[iC].value)
 		)),
 		// iterate and expand the x axis based on the split data
 		(row, ySplit, ysi, iY) => expand(row, xSplits,
 			// generate the y axis row header cells
-			axes.y[iY].map(criterion => cell(`axis y ${criterion.key}`, criterion.value)),
+			axes.y[iY].map(criterion => newCell(`axis y ${criterion.key}`, criterion.value)),
 
 			// generate the cube cells
 			(cell, xSplit, xsi) => ({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] })
@@ -98,17 +98,23 @@ const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>
 		const element = getElement(row, index, table);
 
 		if (!result.some(cell => equals(cell, element))) {
-			result.push({ ...element, rows: 1, cols: 1 });
+			result.push(cellFromElement(element));
 		}
 
 		return result;
-	}, table.length ? [] : [cell('empty')]);
+	}, table.length ? [] : [newCell('empty')]);
 
 /**
- * Creates a cell within a table.
+ * Creates a cell within a table from an element.
  * @hidden
  */
-const cell = (style: string, value: string = '', key = ''): Cell => ({ key, value, style, rows: 1, cols: 1 });
+ const cellFromElement = (element: Element): Cell => ({ ...element, rows: 1, cols: 1 });
+ 
+ /**
+  * Creates a cell within a table from scratch
+  * @hidden
+  */
+ const newCell = (style: string, value: string = ''): Cell => cellFromElement({ key: '', value, style });
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
