@@ -1,5 +1,12 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
-import { Axes, Cube } from '@steelbreeze/pivot';
+import { Cube, Dimension } from '@steelbreeze/pivot';
+/** The pair of axes to be used in a pivot operation. */
+export interface Axes<TRow> {
+    /** The y axis; rows in the resultant pivot table. */
+    y: Dimension<TRow>;
+    /** The x axis; columns in the resultant pivot table. */
+    x: Dimension<TRow>;
+}
 /** Styling information for rendering purposes. */
 export interface Style {
     /** The class name to use in the final table rendering. */

@@ -1,5 +1,14 @@
 import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
-import { Axes, Cube } from '@steelbreeze/pivot';
+import { Cube, Dimension } from '@steelbreeze/pivot';
+
+/** The pair of axes to be used in a pivot operation. */
+export interface Axes<TRow> {
+	/** The y axis; rows in the resultant pivot table. */
+	y: Dimension<TRow>;
+
+	/** The x axis; columns in the resultant pivot table. */
+	x: Dimension<TRow>;
+}
 
 /** Styling information for rendering purposes. */
 export interface Style {
@@ -108,13 +117,13 @@ const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>
  * Creates a cell within a table from an element.
  * @hidden
  */
- const cellFromElement = (element: Element): Cell => ({ ...element, rows: 1, cols: 1 });
- 
- /**
-  * Creates a cell within a table from scratch
-  * @hidden
-  */
- const newCell = (style: string, value: string = ''): Cell => cellFromElement({ key: '', value, style });
+const cellFromElement = (element: Element): Cell => ({ ...element, rows: 1, cols: 1 });
+
+/**
+ * Creates a cell within a table from scratch
+ * @hidden
+ */
+const newCell = (style: string, value: string = ''): Cell => cellFromElement({ key: '', value, style });
 
 /**
  * Expands an array using, splitting values into multiple based on a set of corresponding splits then maps the data to a desired structure.
