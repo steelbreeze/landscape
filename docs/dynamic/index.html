@@ -215,7 +215,8 @@
 			padding: 0.5em;
 		}
 
-		.axis.y, .axis.x {
+		.axis.y,
+		.axis.x {
 			width: 20%;
 		}
 
@@ -230,7 +231,6 @@
 		#title::first-letter {
 			text-transform: capitalize;
 		}
-
 	</style>
 </head>
 
@@ -298,9 +298,10 @@
 				<p>Firstly, select a .csv file as a data source under thet Settings header; once selected, the x-axis,
 					y-axis and Fact will be populates with the column headings from the data source and can be used to
 					control the landscape map.</p>
-					<p>
-						Note: once you select the .csv file, the data is only loaded into your web browser; it goes no further than this.
-					</p>
+				<p>
+					Note: once you select the .csv file, the data is only loaded into your web browser; it goes no
+					further than this.
+				</p>
 				<h3>
 					Background
 				</h3>
@@ -358,7 +359,7 @@
 	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
 		import * as csv from 'https://cdn.skypack.dev/pin/@steelbreeze/csv@v1.0.0-rc.1-4nHggLhodIp0gDFtdQi7/mode=imports,min/optimized/@steelbreeze/csv.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.0.0-Qe4oRmwNHOIQyjXdX7Kz/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.1.0-ZqyCULbtM6EctdsBLYBV/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		const context = {
 			file: undefined,
@@ -422,8 +423,8 @@
 
 		function pivotAndRender() {
 			context.axes = {
-				x: xAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, xAxisPicker.value),xAxisPicker.value)  : pivot.dimension(['Select x-axis'], 'noX', value => [{ key: "noX", value: "Select x-axis", predicate: () => true }]),
-				y: yAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, yAxisPicker.value), yAxisPicker.value) : pivot.dimension(['Select y-axis'], 'noY', value => [{ key: "noY", value: "Select y-axis", predicate: () => true }])
+				x: xAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, xAxisPicker.value), xAxisPicker.value) : pivot.dimension(['Select x-axis'], 'noX', value => [Object.assign(() => true, { key: "noX", value: "Select x-axis" })]),
+				y: yAxisPicker.selectedIndex ? pivot.dimension(pivot.distinct(context.json, yAxisPicker.value), yAxisPicker.value) : pivot.dimension(['Select y-axis'], 'noY', value => [Object.assign(() => true, { key: "noY", value: "Select y-axis" })])
 			}
 
 			context.getKey = factPicker.selectedIndex ? (record) => { return { key: factPicker.value, value: record[factPicker.value], style: 'none' }; } : () => { return { key: '', value: 'Select fact', style: 'none' }; };

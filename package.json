@@ -12,7 +12,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@steelbreeze/pivot": "^3.0.0"
+    "@steelbreeze/pivot": "^3.1.0"
   },
   "devDependencies": {
     "@steelbreeze/types": "^1.1.0",
