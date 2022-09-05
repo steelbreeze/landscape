@@ -52,17 +52,17 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
 	// generate the whole table
 	return expand(cells, cells.map(row => onX ? 1 : method(...row.map(table => table.length))),
 		// generate x axis header rows
-		axes.x[0].map((_, iC) => expand(axes.x, xSplits,
+		axes.x[0].metadata.map((_, iC) => expand(axes.x, xSplits,
 			// generate the x/y header
-			axes.y[0].map(() => newCell('axis xy')),
+			axes.y[0].metadata.map(() => newCell('axis xy')),
 
 			// generate the x axis cells
-			(x) => newCell(`axis x ${x[iC].key}`, x[iC].value)
+			(x) => newCell(`axis x ${x.metadata[iC].key}`, x.metadata[iC].value)
 		)),
 		// iterate and expand the x axis based on the split data
 		(row, ySplit, ysi, iY) => expand(row, xSplits,
 			// generate the y axis row header cells
-			axes.y[iY].map(criterion => newCell(`axis y ${criterion.key}`, criterion.value)),
+			axes.y[iY].metadata.map(criterion => newCell(`axis y ${criterion.key}`, criterion.value)),
 
 			// generate the cube cells
 			(cell, xSplit, xsi) => ({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] })
