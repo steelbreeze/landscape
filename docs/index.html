@@ -170,7 +170,7 @@
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
 		import * as footer from 'https://steelbreeze.net/footer.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.2.0-Ci18SEEPrQqxS4mie2xN/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.3.0-1GpdP4TtkSfjV2i1Zq1D/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		// initialise the page footer
 		footer.init('https://api.github.com/repos/steelbreeze/landscape');
@@ -192,7 +192,7 @@
 		// defaults
 		const defaults = {
 			dimensions: {
-				"Capability": ["Market gateway", "Order execution", "Order management", "Lifecycle management", "Confirmations", "Settlement", "Payments"],
+				"Capability": ["Market gateway", "Order execution", "Order management", "Confirmations"],
 				"Product": ["Rates", "FX", "MM", "Credit", "Equities"],
 				"Status": ["green", "amber", "red"],
 				"Location": ["United States", "United Kingdom", "Germany", "Italy"],
@@ -259,8 +259,8 @@
 		function createCube() {
 			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
 			context.axes = {
-				x: pivot.dimension(pivot.distinct(context.json, row => row[xAxisSelector.value]).sort(listSort(defaults.dimensions[xAxisSelector.value])), xAxisSelector.value),
-				y: pivot.dimension(pivot.distinct(context.json, row => row[yAxisSelector.value]).sort(listSort(defaults.dimensions[yAxisSelector.value])), yAxisSelector.value)
+				x: pivot.dimension(defaults.dimensions[xAxisSelector.value], xAxisSelector.value),
+				y: pivot.dimension(defaults.dimensions[yAxisSelector.value], yAxisSelector.value)
 			};
 
 			// create the cube
@@ -310,11 +310,6 @@
 				//text: `APP: ${app.Name}`,
 				style: app.Status
 			};
-		}
-
-		/** Generator to create a sort callback that orders by a preferred list */
-		function listSort(list) {
-			return (a, b) => list.indexOf(a) - list.indexOf(b);
 		}
 
 		// helper function to add days to a date
