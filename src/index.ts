@@ -29,7 +29,7 @@ export interface Layout {
 }
 
 /** The final text and class name to use when rendering cells in a table. */
-export type Element = Pair & Style;
+export type Element = Pair<string | number, any> & Style;
 
 /** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
 export type Cell = Element & Layout;
@@ -57,12 +57,12 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
 			axes.y[0].metadata.map(() => newCell('axis xy')),
 
 			// generate the x axis cells
-			(x) => newCell(`axis x ${x.metadata[iC].key}`, x.metadata[iC].value)
+			(x) => newCell(`axis x ${String(x.metadata[iC].key)}`, x.metadata[iC].value)
 		)),
 		// iterate and expand the x axis based on the split data
 		(row, ySplit, ysi, iY) => expand(row, xSplits,
 			// generate the y axis row header cells
-			axes.y[iY].metadata.map(criterion => newCell(`axis y ${criterion.key}`, criterion.value)),
+			axes.y[iY].metadata.map(criterion => newCell(`axis y ${String(criterion.key)}`, criterion.value)),
 
 			// generate the cube cells
 			(cell, xSplit, xsi) => ({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] })

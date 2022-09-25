@@ -22,7 +22,7 @@ export interface Layout {
     cols: number;
 }
 /** The final text and class name to use when rendering cells in a table. */
-export declare type Element = Pair & Style;
+export declare type Element = Pair<string | number, any> & Style;
 /** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
 export declare type Cell = Element & Layout;
 /**

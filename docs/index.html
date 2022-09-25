@@ -170,7 +170,7 @@
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
 		import * as footer from 'https://steelbreeze.net/footer.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.3.0-1GpdP4TtkSfjV2i1Zq1D/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.4.1-vXxpELpnJy58pfpOwzr4/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		// initialise the page footer
 		footer.init('https://api.github.com/repos/steelbreeze/landscape');
@@ -259,8 +259,8 @@
 		function createCube() {
 			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
 			context.axes = {
-				x: pivot.dimension(defaults.dimensions[xAxisSelector.value], xAxisSelector.value),
-				y: pivot.dimension(defaults.dimensions[yAxisSelector.value], yAxisSelector.value)
+				x: pivot.dimension(xAxisSelector.value, defaults.dimensions[xAxisSelector.value]),
+				y: pivot.dimension(yAxisSelector.value, defaults.dimensions[yAxisSelector.value])
 			};
 
 			// create the cube

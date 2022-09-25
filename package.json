@@ -1,6 +1,6 @@
 {
   "name": "@steelbreeze/landscape",
-  "version": "3.8.10",
+  "version": "3.8.11",
   "description": "Landscape map viewpoint visualisation",
   "main": "lib/node/index.js",
   "module": "lib/node/index.js",
@@ -12,13 +12,13 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@steelbreeze/pivot": "^3.3.0"
+    "@steelbreeze/pivot": "^3.4.0"
   },
   "devDependencies": {
     "@steelbreeze/types": "^1.1.0",
     "typedoc": "^0.22.11",
-    "typescript": "^4.2.4",
-    "webpack-cli": "^4.7.0"
+    "typescript": "latest",
+    "webpack-cli": "latest"
   },
   "scripts": {
     "build": "tsc -p . && webpack && cp ./lib/web/*.js ./docs/dist/",
