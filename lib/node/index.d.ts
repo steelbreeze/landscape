@@ -1,5 +1,13 @@
-import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
-import { Cube, Dimension } from '@steelbreeze/pivot';
+import { Callback, FunctionVA, Pair, Predicate } from '@steelbreeze/types';
+import { Cube } from '@steelbreeze/pivot';
+/** Specialised criteria for landscape maps. */
+export declare type Criteria<TRecord> = Predicate<TRecord> & {
+    metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>>;
+};
+/** Specialised dimensions for landscape maps. */
+export declare type Dimension<TRecord> = Array<Criteria<TRecord>>;
+/** Default criteria creator with simple metadata. */
+export declare function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>>;
 /** The pair of axes to be used in a pivot operation. */
 export interface Axes<TRow> {
     /** The y axis; rows in the resultant pivot table. */

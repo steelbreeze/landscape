@@ -1,5 +1,16 @@
-import { Callback, FunctionVA, Pair } from '@steelbreeze/types';
-import { Cube, Dimension } from '@steelbreeze/pivot';
+import { Callback, FunctionVA, Pair, Predicate } from '@steelbreeze/types';
+import { Cube } from '@steelbreeze/pivot';
+
+/** Specialised criteria for landscape maps. */
+export declare type Criteria<TRecord> = Predicate<TRecord> & { metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>> };
+
+/** Specialised dimensions for landscape maps. */
+export declare type Dimension<TRecord> = Array<Criteria<TRecord>>;
+
+/** Default criteria creator with simple metadata. */
+export function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>> {
+	return (value: TRecord[keyof TRecord]) => Object.assign((record: TRecord) => record[key] === value, { metadata: [{ key, value }] });
+}
 
 /** The pair of axes to be used in a pivot operation. */
 export interface Axes<TRow> {
@@ -57,12 +68,12 @@ export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Call
 			axes.y[0].metadata.map(() => newCell('axis xy')),
 
 			// generate the x axis cells
-			(x) => newCell(`axis x ${String(x.metadata[iC].key)}`, x.metadata[iC].value)
+			(x) => newCell(`axis x ${String(x.metadata[iC].key)}`, String(x.metadata[iC].value))
 		)),
 		// iterate and expand the x axis based on the split data
 		(row, ySplit, ysi, iY) => expand(row, xSplits,
 			// generate the y axis row header cells
-			axes.y[iY].metadata.map(criterion => newCell(`axis y ${String(criterion.key)}`, criterion.value)),
+			axes.y[iY].metadata.map((pair) => newCell(`axis y ${String(pair.key)}`, String(pair.value))),
 
 			// generate the cube cells
 			(cell, xSplit, xsi) => ({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] })

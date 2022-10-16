@@ -170,7 +170,7 @@
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
 		import * as footer from 'https://steelbreeze.net/footer.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.4.3-40V6BryzZaXM7k31OScb/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.5.0-beta-2-x1evgLRsd3iKSYyVL2Jm/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		// initialise the page footer
 		footer.init('https://api.github.com/repos/steelbreeze/landscape');
@@ -260,8 +260,8 @@
 			// create the dimensions to use as the x and y axes; derive from the source data and sort by a pre-defined sequence
 			console.time('axes');
 			context.axes = {
-				x: pivot.dimension(xAxisSelector.value, defaults.dimensions[xAxisSelector.value]),
-				y: pivot.dimension(yAxisSelector.value, defaults.dimensions[yAxisSelector.value])
+				x: defaults.dimensions[xAxisSelector.value].map(landscape.criteria(xAxisSelector.value)),
+				y: defaults.dimensions[yAxisSelector.value].map(landscape.criteria(yAxisSelector.value))
 			};
 			console.timeEnd('axes');
 

@@ -359,7 +359,7 @@
 	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
 		import * as csv from 'https://cdn.skypack.dev/pin/@steelbreeze/csv@v1.0.0-rc.1-4nHggLhodIp0gDFtdQi7/mode=imports,min/optimized/@steelbreeze/csv.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.4.3-40V6BryzZaXM7k31OScb/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.5.0-beta-2-x1evgLRsd3iKSYyVL2Jm/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		const context = {
 			file: undefined,
@@ -423,8 +423,8 @@
 
 		function pivotAndRender() {
 			context.axes = {
-				x: xAxisPicker.selectedIndex ? pivot.dimension(xAxisPicker.value, context.json.map(row => row[xAxisPicker.value]).filter(distinct)) : pivot.dimension('noX', ['Select x-axis'], value => Object.assign(() => true, {metadata:[{ key: "noX", value: "Select x-axis"}]})),
-				y: yAxisPicker.selectedIndex ? pivot.dimension(yAxisPicker.value, context.json.map(row => row[yAxisPicker.value]).filter(distinct)) : pivot.dimension('noY', ['Select y-axis'], value => Object.assign(() => true, {metadata:[{ key: "noY", value: "Select y-axis"}]}))
+				x: xAxisPicker.selectedIndex ? context.json.map(row => row[xAxisPicker.value]).filter(distinct).map(landscape.criteria(xAxisPicker.value)) : ['Select x-axis'].map(value => Object.assign(() => true, {metadata:[{ key: "noX", value: "Select x-axis"}]})),
+				y: yAxisPicker.selectedIndex ? context.json.map(row => row[yAxisPicker.value]).filter(distinct).map(landscape.criteria(yAxisPicker.value)) : ['Select y-axis'].map(value => Object.assign(() => true, {metadata:[{ key: "noY", value: "Select y-axis"}]}))
 			}
 
 			context.getKey = factPicker.selectedIndex ? (record) => { return { key: factPicker.value, value: record[factPicker.value], style: 'none' }; } : () => { return { key: '', value: 'Select fact', style: 'none' }; };
