@@ -4,16 +4,12 @@ import { Cube } from '@steelbreeze/pivot';
 export declare type Criteria<TRecord> = Predicate<TRecord> & {
     metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>>;
 };
-/** Specialised dimensions for landscape maps. */
-export declare type Dimension<TRecord> = Array<Criteria<TRecord>>;
-/** Default criteria creator with simple metadata. */
-export declare function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>>;
 /** The pair of axes to be used in a pivot operation. */
-export interface Axes<TRow> {
+export interface Axes<TRecord> {
     /** The y axis; rows in the resultant pivot table. */
-    y: Dimension<TRow>;
+    y: Array<Criteria<TRecord>>;
     /** The x axis; columns in the resultant pivot table. */
-    x: Dimension<TRow>;
+    x: Array<Criteria<TRecord>>;
 }
 /** Styling information for rendering purposes. */
 export interface Style {
@@ -34,6 +30,11 @@ export declare type Element = Pair<string | number, any> & Style;
 /** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
 export declare type Cell = Element & Layout;
 /**
+ * Default criteria creator with simple metadata.
+ * @param key The property within the source data to use as
+ */
+export declare function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>>;
+/**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
  * @param axes The x and y axes used in the pivot operation to create the cube.
@@ -41,7 +42,7 @@ export declare type Cell = Element & Layout;
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export declare const table: <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method?: FunctionVA<number, number>) => Array<Array<Cell>>;
+export declare const table: <TRecord>(cube: Cube<TRecord>, axes: Axes<TRecord>, getElement: Callback<TRecord, Element>, onX: boolean, method?: FunctionVA<number, number>) => Array<Array<Cell>>;
 /**
  * Merge adjacent cells in a split table on the y and/or x axes.
  * @param cells A table of Cells created by a previous call to splitX or splitY.

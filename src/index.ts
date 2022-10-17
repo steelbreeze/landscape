@@ -4,21 +4,13 @@ import { Cube } from '@steelbreeze/pivot';
 /** Specialised criteria for landscape maps. */
 export declare type Criteria<TRecord> = Predicate<TRecord> & { metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>> };
 
-/** Specialised dimensions for landscape maps. */
-export declare type Dimension<TRecord> = Array<Criteria<TRecord>>;
-
-/** Default criteria creator with simple metadata. */
-export function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>> {
-	return (value: TRecord[keyof TRecord]) => Object.assign((record: TRecord) => record[key] === value, { metadata: [{ key, value }] });
-}
-
 /** The pair of axes to be used in a pivot operation. */
-export interface Axes<TRow> {
+export interface Axes<TRecord> {
 	/** The y axis; rows in the resultant pivot table. */
-	y: Dimension<TRow>;
+	y: Array<Criteria<TRecord>>;
 
 	/** The x axis; columns in the resultant pivot table. */
-	x: Dimension<TRow>;
+	x: Array<Criteria<TRecord>>;
 }
 
 /** Styling information for rendering purposes. */
@@ -46,6 +38,14 @@ export type Element = Pair<string | number, any> & Style;
 export type Cell = Element & Layout;
 
 /**
+ * Default criteria creator with simple metadata.
+ * @param key The property within the source data to use as 
+ */
+export function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>> {
+	return (value: TRecord[keyof TRecord]) => Object.assign((record: TRecord) => record[key] === value, { metadata: [{ key, value }] });
+}
+
+/**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
  * @param axes The x and y axes used in the pivot operation to create the cube.
@@ -53,7 +53,7 @@ export type Cell = Element & Layout;
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export const table = <TRow>(cube: Cube<TRow>, axes: Axes<TRow>, getElement: Callback<TRow, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
+export const table = <TRecord>(cube: Cube<TRecord>, axes: Axes<TRecord>, getElement: Callback<TRecord, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
 	const cells = cube.map(slice => slice.map(table => transform(table, getElement)));
 
@@ -113,7 +113,7 @@ const mergeCells = (next: Cell, cell: Cell, compareKey: keyof Layout, mergeKey: 
  * Transform an array of rows into an array of cells.
  * @hidden
  */
-const transform = <TRow>(table: Array<TRow>, getElement: Callback<TRow, Element>): Array<Cell> =>
+const transform = <TRecord>(table: Array<TRecord>, getElement: Callback<TRecord, Element>): Array<Cell> =>
 	table.reduce<Array<Cell>>((result, row, index) => {
 		const element = getElement(row, index, table);
 
