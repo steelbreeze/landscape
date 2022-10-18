@@ -33,7 +33,7 @@ export declare type Cell = Element & Layout;
  * Default criteria creator with simple metadata.
  * @param key The property within the source data to use as
  */
-export declare function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>>;
+export declare const criteria: <TRecord>(key: keyof TRecord) => Callback<TRecord[keyof TRecord], Criteria<TRecord>>;
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.

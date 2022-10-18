@@ -41,9 +41,8 @@ export type Cell = Element & Layout;
  * Default criteria creator with simple metadata.
  * @param key The property within the source data to use as 
  */
-export function criteria<TRecord>(key: keyof TRecord): Callback<any, Criteria<TRecord>> {
-	return (value: TRecord[keyof TRecord]) => Object.assign((record: TRecord) => record[key] === value, { metadata: [{ key, value }] });
-}
+export const criteria = <TRecord>(key: keyof TRecord): Callback<TRecord[keyof TRecord], Criteria<TRecord>> =>
+	value => Object.assign((record: TRecord) => record[key] === value, { metadata: [{ key, value }] });
 
 /**
  * Generates a table from a cube and it's axis.
