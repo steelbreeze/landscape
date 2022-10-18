@@ -34,14 +34,14 @@ This simple example is taken from the [steelbreeze.net](https://steelbreeze.net)
 ```javascript
 // create pre-defined dimensions
 const axes = {
-	x: pivot.dimension(["Rates", "FX", "MM", "Credit", "Equities"], "Product"),
-	y: pivot.dimension(["Market gateway", "Order execution", "Order management", "Confirmations"], "Capability")
+	x: ["Rates", "FX", "MM", "Credit", "Equities"].map(landscape.criteria("Product")),
+	y: ["Market gateway", "Order execution", "Order management", "Confirmations"].map(landscape.criteria("Capability"))
 };
 
 // pivot the data using the product and capability dimensions as the x and y axes respectively
-const cube = pivot.cube(data, axes);
+const cube = pivot.cube(data, axes.y, axes.x);
 
-// create a table of data from the pivot cube and dimensions
+// create a table of data from the pivot cube
 const table = landscape.table(cube, axes, key, true);
 
 // merge cells on both axes where possible
