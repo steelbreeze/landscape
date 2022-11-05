@@ -170,7 +170,8 @@
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
 		import * as footer from 'https://steelbreeze.net/footer.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.5.2-aSDALnowcoyKSRYuB0aT/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.6.0-U9Th0q4OrjffiXVYSRHz/mode=imports,min/optimized/@steelbreeze/pivot.js';
+//		import * as pivot from './dist/pivot.min.js';
 
 		// initialise the page footer
 		footer.init('https://api.github.com/repos/steelbreeze/landscape');
@@ -282,7 +283,7 @@
 			dateOfInterest.textContent = date;
 
 			// filter the cube using the date of interest
-			context.filtered = pivot.map(context.cube, pivot.filter(app => (!app.From || app.From < date) && (!app.To || date < app.To)));
+			context.filtered = pivot.map(context.cube, records => records.filter(app => (!app.From || app.From < date) && (!app.To || date < app.To)));
 
 			renderCube();
 		}
