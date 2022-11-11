@@ -67,7 +67,7 @@ export const table = <TRecord>(cube: Cube<TRecord>, axes: Axes<TRecord>, getElem
 			axes.y[0].metadata.map(() => newCell('axis xy')),
 
 			// generate the x axis cells
-			(x) => newCell(`axis x ${String(x.metadata[iC].key)}`, String(x.metadata[iC].value))
+			x => newCell(`axis x ${String(x.metadata[iC].key)}`, String(x.metadata[iC].value))
 		)),
 		// iterate and expand the x axis based on the split data
 		(row, ySplit, ysi, iY) => expand(row, xSplits,
