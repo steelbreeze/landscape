@@ -431,7 +431,7 @@
 
 			context.cube = pivot.cube(context.json, context.axes.y, context.axes.x);
 
-			const tab = landscape.table(context.cube, context.axes, context.getKey, false);
+			const tab = landscape.table(context.cube, context.axes.y, context.axes.x, context.getKey, false);
 			landscape.merge(tab, true, true);
 
 			renderTable(tab);

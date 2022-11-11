@@ -292,7 +292,7 @@
 			console.time('split');
 
 			// split the cube and axes along the desired axis, creating a table
-			const table = landscape.table(context.filtered, context.axes, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
+			const table = landscape.table(context.filtered, context.axes.y, context.axes.x, key, splitByX.checked); // NOTE: as the merge function modifies the table, this must be done each time
 
 			console.timeEnd('split');
 			console.time('merge');

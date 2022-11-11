@@ -2,16 +2,9 @@ import { Callback, FunctionVA, Pair, Predicate } from '@steelbreeze/types';
 import { Cube } from '@steelbreeze/pivot';
 
 /** Specialised criteria for landscape maps. */
-export declare type Criteria<TRecord> = Predicate<TRecord> & { metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>> };
+export type Criteria<TRecord> = Predicate<TRecord> & { metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>> };
 
-/** The pair of axes to be used in a pivot operation. */
-export interface Axes<TRecord> {
-	/** The y axis; rows in the resultant pivot table. */
-	y: Array<Criteria<TRecord>>;
-
-	/** The x axis; columns in the resultant pivot table. */
-	x: Array<Criteria<TRecord>>;
-}
+export type Dimension<TRecord> = Array<Criteria<TRecord>>;
 
 /** Styling information for rendering purposes. */
 export interface Style {
@@ -47,32 +40,33 @@ export const criteria = <TRecord>(key: keyof TRecord): Callback<TRecord[keyof TR
 /**
  * Generates a table from a cube and it's axis.
  * @param cube The source cube.
- * @param axes The x and y axes used in the pivot operation to create the cube.
+ * @param y The y axis used in the pivot operation to create the cube.
+ * @param x The x axis used in the pivot operation to create the cube.
  * @param getElement A callback to generate an element containing the details used in table rendering,
  * @param onX A flag to indicate if cells in cube containing multiple values should be split on the x axis (if not, the y axis will be used).
  * @param method A function used to calculate how many rows or columns to split a row/column into based on the number of entries in each cell of that row/column. Defaults to Math.max, but other methods such as Least Common Multiple can be used for more precise table rendering.
  */
-export const table = <TRecord>(cube: Cube<TRecord>, axes: Axes<TRecord>, getElement: Callback<TRecord, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
+export const table = <TRecord>(cube: Cube<TRecord>, y: Dimension<TRecord>, x: Dimension<TRecord>, getElement: Callback<TRecord, Element>, onX: boolean, method: FunctionVA<number, number> = Math.max): Array<Array<Cell>> => {
 	// transform the cube of rows into a cube of cells
 	const cells = cube.map(slice => slice.map(table => transform(table, getElement)));
 
 	// calcuate the x splits required (y splits inlined below)
-	const xSplits: Array<number> = axes.x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
+	const xSplits: Array<number> = x.map((_, iX) => onX ? method(...cells.map(row => row[iX].length)) : 1);
 
 	// generate the whole table
 	return expand(cells, cells.map(row => onX ? 1 : method(...row.map(table => table.length))),
 		// generate x axis header rows
-		axes.x[0].metadata.map((_, iC) => expand(axes.x, xSplits,
+		x[0].metadata.map((_, iC) => expand(x, xSplits,
 			// generate the x/y header
-			axes.y[0].metadata.map(() => newCell('axis xy')),
+			y[0].metadata.map(() => newCell('axis xy')),
 
 			// generate the x axis cells
-			x => newCell(`axis x ${String(x.metadata[iC].key)}`, String(x.metadata[iC].value))
+			criteria => newCell(`axis x ${String(criteria.metadata[iC].key)}`, String(criteria.metadata[iC].value))
 		)),
 		// iterate and expand the x axis based on the split data
 		(row, ySplit, ysi, iY) => expand(row, xSplits,
 			// generate the y axis row header cells
-			axes.y[iY].metadata.map((pair) => newCell(`axis y ${String(pair.key)}`, String(pair.value))),
+			y[iY].metadata.map((pair) => newCell(`axis y ${String(pair.key)}`, String(pair.value))),
 
 			// generate the cube cells
 			(cell, xSplit, xsi) => ({ ...cell[Math.floor(cell.length * (ysi + xsi) / (xSplit * ySplit))] })
