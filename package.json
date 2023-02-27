@@ -12,10 +12,10 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@steelbreeze/pivot": "^3.6.0"
+    "@steelbreeze/pivot": "latest"
   },
   "devDependencies": {
-    "@steelbreeze/types": "^1.1.0",
+    "@steelbreeze/types": "latest",
     "typedoc": "^0.22.11",
     "typescript": "latest",
     "webpack-cli": "latest"
