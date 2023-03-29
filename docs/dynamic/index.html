@@ -319,7 +319,7 @@
 	<script src="../dist/landscape.min.js"></script>
 	<script type="module">
 		import * as csv from 'https://cdn.skypack.dev/pin/@steelbreeze/csv@v1.0.0-rc.1-4nHggLhodIp0gDFtdQi7/mode=imports,min/optimized/@steelbreeze/csv.js';
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.7.1-nejNC1Sxrs2qVsLjXECW/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v4.0.0-V2jTpjIfQu27xQ0bXDqL/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		const context = {
 			file: undefined,
@@ -389,7 +389,7 @@
 
 			context.getKey = factPicker.selectedIndex ? (record) => { return { key: factPicker.value, value: record[factPicker.value], style: 'none' }; } : () => { return { key: '', value: 'Select fact', style: 'none' }; };
 
-			context.cube = pivot.cube(context.json, context.axes.y, context.axes.x);
+			context.cube = pivot.pivot(context.json, context.axes.y, context.axes.x);
 
 			const tab = landscape.table(context.cube, context.axes.y, context.axes.x, context.getKey, false);
 			landscape.merge(tab, true, true);

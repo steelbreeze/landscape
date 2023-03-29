@@ -160,7 +160,7 @@
 	<script src="./dist/landscape.min.js"></script>
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v3.7.1-nejNC1Sxrs2qVsLjXECW/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v4.0.0-V2jTpjIfQu27xQ0bXDqL/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		// common controls used
 		const xAxisSelector = document.getElementById("xAxisSelector");
@@ -254,7 +254,7 @@
 
 			// create the cube
 			console.time('cube');
-			context.cube = pivot.cube(context.json, context.axes.y, context.axes.x);
+			context.cube = pivot.pivot(context.json, context.axes.y, context.axes.x);
 			console.timeEnd('cube');
 
 			filterCube();

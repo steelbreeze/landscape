@@ -39,7 +39,7 @@ const axes = {
 };
 
 // pivot the data using the product and capability dimensions as the x and y axes respectively
-const cube = pivot.cube(data, axes.y, axes.x);
+const cube = pivot.pivot(data, axes.y, axes.x);
 
 // create a table of data from the pivot cube
 const table = landscape.table(cube, axes, key, true);
