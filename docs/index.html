@@ -160,7 +160,7 @@
 	<script src="./dist/landscape.min.js"></script>
 	<script src="./dist/render.min.js"></script>
 	<script type="module">
-		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v4.2.0-zuCwVf1CX0QPiaOBWNyy/mode=imports,min/optimized/@steelbreeze/pivot.js';
+		import * as pivot from 'https://cdn.skypack.dev/pin/@steelbreeze/pivot@v4.3.0-JN707WjcEaD97F4i6JD7/mode=imports,min/optimized/@steelbreeze/pivot.js';
 
 		// common controls used
 		const xAxisSelector = document.getElementById("xAxisSelector");
@@ -269,7 +269,7 @@
 			dateOfInterest.textContent = date;
 
 			// filter the cube using the date of interest
-			context.filtered = pivot.map(context.cube, records => records.filter(app => (!app.From || app.From < date) && (!app.To || date < app.To)));
+			context.filtered = pivot.aggregate(context.cube, records => records.filter(app => (!app.From || app.From < date) && (!app.To || date < app.To)));
 
 			renderCube();
 		}
