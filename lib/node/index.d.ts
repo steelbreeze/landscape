@@ -1,10 +1,10 @@
 import { Callback, FunctionVA, Pair, Predicate } from '@steelbreeze/types';
 import { Cube } from '@steelbreeze/pivot';
 /** Specialised criteria for landscape maps. */
-export declare type Criteria<TRecord> = Predicate<TRecord> & {
+export type Criteria<TRecord> = Predicate<TRecord> & {
     metadata: Array<Pair<keyof TRecord, TRecord[keyof TRecord]>>;
 };
-export declare type Dimension<TRecord> = Array<Criteria<TRecord>>;
+export type Dimension<TRecord> = Array<Criteria<TRecord>>;
 /** Styling information for rendering purposes. */
 export interface Style {
     /** The class name to use in the final table rendering. */
@@ -20,9 +20,9 @@ export interface Layout {
     cols: number;
 }
 /** The final text and class name to use when rendering cells in a table. */
-export declare type Element = Pair<string | number, any> & Style;
+export type Element = Pair<string | number, any> & Style;
 /** An extension of Element, adding the number of rows and columns the element will occupy in the final table rendering. */
-export declare type Cell = Element & Layout;
+export type Cell = Element & Layout;
 /**
  * Default criteria creator with simple metadata.
  * @param key The property within the source data to use as
